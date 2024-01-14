@@ -2,7 +2,7 @@ package com.example.demo.domain.member.entity;
 
 import com.example.demo.domain.common.BaseEntity;
 
-import com.example.demo.domain.enums.Genre;
+import com.example.demo.domain.member.constant.Genre;
 import jakarta.persistence.*;
 import lombok.*;
 

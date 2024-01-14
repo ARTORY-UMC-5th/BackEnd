@@ -1,4 +1,4 @@
-package com.example.demo.domain.enums;
+package com.example.demo.domain.member.constant;
 
 public enum Genre {
     MEDIA,CRAFT,DESIGN,PICTURE,SPECIAL_EXHIBITION,SCULPTURE,PLANEXHIBITION,
