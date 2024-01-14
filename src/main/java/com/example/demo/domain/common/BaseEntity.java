@@ -19,6 +19,6 @@ public abstract class BaseEntity extends BaseTimeEntity{
     private LocalDateTime creatTimeBy;
 
     @LastModifiedDate
-    private LocalDateTime updateTimeBt;
+    private LocalDateTime updateTimeBy;
 
 }
