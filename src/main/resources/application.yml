@@ -1,0 +1,53 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:test
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+    show-sql: true #??? sql ??
+    properties:
+      hibernate:
+        format_sql: true #sql ??? ??
+        default_batch_fetch_size: 500  #?? ? ??? ?? ???
+
+    open-in-view: false # ??? ????? ?? ??? ???? ??? ??
+
+  servlet:
+    multipart:
+      max-file-size: 10MB #?? ??? ??? ??? ?? ??? 10MB ??? ???.
+      max-request-size: 100MB # ?? ??? ?? ??
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+logging:
+  level:
+    org.hibernate.type: trace # ???? ??? ????? ? ? ?? ?? ??
+    com.app: debug # todo ??? ??
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+
+kakao:
+  client:
+    id: ee35f9bdbb7d489738218a16bc693718
+    secret: WlH1pCtFLtTBJIACJW2aIh7azY3ZK47R
+
+token:
+  secret: ENC(9c9uJh1XDJMe72tcz8o94Z1pqQxRrUddasasdjkhlasfhasdjkasdKaxFAlScPFuIGZtp57tFR3Q==) # ??? ???
+  access-token-expiration-time: 900000  # 15? 1000(ms) x 60(s) x 15(m)
+  refresh-token-expiration-time: 1209600000 # 2? 1000(ms) x 60 (s) x 60(m) x 24(h) x 14(d)
