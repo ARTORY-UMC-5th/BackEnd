@@ -1,5 +1,6 @@
 package com.example.demo.web.kakaoToken.controller;
 
+import com.example.demo.api.login.dto.OauthLoginDto;
 import com.example.demo.api.login.service.OauthLoginService;
 import com.example.demo.domain.member.constant.MemberType;
 import com.example.demo.web.kakaoToken.client.KakaoTokenClient;
@@ -23,13 +24,21 @@ public class KakaoTokenController {
     @Value("${kakao.client.secret}")
     private String clientSecret;
 
+
+
     @GetMapping("/login")
     public String login() {
         return "loginForm";
     }
 
+
+    @GetMapping("/home")
+    public String home() {
+        return "home";
+    }
+
     @GetMapping("/oauth/kakao/callback")
-    public @ResponseBody String loginCallback(String code) {
+    public @ResponseBody OauthLoginDto.Response loginCallback(String code) {
         String contentType = "application/x-www-form-urlencoded;charset=utf-8";
         KakaoTokenDto.Request kakaoTokenRequestDto = KakaoTokenDto.Request.builder()
                 .client_id(clientId)
@@ -37,13 +46,19 @@ public class KakaoTokenController {
                 .grant_type("authorization_code")
                 .code(code)
                 .redirect_uri("http://localhost:8080/oauth/kakao/callback")
+//                .redirect_uri("http://localhost:8080/home")
+
                 .build();
-        KakaoTokenDto.Response kakaoToken = kakaoTokenClient.requestKakaoToken(contentType, kakaoTokenRequestDto);
         System.out.println("CODE : " + code);
+
+        KakaoTokenDto.Response kakaoToken = kakaoTokenClient.requestKakaoToken(contentType, kakaoTokenRequestDto);
+
         System.out.println("getAccess_token : " + kakaoToken.getAccess_token());
 
-        System.out.println(oauthLoginService.oauthLogin(kakaoToken.getAccess_token(), MemberType.from("KAKAO")));
-        return "kakao toekn : " + kakaoToken;
+        System.out.println(kakaoToken);
+//        return "kakao toekn : " + kakaoToken;
+        return oauthLoginService.oauthLogin(kakaoToken.getAccess_token(), MemberType.from("KAKAO"));
     }
+
 
 }

@@ -27,6 +27,7 @@ public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "memberId")
     private Long memberId;
 
     @Enumerated(EnumType.STRING)

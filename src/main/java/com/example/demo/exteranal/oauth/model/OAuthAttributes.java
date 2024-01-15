@@ -14,6 +14,8 @@ public class OAuthAttributes {
     private String name;
     private String email;
     private String profile;
+    private String gender;
+    private String nickname;
     private MemberType memberType;
 
     public Member toMemberEntity(MemberType memberType, Role role){
