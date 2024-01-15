@@ -1,8 +1,11 @@
-package com.example.demo.domain.member.entity;
+package com.example.demo.domain.exhibition.entity;
+
 
 import com.example.demo.domain.common.BaseEntity;
+import com.example.demo.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
+
 
 
 
@@ -11,13 +14,16 @@ import lombok.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-
-public class LikeExhibition extends BaseEntity {
-
+public class ScrapExhibition extends BaseEntity {
+//My Story 달력에 필요
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "likeExhibition_id")
+    @Column(name = "scrapExhibition_id")
     private Long id;
+
+    private int year;
+    private int month;
+    private int day;
 
 
     @ManyToOne(fetch = FetchType.LAZY)

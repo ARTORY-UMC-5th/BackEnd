@@ -1,7 +1,7 @@
 package com.example.demo.domain.member.service;
 
-import com.example.demo.domain.member.repository.MemberRepository;
 import com.example.demo.domain.member.entity.Member;
+import com.example.demo.domain.member.repository.MemberRepository;
 import com.example.demo.global.error.ErrorCode;
 import com.example.demo.global.error.exception.AuthenticationException;
 import com.example.demo.global.error.exception.BusinessException;
@@ -34,7 +34,7 @@ public class MemberService {
         return memberRepository.findByEmail(email);
     }
 //    @Transactional(readOnly = true)
-    public Member findMemberByRefreshToken(String refreshToken) {//리프레시 토큰 만료
+    public Member findMemberByRefreshToken(String refreshToken) {
         Member member = memberRepository.findByRefreshToken(refreshToken);
         LocalDateTime tokenExpirationTime = member.getTokenExpirationTime();
         if(tokenExpirationTime.isBefore(LocalDateTime.now())) {

@@ -1,6 +1,7 @@
-package com.example.demo.domain.member.entity;
+package com.example.demo.domain.exhibition.entity;
 
 import com.example.demo.domain.common.BaseEntity;
+import com.example.demo.domain.member.entity.Story;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,7 +39,8 @@ public class Exhibition extends BaseEntity {
     private String exhibitionLongitude; //경도, 크롤링기준: LOT
     private String exhibitionLatitude; //위도, 크롤링기준: LAT
 
-    //시작날짜,종료날짜가 따로 필요하다면 STRTDATE,END_DATE로 하면됨
+    private String exhibitionStartDate; //시작날짜, 크롤링 기준: STRTDATE
+    private String exhibitionEndDate; //종료날짜, 크롤링 기준: END_DATE
 
     private boolean isEnded = false; //전시회 종료되었는지, 안되었는지
 

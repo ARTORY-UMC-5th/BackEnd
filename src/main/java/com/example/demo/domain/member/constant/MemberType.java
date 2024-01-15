@@ -1,10 +1,7 @@
 package com.example.demo.domain.member.constant;
 
-import com.example.demo.domain.member.entity.Member;
-
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public enum MemberType {
     KAKAO;

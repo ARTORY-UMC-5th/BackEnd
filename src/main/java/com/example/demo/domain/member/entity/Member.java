@@ -2,10 +2,12 @@ package com.example.demo.domain.member.entity;
 
 
 import com.example.demo.domain.common.BaseEntity;
+import com.example.demo.domain.exhibition.entity.LikeExhibition;
+import com.example.demo.domain.exhibition.entity.ScrapExhibition;
 import com.example.demo.domain.member.constant.Gender;
 import com.example.demo.domain.member.constant.Genre;
-import com.example.demo.domain.member.constant.Role;
 import com.example.demo.domain.member.constant.MemberType;
+import com.example.demo.domain.member.constant.Role;
 import com.example.demo.global.jwt.dto.JwtTokenDto;
 import com.example.demo.global.util.DateTimeUtils;
 import jakarta.persistence.*;

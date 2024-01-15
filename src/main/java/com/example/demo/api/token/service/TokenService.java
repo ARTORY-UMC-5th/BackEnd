@@ -1,8 +1,8 @@
 package com.example.demo.api.token.service;
 
+import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.member.service.MemberService;
 import com.example.demo.api.token.dto.AccessTokenResponseDto;
-import com.example.demo.domain.member.entity.Member;
 import com.example.demo.global.jwt.constant.GrantType;
 import com.example.demo.global.jwt.service.TokenManager;
 import jakarta.transaction.Transactional;

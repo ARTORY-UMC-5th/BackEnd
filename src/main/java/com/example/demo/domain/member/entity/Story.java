@@ -1,7 +1,8 @@
 package com.example.demo.domain.member.entity;
 
 import com.example.demo.domain.common.BaseEntity;
-
+import com.example.demo.domain.exhibition.entity.Exhibition;
+import com.example.demo.domain.exhibition.entity.ExhibitionGenre;
 import com.example.demo.domain.member.constant.Genre;
 import jakarta.persistence.*;
 import lombok.*;
