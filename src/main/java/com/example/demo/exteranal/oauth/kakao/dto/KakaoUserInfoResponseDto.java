@@ -14,7 +14,9 @@ public class KakaoUserInfoResponseDto {
     @Getter @Setter
     public static class KakaoAccount {
         private String email;
+//        private String name;
         private Profile profile;
+        private String gender;
 
         @Getter @Setter
         public static class Profile {

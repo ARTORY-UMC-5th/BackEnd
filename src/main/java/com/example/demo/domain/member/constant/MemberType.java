@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum MemberType {
-    KAKAO;
+    KAKAO, NAVER;
 
     public static MemberType from(String type){//맴버 값을 가지고 있는지 확인하는 메소드
         return MemberType.valueOf(type.toUpperCase());

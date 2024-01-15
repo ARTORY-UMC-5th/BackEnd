@@ -34,7 +34,11 @@ public class OauthLoginController {
         String accessToken = authorizationHeader.split(" ")[1];
         OauthLoginDto.Response jwtTokenResponseDto = oauthLoginService.oauthLogin(accessToken, MemberType.from(oauthLoginRequestDto.getMemberType()));
 
+        System.out.println("kako-login");
+
         return ResponseEntity.ok(jwtTokenResponseDto);
     }
+
+
 
 }

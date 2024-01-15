@@ -9,6 +9,8 @@ import com.example.demo.domain.member.entity.Member;
 import com.example.demo.exteranal.oauth.model.OAuthAttributes;
 import com.example.demo.exteranal.oauth.service.SocialLoginApiService;
 import com.example.demo.exteranal.oauth.service.SocialLoginApiServiceFactory;
+import com.example.demo.global.error.ErrorCode;
+import com.example.demo.global.error.exception.BusinessException;
 import com.example.demo.global.jwt.dto.JwtTokenDto;
 import com.example.demo.global.jwt.service.TokenManager;
 import lombok.RequiredArgsConstructor;
@@ -42,13 +44,14 @@ public class OauthLoginService {
             jwtTokenDto = tokenManager.createJwtTokenDto(oauthMember.getMemberId(), oauthMember.getRole());
             oauthMember.updateRefreshToken(jwtTokenDto);
 
-        }else{//기존
+        }else if(memberType == optionalMember.get().getMemberType()){//기존
             Member oauthMember = optionalMember.get();
 
             //토큰 생성
             jwtTokenDto = tokenManager.createJwtTokenDto(oauthMember.getMemberId(), oauthMember.getRole());
             oauthMember.updateRefreshToken(jwtTokenDto);
-        }
+        } else throw new BusinessException(ErrorCode.ALREADY_REGISTERED_EMAIL);
+        //같은 이메일 사용한 경우
 
         return OauthLoginDto.Response.of(jwtTokenDto);
 
