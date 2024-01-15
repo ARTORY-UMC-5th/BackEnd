@@ -2,6 +2,8 @@ package com.example.demo.domain.member.entity;
 
 
 import com.example.demo.domain.common.BaseEntity;
+import com.example.demo.domain.member.constant.Gender;
+import com.example.demo.domain.member.constant.Genre;
 import com.example.demo.domain.member.constant.Role;
 import com.example.demo.domain.member.constant.MemberType;
 import com.example.demo.global.jwt.dto.JwtTokenDto;
@@ -13,6 +15,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -68,4 +72,67 @@ public class Member extends BaseEntity {
     public void expireRefreshToken(LocalDateTime now) {
         this.tokenExpirationTime = now;
     }
+
+
+    private String memberUserInfo;
+
+
+    @Column(nullable = true, length = 10)
+    private String nickname;
+
+
+    private String image;
+
+
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(10)")
+    private Gender gender;
+
+    private String age;
+
+
+    //@Column(nullable = false, length = 40) 필요하면 제한하자, 일단은 이대로
+
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(20)")
+    private Genre genre1;
+
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(20)")
+    private Genre genre2;
+
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(20)")
+    private Genre genre3;
+
+
+    //mypage에서 사용
+    private String introduction;
+    private String myKeyword;
+
+    //mystory에서 사용
+    @Lob
+    private String memo;
+
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<ScrapMember> scrapMemberList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Story> storyList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<ScrapStory> scrapStoryList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Comment> commentList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<ScrapExhibition> scrapExhibitionList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<LikeExhibition> likeExhibitionList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<LikeStory> likeStoryList = new ArrayList<>();
 }

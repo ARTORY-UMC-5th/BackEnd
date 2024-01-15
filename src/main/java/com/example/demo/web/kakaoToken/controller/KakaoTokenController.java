@@ -1,5 +1,7 @@
 package com.example.demo.web.kakaoToken.controller;
 
+import com.example.demo.api.login.service.OauthLoginService;
+import com.example.demo.domain.member.constant.MemberType;
 import com.example.demo.web.kakaoToken.client.KakaoTokenClient;
 import com.example.demo.web.kakaoToken.dto.KakaoTokenDto;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class KakaoTokenController {
 
     private final KakaoTokenClient kakaoTokenClient;
+    private final OauthLoginService oauthLoginService;
 
     @Value("${kakao.client.id}")
     private String clientId;
@@ -36,6 +39,10 @@ public class KakaoTokenController {
                 .redirect_uri("http://localhost:8080/oauth/kakao/callback")
                 .build();
         KakaoTokenDto.Response kakaoToken = kakaoTokenClient.requestKakaoToken(contentType, kakaoTokenRequestDto);
+        System.out.println("CODE : " + code);
+        System.out.println("getAccess_token : " + kakaoToken.getAccess_token());
+
+        System.out.println(oauthLoginService.oauthLogin(kakaoToken.getAccess_token(), MemberType.from("KAKAO")));
         return "kakao toekn : " + kakaoToken;
     }
 

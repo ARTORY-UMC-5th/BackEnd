@@ -34,7 +34,7 @@ public class MemberService {
         return memberRepository.findByEmail(email);
     }
 //    @Transactional(readOnly = true)
-    public Member findMemberByRefreshToken(String refreshToken) {
+    public Member findMemberByRefreshToken(String refreshToken) {//리프레시 토큰 만료
         Member member = memberRepository.findByRefreshToken(refreshToken);
         LocalDateTime tokenExpirationTime = member.getTokenExpirationTime();
         if(tokenExpirationTime.isBefore(LocalDateTime.now())) {
