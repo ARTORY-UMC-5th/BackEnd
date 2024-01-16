@@ -8,6 +8,6 @@ public class RootController {
 
     @GetMapping("/health")
     public String healthCehck(){
-        return "I'm healthy";
+        return "Im healthy";
     }
 }
