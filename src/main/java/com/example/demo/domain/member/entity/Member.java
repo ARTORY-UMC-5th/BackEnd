@@ -8,13 +8,11 @@ import com.example.demo.domain.member.constant.Gender;
 import com.example.demo.domain.member.constant.Genre;
 import com.example.demo.domain.member.constant.MemberType;
 import com.example.demo.domain.member.constant.Role;
+import com.example.demo.domain.member.dto.MemberInfoSaveDto;
 import com.example.demo.global.jwt.dto.JwtTokenDto;
 import com.example.demo.global.util.DateTimeUtils;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,7 +20,10 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder(toBuilder = true)
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class Member extends BaseEntity {
 
     @Id
@@ -66,6 +67,11 @@ public class Member extends BaseEntity {
         this.role = role;
     }
 
+    @Builder
+    public Member(MemberInfoSaveDto memberInfosaveDto) {
+        super();
+    }
+
 
     public void updateRefreshToken(JwtTokenDto jwtTokenDto) {
         this.refreshToken = jwtTokenDto.getRefreshToken();
@@ -77,7 +83,7 @@ public class Member extends BaseEntity {
     }
 
 
-    private String memberUserInfo;
+//    private String memberUserInfo;
 
 
     @Column(nullable = true, length = 10)

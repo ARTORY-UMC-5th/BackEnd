@@ -43,6 +43,8 @@ public class OauthLoginService {
             //토큰 생성
             jwtTokenDto = tokenManager.createJwtTokenDto(oauthMember.getMemberId(), oauthMember.getRole());
             oauthMember.updateRefreshToken(jwtTokenDto);
+            //시큐리티에 저장
+
 
         }else if(memberType == optionalMember.get().getMemberType()){//기존
             Member oauthMember = optionalMember.get();

@@ -1,6 +1,8 @@
 package com.example.demo.global.resolver.memberInfo;
 
 import com.example.demo.domain.member.constant.Role;
+import com.example.demo.domain.member.entity.Member;
+import com.example.demo.domain.member.repository.MemberRepository;
 import com.example.demo.global.jwt.service.TokenManager;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,11 +19,15 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 public class MemberInfoArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final TokenManager tokenManager;
+    private final MemberRepository memberRepository;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         boolean hasMemberInfoAnnotation = parameter.hasParameterAnnotation(MemberInfo.class);
-        boolean hasMemberInfoDto = MemberInfo.class.isAssignableFrom(parameter.getParameterType());
+        boolean hasMemberInfoDto = MemberInfoDto.class.isAssignableFrom(parameter.getParameterType());
+        System.out.println("hasMemberInfoAnnotation : " + hasMemberInfoAnnotation );
+        System.out.println("hasMemberInfoDto : " + hasMemberInfoDto );
+
         return hasMemberInfoAnnotation && hasMemberInfoDto;
     }
 
@@ -34,6 +40,7 @@ public class MemberInfoArgumentResolver implements HandlerMethodArgumentResolver
         Claims tokenClaims = tokenManager.getTokenClaims(token);
         Long memberId = Long.valueOf( (Integer) tokenClaims.get("memberId"));
         String role = (String) tokenClaims.get("role");
+        System.out.println("resolver : "+ memberId);
         return MemberInfoDto.builder()
                 .memberId(memberId)
                 .role(Role.from(role))
