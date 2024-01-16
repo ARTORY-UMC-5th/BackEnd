@@ -1,4 +1,4 @@
-package com.example.demo.api.logout.service;
+package com.example.demo.domain.member.service;
 
 
 import com.example.demo.domain.member.entity.Member;

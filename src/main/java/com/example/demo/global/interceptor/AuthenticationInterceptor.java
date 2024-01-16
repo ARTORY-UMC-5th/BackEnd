@@ -1,5 +1,6 @@
 package com.example.demo.global.interceptor;
 
+import com.example.demo.domain.member.repository.MemberRepository;
 import com.example.demo.global.error.ErrorCode;
 import com.example.demo.global.error.exception.AuthenticationException;
 import com.example.demo.global.jwt.constant.TokenType;
@@ -12,12 +13,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @Component
 @RequiredArgsConstructor
 public class AuthenticationInterceptor implements HandlerInterceptor {
 
     //컨트롤러 로직을 시작하기 전에 확인하는 로직
     private final TokenManager tokenManager;
+    private final MemberRepository memberRepository;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -36,6 +41,10 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         if (!TokenType.isAccessToken(tokenType)) {
             throw new AuthenticationException(ErrorCode.NOT_ACCESS_TOKEN_TYPE);
         }
+        // 4. 리프레시 토큰 만료
+        Long memberId = Long.valueOf( (Integer) tokenClaims.get("memberId"));
+        tokenManager.validateToken(memberRepository.findByMemberId(memberId).getRefreshToken());
+
 
         return true;
     }

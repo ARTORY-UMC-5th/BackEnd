@@ -23,16 +23,15 @@ public class MemberInfoService {
     public Member saveMemberInfo(MemberInfoSaveDto memberInfoSaveDto, Long memberId){
         Member member = memberService.findMemberByMemberId(memberId);
         return member.toBuilder()
-                .memberId(member.getMemberId())
-                .age(member.getAge())
-                .nickname(member.getNickname())
-                .image(member.getImage())
-                .gender(member.getGender())
-                .genre1(member.getGenre1())
-                .genre2(member.getGenre2())
-                .genre3(member.getGenre3())
-                .memberName(member.getMemberName())
-                .profile(member.getProfile())
+                .age(memberInfoSaveDto.getAge())
+                .nickname(memberInfoSaveDto.getNickname())
+                .image(memberInfoSaveDto.getImage())
+                .gender(memberInfoSaveDto.getGender())
+                .genre1(memberInfoSaveDto.getGenre1())
+                .genre2(memberInfoSaveDto.getGenre2())
+                .genre3(memberInfoSaveDto.getGenre3())
+                .memberName(memberInfoSaveDto.getMemberName())
+                .profile(memberInfoSaveDto.getProfile())
                 .build();
     }
 

@@ -1,6 +1,6 @@
-package com.example.demo.api.logout.controller;
+package com.example.demo.domain.member.controller;
 
-import com.example.demo.api.logout.service.LogoutService;
+import com.example.demo.domain.member.service.LogoutService;
 import com.example.demo.global.util.AuthorizationHeaderUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

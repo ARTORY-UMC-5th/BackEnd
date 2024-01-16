@@ -58,5 +58,5 @@ naver:
 
 token:
   secret: ENC(9c9uJh1XDJMe72tcz8o94Z1pqQxRrUddasasdjkhlasfhasdjkasdKaxFAlScPFuIGZtp57tFR3Q==) # ??? ???
-  access-token-expiration-time: 900000  # 15? 1000(ms) x 60(s) x 15(m)
+  access-token-expiration-time: 90000000  # 15? 1000(ms) x 60(s) x 15(m)
   refresh-token-expiration-time: 1209600000 # 2? 1000(ms) x 60 (s) x 60(m) x 24(h) x 14(d)

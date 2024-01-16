@@ -47,7 +47,7 @@ public class WebConfig implements WebMvcConfigurer {
                         ,"/swagger-ui/**", "/v3/api-docs/"
                         ,"/api/access-token/issue"
                         ,"/api/logout"
-                        ,"api/health");
+                        ,"/api/health");
         registry.addInterceptor(adminAuthorizationInterceptor)
                 .order(2)
                 .addPathPatterns("/api/admin/**");

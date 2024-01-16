@@ -13,6 +13,7 @@ import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,14 +33,14 @@ public class MemberInfoController {
 
         return ResponseEntity.ok(memberInfoResponseDto);
     }
-    @GetMapping("/save")
+    @PostMapping("/save")
     public ResponseEntity<Member> saveMemberInfo(@MemberInfo MemberInfoDto memberInfoDto, MemberInfoSaveDto memberInfoSaveDto) {
 
         Long memberId = memberInfoDto.getMemberId();
         Member member = memberInfoService.saveMemberInfo(memberInfoSaveDto , memberId);
-        memberRepository.save(member);
+        Member save = memberRepository.save(member);
 
-        return ResponseEntity.ok(member);
+        return ResponseEntity.ok(save);
     }
 
 }

@@ -21,7 +21,7 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
         Info info = new Info()
-                .title("Catchplan API 문서")
+                .title("ARTORY API 문서")
                 .version("v1")
                 .description("ARTORY API")
                 .contact(new Contact().name("JSW"));
