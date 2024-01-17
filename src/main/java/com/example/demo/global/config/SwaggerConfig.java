@@ -23,7 +23,7 @@ public class SwaggerConfig {
         Info info = new Info()
                 .title("ARTORY API 문서")
                 .version("v1")
-                .description("ARTORY API")
+                .description(new StringBuilder().append("소셜 로그인 토큰 발급 주소").append("<br />").append("카카오 : https://kauth.kakao.com/oauth/authorize?client_id=ee35f9bdbb7d489738218a16bc693718&redirect_uri=http://localhost:8080/oauth/kakao/callback&response_type=code").append("<br />").append("네이버 : https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=4yrLNCK6RQMeFj95vayh&state=YOUR_RANDOM_STATE&redirect_uri=http://localhost:8080/login/oauth2/code/naver").toString())
                 .contact(new Contact().name("JSW"));
         // Security 스키마 설정
         SecurityScheme bearerAuth = new SecurityScheme()
