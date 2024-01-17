@@ -54,7 +54,7 @@ naver:
     id: 4yrLNCK6RQMeFj95vayh
     secret: mfAMbtRMFO
   callback:
-    url: http://localhost:8080/login/oauth2/code/naver
+    url: http://3.39.39.6:8080/login/oauth2/code/naver
 
 
 token:

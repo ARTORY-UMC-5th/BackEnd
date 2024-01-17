@@ -46,7 +46,7 @@ public class KakaoTokenController {
                 .client_secret(kakaoClientSecret)
                 .grant_type("authorization_code")
                 .code(code)
-                .redirect_uri("http://localhost:8080/oauth/kakao/callback")
+                .redirect_uri("http://3.39.39.6:8080/oauth/kakao/callback")
 //                .redirect_uri("http://localhost:8080/home")
 
                 .build();
