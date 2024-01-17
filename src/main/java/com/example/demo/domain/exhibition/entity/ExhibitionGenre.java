@@ -1,5 +1,6 @@
 package com.example.demo.domain.exhibition.entity;
 
+
 import com.example.demo.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;

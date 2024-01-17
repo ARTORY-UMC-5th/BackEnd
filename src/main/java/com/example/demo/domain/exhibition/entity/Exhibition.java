@@ -1,5 +1,7 @@
 package com.example.demo.domain.exhibition.entity;
 
+
+
 import com.example.demo.domain.common.BaseEntity;
 import com.example.demo.domain.member.entity.Story;
 import jakarta.persistence.*;
@@ -35,6 +37,8 @@ public class Exhibition extends BaseEntity {
 
     private String exhibitionViewingAge; //관람연령, 크롤링기준: USE_TRGT
     private String exhibitionPrice; //가격, 크롤링기준: USE_FEE
+
+    @Column(length = 800)
     private String exhibitionUrl; //전시회 사이트, 크롤링 기준: ORG_LINK
     private String exhibitionLongitude; //경도, 크롤링기준: LOT
     private String exhibitionLatitude; //위도, 크롤링기준: LAT
@@ -44,10 +48,10 @@ public class Exhibition extends BaseEntity {
 
     private boolean isEnded = false; //전시회 종료되었는지, 안되었는지
 
-
     private int exhibitionLikeCount = 0; // 좋아요 수
 
     private String genreCategory;
+
 
     @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL)
     private List<Story> storyList = new ArrayList<>();
