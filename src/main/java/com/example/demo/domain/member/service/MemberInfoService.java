@@ -20,7 +20,7 @@ public class MemberInfoService {
         return MemberInfoResponseDto.of(member);
     }
 
-    public Member saveMemberInfo(MemberInfoSaveDto memberInfoSaveDto, Long memberId){
+    public Member saveMemberInfo(MemberInfoSaveDto.MemberInfo memberInfoSaveDto, Long memberId){
         Member member = memberService.findMemberByMemberId(memberId);
         return member.toBuilder()
                 .age(memberInfoSaveDto.getAge())
@@ -32,6 +32,28 @@ public class MemberInfoService {
                 .genre3(memberInfoSaveDto.getGenre3())
                 .memberName(memberInfoSaveDto.getMemberName())
                 .profile(memberInfoSaveDto.getProfile())
+                .build();
+    }
+    public Member saveMemberNickname(MemberInfoSaveDto.MemberNickname memberNickname, Long memberId){
+        Member member = memberService.findMemberByMemberId(memberId);
+        return member.toBuilder()
+                .nickname(memberNickname.getNickname())
+                .image(memberNickname.getImage())
+                .build();
+    }
+    public Member saveMemberAgeAndGender(MemberInfoSaveDto.MemberAgeAndGender memberAgeAndGender, Long memberId){
+        Member member = memberService.findMemberByMemberId(memberId);
+        return member.toBuilder()
+                .age(memberAgeAndGender.getAge())
+                .gender(memberAgeAndGender.getGender())
+                .build();
+    }
+    public Member saveMemberGenre(MemberInfoSaveDto.MemberGenre memberGenre, Long memberId){
+        Member member = memberService.findMemberByMemberId(memberId);
+        return member.toBuilder()
+                .genre1(memberGenre.getGenre1())
+                .genre2(memberGenre.getGenre2())
+                .genre3(memberGenre.getGenre3())
                 .build();
     }
 

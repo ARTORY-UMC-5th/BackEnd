@@ -18,7 +18,7 @@ public class MemberInfoResponseDto {
     private String nickname;
     private String image;
     private Gender gender;
-    private String age;
+    private Integer age;
     private Genre genre1;
     private Genre genre2;
     private Genre genre3;

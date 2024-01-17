@@ -3,25 +3,20 @@ package com.example.demo.web.kakaoToken.controller;
 import com.example.demo.api.login.dto.OauthLoginDto;
 import com.example.demo.api.login.service.OauthLoginService;
 import com.example.demo.domain.member.constant.MemberType;
-import com.example.demo.web.kakaoToken.client.KakaoTokenClient;
 import com.example.demo.web.kakaoToken.client.NaverTokenClient;
-import com.example.demo.web.kakaoToken.dto.KakaoTokenDto;
 import com.example.demo.web.kakaoToken.dto.NaverTokenDto;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-import org.springframework.http.ResponseEntity;
 
 
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.net.URLEncoder;
-
+@Tag(name = "소셜 로그인", description = "서버 콜백 API (서버 내부용)")
 @Controller
 @RequiredArgsConstructor
 public class NaverTokenController {
@@ -30,13 +25,13 @@ public class NaverTokenController {
     private final OauthLoginService oauthLoginService;
 
     @Value("${naver.client.id}")
-    private String clientId;
+    private String NaverClientId;
 
     @Value("${naver.client.secret}")
-    private String clientSecret;
+    private String NaverClientSecret;
 
     @Value("${naver.callback.url}")
-    private String callbackUrl;
+    private String NaverCallbackUrl;
 
 
 
@@ -44,11 +39,11 @@ public class NaverTokenController {
     public @ResponseBody OauthLoginDto.Response naverCallback(@RequestParam(name = "code", required = true) String code,
                                                               @RequestParam(name = "state", required = true) String state) throws UnsupportedEncodingException {
 
-        String redirectURI = URLEncoder.encode(callbackUrl, "UTF-8");
+        String redirectURI = URLEncoder.encode(NaverCallbackUrl, "UTF-8");
         String contentType = "application/x-www-form-urlencoded;charset=utf-8";
         NaverTokenDto.Request naverTokenRequestDto = NaverTokenDto.Request.builder()
-                .client_id(clientId)
-                .client_secret(clientSecret)
+                .client_id(NaverClientId)
+                .client_secret(NaverClientSecret)
                 .grant_type("authorization_code")
                 .code(code)
                 .state(state)

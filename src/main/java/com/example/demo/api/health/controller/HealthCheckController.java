@@ -1,6 +1,7 @@
 package com.example.demo.api.health.controller;
 
 import com.example.demo.api.health.dto.HealthCheckResponseDto;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
-
+@Tag(name = "서버 기동중 확인", description = "배포시 확인용 api")
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor

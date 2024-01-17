@@ -97,7 +97,7 @@ public class Member extends BaseEntity {
     @Column(columnDefinition = "VARCHAR(10)")
     private Gender gender;
 
-    private String age;
+    private Integer age;
 
 
     //@Column(nullable = false, length = 40) 필요하면 제한하자, 일단은 이대로
