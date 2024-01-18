@@ -24,9 +24,6 @@ import java.util.List;
 
 public class ExhibitionController {
     private final ExhibitionService exhibitionService;
-    private final ExhibitionDistanceRecommendService exhibitionDistanceRecommendService;
-    private final MemberService memberService;
-    private final MemberInfoService memberInfoService;
 
     @Operation(summary = "모든 전시회 목록 조회", description = "페이징 및 검색 기능 포함")
     @PostMapping("/all")
