@@ -3,7 +3,7 @@ package com.example.demo.domain.exhibition.entity;
 
 
 import com.example.demo.domain.common.BaseEntity;
-import com.example.demo.domain.member.entity.Story;
+import com.example.demo.domain.story.entity.Story;
 import jakarta.persistence.*;
 import lombok.*;
 
