@@ -13,7 +13,7 @@ import java.util.List;
 public interface ExhibitionService {
     ExhibitionResponseDto.ExhibitionListResponseDto getAllExhibitionList(int page, ExhibitionRequestDto requestDto);
     List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getDistanceRecommendExhibitions(ExhibitionRequestDto requestDto, int page);
-    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecentExhibitions(int page);
+//    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecentExhibitions(int page);
 
     List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getPopularityExhibitions(int page);
 

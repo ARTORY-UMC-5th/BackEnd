@@ -28,4 +28,24 @@ public class LikeExhibitionController {
         likeExhibitionService.likeExhibition(memberId, exhibitionId);
         return ResponseEntity.ok("Exhibition liked successfully.");
     }
+
+    @Operation(summary = "전시회 좋아요 취소", description = "memberId, exhibitionId 필요")
+    @PostMapping("/exhibition-disliked")
+    public ResponseEntity<String> disLikeExhibition(
+            @RequestParam Long memberId,
+            @RequestParam Long exhibitionId
+    ) {
+        likeExhibitionService.disLikeExhibition(memberId, exhibitionId);
+        return ResponseEntity.ok("Exhibition disliked successfully.");
+    }
+
+//    @Operation(summary = "전시회 좋아요 여부 확인", description = "memberId, exhibitionId 필요")
+//    @GetMapping("/is-exhibition-liked")
+//    public ResponseEntity<Boolean> isExhibitionLiked(
+//            @RequestParam Long memberId,
+//            @RequestParam Long exhibitionId
+//    ) {
+//        boolean isLiked = likeExhibitionService.isExhibitionLiked(memberId, exhibitionId);
+//        return ResponseEntity.ok(isLiked);
+//    }
 }

@@ -4,10 +4,7 @@ package com.example.demo.domain.exhibition.controller;
 
 import com.example.demo.domain.exhibition.dto.ExhibitionRequestDto;
 import com.example.demo.domain.exhibition.dto.ExhibitionResponseDto;
-import com.example.demo.domain.exhibition.service.ExhibitionDistanceRecommendService;
 import com.example.demo.domain.exhibition.service.ExhibitionService;
-import com.example.demo.domain.member.service.MemberInfoService;
-import com.example.demo.domain.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -46,13 +43,13 @@ public class ExhibitionController {
     }
 
 
-    @Operation(summary = "최근 전시회 목록 조회", description = "페이징 기능 포함")
-    @GetMapping("/recent")
-    public ResponseEntity<List<ExhibitionResponseDto.ExhibitionGeneralResponseDto>> getRecentExhibitions(
-            @RequestParam(defaultValue = "1") int page) {
-        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> recentExhibitions = exhibitionService.getRecentExhibitions(page);
-        return ResponseEntity.ok(recentExhibitions);
-    }
+//    @Operation(summary = "최근 전시회 목록 조회", description = "페이징 기능 포함")
+//    @GetMapping("/recent")
+//    public ResponseEntity<List<ExhibitionResponseDto.ExhibitionGeneralResponseDto>> getRecentExhibitions(
+//            @RequestParam(defaultValue = "1") int page) {
+//        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> recentExhibitions = exhibitionService.getRecentExhibitions(page);
+//        return ResponseEntity.ok(recentExhibitions);
+//    }
 
     @Operation(summary = "인기 전시회 목록 조회", description = "페이징 기능 포함")
     @GetMapping("/popularity")

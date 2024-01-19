@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExhibitionConverter {
 
+
     public ExhibitionResponseDto.ExhibitionGeneralResponseDto convertToGeneralDto(Exhibition exhibition) {
         return ExhibitionResponseDto.ExhibitionGeneralResponseDto.builder()
                 .id(exhibition.getId())

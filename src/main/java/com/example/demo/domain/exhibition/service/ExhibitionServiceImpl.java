@@ -31,7 +31,7 @@ public class ExhibitionServiceImpl implements ExhibitionService {
         ExhibitionResponseDto.ExhibitionListResponseDto allResponseDto = new ExhibitionResponseDto.ExhibitionListResponseDto();
 
         // 최근 전시회 가져오기
-        allResponseDto.setRecentExhibitionDtoList(getRecentExhibitions(page));
+//        allResponseDto.setRecentExhibitionDtoList(getRecentExhibitions(page));
 
         // 인기 있는 전시회 가져오기
         allResponseDto.setPopluarExhibitionDtoList(getPopularityExhibitions(page));
@@ -63,20 +63,20 @@ public class ExhibitionServiceImpl implements ExhibitionService {
                 .map(exhibitionConverter::convertToGeneralDto)
                 .collect(Collectors.toList());
     }
-    @Override
-    public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecentExhibitions(int page) {
-        int pageSize = 10;
-        Pageable pageable = PageRequest.of(page - 1, pageSize);
-        Page<Exhibition> recentExhibitionsPage = exhibitionRepository.findAllByOrderByCreateTimeByDesc(pageable);
-
-        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> recentExhibitions = recentExhibitionsPage.getContent()
-                .stream()
-                .map(exhibitionConverter::convertToGeneralDto)
-                .collect(Collectors.toList());
-
-
-        return recentExhibitions;
-    }
+//    @Override
+//    public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecentExhibitions(int page) {
+//        int pageSize = 10;
+//        Pageable pageable = PageRequest.of(page - 1, pageSize);
+//        Page<Exhibition> recentExhibitionsPage = exhibitionRepository.findAllByOrderByCreateTimeByDesc(pageable);
+//
+//        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> recentExhibitions = recentExhibitionsPage.getContent()
+//                .stream()
+//                .map(exhibitionConverter::convertToGeneralDto)
+//                .collect(Collectors.toList());
+//
+//
+//        return recentExhibitions;
+//    }
     @Override
     public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getPopularityExhibitions(int page) {
         int pageSize = 10;
@@ -126,7 +126,7 @@ public class ExhibitionServiceImpl implements ExhibitionService {
     public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRandomExhibitions(int page) {
         int pageSize = 10;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
-        Page<Exhibition> randomExhibitionsPage = exhibitionRepository.findAllByOrderByCreateTimeByDesc(pageable);
+        Page<Exhibition> randomExhibitionsPage = exhibitionRepository.findRandomExhibitions(pageable);
 
         List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> randomExhibitions = randomExhibitionsPage.getContent()
                 .stream()
