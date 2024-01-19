@@ -8,6 +8,7 @@ import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -23,6 +24,7 @@ public class LikeExhibitionServiceImpl implements LikeExhibitionService {
 
 
     @Override
+    @Transactional
     public void likeExhibition(Long memberId, Long exhibitionId) {
         // 해당 맴버와 전시회 정보를 찾음
         Optional<Member> memberOptional = memberRepository.findById(memberId);
@@ -32,17 +34,59 @@ public class LikeExhibitionServiceImpl implements LikeExhibitionService {
             Member member = memberOptional.get();
             Exhibition exhibition = exhibitionOptional.get();
 
-            // 이미 좋아요되었는지 확인
-            Optional<LikeExhibition> existingLike = likeExhibitionRepository.findByMemberAndExhibition(member, exhibition);
+            // LikeExhibition이 이미 존재하는지 확인
+            Optional<LikeExhibition> existingLikeExhibitionOptional = likeExhibitionRepository.findByMemberAndExhibition(member, exhibition);
 
-            if (existingLike.isEmpty()) {
-                // 좋아요되지 않았다면 저장
+            if (existingLikeExhibitionOptional.isPresent()) {
+                // LikeExhibition이 존재하면 해당 객체를 가져와 isLiked를 true로 업데이트
+                LikeExhibition existingLikeExhibition = existingLikeExhibitionOptional.get();
+                existingLikeExhibition.setLiked(true);
+            } else {
+                // LikeExhibition이 존재하지 않으면 새로 생성
                 LikeExhibition likeExhibition = LikeExhibition.builder()
                         .member(member)
                         .exhibition(exhibition)
+                        .isLiked(true)
                         .build();
 
                 likeExhibitionRepository.save(likeExhibition);
+
+                // 해당 전시회의 전체 좋아요 수를 1 증가시킴
+                exhibition.setExhibitionLikeCount(exhibition.getExhibitionLikeCount() + 1);
+            }
+        }
+    }
+
+    @Override
+    @Transactional
+    public void disLikeExhibition(Long memberId, Long exhibitionId) {
+        // 해당 맴버와 전시회 정보를 찾음
+        Optional<Member> memberOptional = memberRepository.findById(memberId);
+        Optional<Exhibition> exhibitionOptional = exhibitionRepository.findById(exhibitionId);
+
+        if (memberOptional.isPresent() && exhibitionOptional.isPresent()) {
+            Member member = memberOptional.get();
+            Exhibition exhibition = exhibitionOptional.get();
+
+            // LikeExhibition이 이미 존재하는지 확인
+            Optional<LikeExhibition> existingLikeExhibitionOptional = likeExhibitionRepository.findByMemberAndExhibition(member, exhibition);
+
+            if (existingLikeExhibitionOptional.isPresent()) {
+                // LikeExhibition이 존재하면 해당 객체를 가져와 isLiked를 false로 업데이트
+                LikeExhibition existingLikeExhibition = existingLikeExhibitionOptional.get();
+                existingLikeExhibition.setLiked(false);
+            } else {
+                // LikeExhibition이 존재하지 않으면 새로 생성
+                LikeExhibition likeExhibition = LikeExhibition.builder()
+                        .member(member)
+                        .exhibition(exhibition)
+                        .isLiked(false)
+                        .build();
+
+                likeExhibitionRepository.save(likeExhibition);
+
+                // 해당 전시회의 전체 좋아요 수를 1 감소시킴
+                exhibition.setExhibitionLikeCount(exhibition.getExhibitionLikeCount() - 1);
             }
         }
     }

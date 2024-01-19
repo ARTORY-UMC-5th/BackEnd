@@ -13,4 +13,5 @@ public interface LikeExhibitionRepository extends JpaRepository<LikeExhibition, 
 
     // 특정 맴버와 전시회에 대한 LikeExhibition을 찾기 위한 메서드
     Optional<LikeExhibition> findByMemberAndExhibition(Member member, Exhibition exhibition);
+
 }
