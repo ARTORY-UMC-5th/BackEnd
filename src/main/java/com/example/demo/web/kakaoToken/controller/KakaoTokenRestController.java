@@ -11,10 +11,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
 @Tag(name = "소셜 로그인", description = "서버 콜백 API (서버 내부용)")
-@Controller
+@RestController
 @RequiredArgsConstructor
-public class KakaoTokenController {
+public class KakaoTokenRestController {
 
     private final KakaoTokenClient kakaoTokenClient;
     private final OauthLoginService oauthLoginService;
@@ -25,18 +27,9 @@ public class KakaoTokenController {
     @Value("${kakao.client.secret}")
     private String kakaoClientSecret;
 
+    @Value("${kakao.callback.url}")
+    private String KakaoCallbackUrl;
 
-
-    @GetMapping("/login")
-    public String login() {
-        return "loginForm";
-    }
-
-
-    @GetMapping("/home")
-    public String home() {
-        return "home";
-    }
 
     @GetMapping("/oauth/kakao/callback")
     public @ResponseBody OauthLoginDto.Response loginCallback(String code) {
@@ -46,7 +39,7 @@ public class KakaoTokenController {
                 .client_secret(kakaoClientSecret)
                 .grant_type("authorization_code")
                 .code(code)
-                .redirect_uri("http://3.39.39.6:8080/oauth/kakao/callback")
+                .redirect_uri(KakaoCallbackUrl)
 //                .redirect_uri("http://localhost:8080/home")
 
                 .build();

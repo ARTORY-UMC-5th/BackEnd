@@ -38,6 +38,9 @@ public class LogoutService {
         Long memberId = Long.valueOf((Integer)tokenClaims.get("memberId"));
         Member member = memberService.findMemberByMemberId(memberId);
         member.expireRefreshToken(LocalDateTime.now());
+
+        // 4. 소셜 인증 서버 로그아웃 처리??
+
     }
 
 }

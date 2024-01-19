@@ -9,18 +9,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-//@RestController
-//@RequiredArgsConstructor
-//@RequestMapping("/api")
-//public class TokenController {
-//    private final TokenService tokenService;
-//    @PostMapping("/access-token/issue")
-//    public ResponseEntity<AccessTokenResponseDto> createAccessToken(HttpServletRequest httpServletRequest){
-//        String authorizationHeader = httpServletRequest.getHeader("Authorization");
-//
-//        String refreshToken = authorizationHeader.split(" ")[1];
-//        AccessTokenResponseDto accessTokenResponseDto = tokenService.createAccessTokenByRefreshToken(refreshToken);
-//        return ResponseEntity.ok(accessTokenResponseDto);
-//
-//    }
-//}
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api")
+public class TokenController {
+    private final TokenService tokenService;
+    @PostMapping("/access-token/issue")
+    public ResponseEntity<AccessTokenResponseDto> createAccessToken(HttpServletRequest httpServletRequest){
+        String authorizationHeader = httpServletRequest.getHeader("Authorization");
+
+        String refreshToken = authorizationHeader.split(" ")[1];
+        AccessTokenResponseDto accessTokenResponseDto = tokenService.createAccessTokenByRefreshToken(refreshToken);
+        return ResponseEntity.ok(accessTokenResponseDto);
+
+    }
+}

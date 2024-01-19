@@ -1,6 +1,19 @@
-spring:
-# todo 운영 데이터베이스 연결
 
-logging:
-  level:
-    com.app: info # todo 패키지 수정
+
+spring:
+  config:
+    activate:
+      on-profile: prod # 환경이름설정
+
+kakao:
+  client:
+    id: ee35f9bdbb7d489738218a16bc693718
+    secret: WlH1pCtFLtTBJIACJW2aIh7azY3ZK47R
+  callback:
+    url: http://3.39.39.6:8080/oauth/kakao/callback
+naver:
+  client:
+    id: 4yrLNCK6RQMeFj95vayh
+    secret: mfAMbtRMFO
+  callback:
+    url: http://3.39.39.6:8080/login/oauth2/code/naver

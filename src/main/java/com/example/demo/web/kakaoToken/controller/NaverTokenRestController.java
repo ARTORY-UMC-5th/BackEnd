@@ -12,14 +12,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 @Tag(name = "소셜 로그인", description = "서버 콜백 API (서버 내부용)")
-@Controller
+@RestController
 @RequiredArgsConstructor
-public class NaverTokenController {
+public class NaverTokenRestController {
 
     private final NaverTokenClient naverTokenClient;
     private final OauthLoginService oauthLoginService;
@@ -32,7 +33,6 @@ public class NaverTokenController {
 
     @Value("${naver.callback.url}")
     private String NaverCallbackUrl;
-
 
 
     @GetMapping("login/oauth2/code/naver")//콜백 주소

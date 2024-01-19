@@ -52,16 +52,16 @@ feign:
         connectTimeout: 5000
         readTimeout: 5000
 
-kakao:
-  client:
-    id: ee35f9bdbb7d489738218a16bc693718
-    secret: WlH1pCtFLtTBJIACJW2aIh7azY3ZK47R
-naver:
-  client:
-    id: 4yrLNCK6RQMeFj95vayh
-    secret: mfAMbtRMFO
-  callback:
-    url: http://3.39.39.6:8080/login/oauth2/code/naver
+#kakao:
+#  client:
+#    id: ee35f9bdbb7d489738218a16bc693718
+#    secret: WlH1pCtFLtTBJIACJW2aIh7azY3ZK47R
+#naver:
+#  client:
+#    id: 4yrLNCK6RQMeFj95vayh
+#    secret: mfAMbtRMFO
+#  callback:
+#    url: http://3.39.39.6:8080/login/oauth2/code/naver
 
 
 token:
