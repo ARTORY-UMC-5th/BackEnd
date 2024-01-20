@@ -3,13 +3,22 @@ package com.example.demo.domain.story.converter;
 
 import com.example.demo.domain.exhibition.entity.Exhibition;
 import com.example.demo.domain.member.entity.Member;
+import com.example.demo.domain.member.entity.ScrapMember;
+import com.example.demo.domain.member.service.ScrapMemberService;
 import com.example.demo.domain.story.dto.StoryRequestDto;
 import com.example.demo.domain.story.dto.StoryResponseDto;
 import com.example.demo.domain.story.entity.Story;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
+@Log4j2
 public class StoryConverter {
+
+    private final ScrapMemberService scrapMemberService;
+
 
     public Story convertToEntity(StoryRequestDto storyRequestDto, Member member, Exhibition exhibition) {
         return Story.builder()
@@ -36,11 +45,13 @@ public class StoryConverter {
         Member member = story.getMember();
         Exhibition exhibition = story.getExhibition();
 
+
+        Boolean isScraped = true;
         StoryResponseDto.StorySpecificResponseDto storySpecificResponseDto = StoryResponseDto.StorySpecificResponseDto.builder()
                 .memberId(member.getMemberId())
                 .memberNickname(member.getNickname())
                 .memberProfile(member.getProfile())
-//                .isScraped(member.isScraped)
+                .isScraped(isScraped)
 
                 .exhibitionId(exhibition.getId())
                 .exhibitionImage(exhibition.getExhibitionImage())
@@ -67,7 +78,7 @@ public class StoryConverter {
         StoryResponseDto.StoryThumbnailResponseDto storyThumbnailResponseDto = StoryResponseDto.StoryThumbnailResponseDto.builder()
                 .id(story.getId())
                 .storyTitle(story.getStoryTitle())
-//                .storyImage(story.getStoryThumbnailImage())
+                .storyImage(story.getStoryThumbnailImage())
                 .build();
 
         return storyThumbnailResponseDto;

@@ -28,6 +28,7 @@ public class Story extends BaseEntity {
 
 
     private String storyTitle;
+    private String storyThumbnailImage;
     private String storySatisfactionLevel;
     private String storyWeather;
     private String storyCompanion;

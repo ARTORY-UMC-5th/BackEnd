@@ -127,8 +127,11 @@ public class Member extends BaseEntity {
     private String memo;
 
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<ScrapMember> scrapMemberList = new ArrayList<>();
+    @OneToMany(mappedBy = "fromMember", cascade = CascadeType.ALL)
+    private List<ScrapMember> scrapfromMemberList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "toMember", cascade = CascadeType.ALL)
+    private List<ScrapMember> scraptoMemberList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Story> storyList = new ArrayList<>();

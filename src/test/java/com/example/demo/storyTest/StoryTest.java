@@ -20,9 +20,7 @@ public class StoryTest {
         ResponseEntity<StoryResponseDto.StorySpecificResponseDto> storyDto = storyController.getStory(1L);
         StoryResponseDto.StorySpecificResponseDto temp = storyDto.getBody();
 
-        System.out.println("temp.getStoryId() = " + temp.getStoryId());
-        System.out.println("temp.getExhibitionId() = " + temp.getExhibitionId());
-        System.out.println("temp.getMemberId() = " + temp.getMemberId());
+
 
         Assertions.assertNotNull(temp);
     }
