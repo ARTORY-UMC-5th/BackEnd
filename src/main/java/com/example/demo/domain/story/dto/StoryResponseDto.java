@@ -1,6 +1,7 @@
 package com.example.demo.domain.story.dto;
 
 
+import com.example.demo.domain.member.constant.Genre;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +19,7 @@ public class StoryResponseDto {
     public static class StoryThumbnailResponseDto {
         private Long id;
         private String storyTitle;
-        private String storyImage;
+        private String storyImage; // <- 필요
     }
 
     @Builder
@@ -31,21 +32,22 @@ public class StoryResponseDto {
         private Long memberId;
         private String memberNickname;
         private String memberProfile;
-        private Boolean isScraped;
+        private Boolean isScraped; // <- 필요
 
         // 전시회 정보
-        private String exhibitionId;
+        private Long exhibitionId;
         private String exhibitionTitle;
         private String exhibitionImage;
 
         // 스토리 정보
+        private Long storyId;
         private String storyTitle;
         private String storySatisfactionLevel;
         private String storyWeather;
         private String storyCompanion;
-        private String storyGenre1;
-        private String storyGenre2;
-        private String storyGenre3;
+        private Genre storyGenre1;
+        private Genre storyGenre2;
+        private Genre storyGenre3;
         private String storyKeyword;
         private String storyContext;
     }

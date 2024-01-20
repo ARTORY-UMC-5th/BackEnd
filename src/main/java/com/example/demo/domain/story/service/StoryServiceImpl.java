@@ -31,9 +31,9 @@ public class StoryServiceImpl implements StoryService{
     private final StoryConverter storyConverter;
 
 
-    @Override
+    @Transactional
     public StoryResponseDto.StorySpecificResponseDto getStoryById(Long storyId) {
-        Story story = storyRepository.findById(storyId).orElseThrow();
+        Story story = storyRepository.findById(storyId).orElseThrow(() -> new EntityNotFoundException(ErrorCode.STORY_NOT_EXISTS));
 
         return storyConverter.convertToSpecificResponseDto(story);
     }

@@ -3,7 +3,6 @@ package com.example.demo.domain.story.converter;
 
 import com.example.demo.domain.exhibition.entity.Exhibition;
 import com.example.demo.domain.member.entity.Member;
-import com.example.demo.domain.member.service.MemberService;
 import com.example.demo.domain.story.dto.StoryRequestDto;
 import com.example.demo.domain.story.dto.StoryResponseDto;
 import com.example.demo.domain.story.entity.Story;
@@ -29,8 +28,11 @@ public class StoryConverter {
                 .exhibition(exhibition)
                 .build();
     }
-
+    
+    
+    // story 엔티티를 dto로 변환
     public StoryResponseDto.StorySpecificResponseDto convertToSpecificResponseDto(Story story){
+
         Member member = story.getMember();
         Exhibition exhibition = story.getExhibition();
 
@@ -38,12 +40,13 @@ public class StoryConverter {
                 .memberId(member.getMemberId())
                 .memberNickname(member.getNickname())
                 .memberProfile(member.getProfile())
-                .isScraped(member.isScraped)
+//                .isScraped(member.isScraped)
 
                 .exhibitionId(exhibition.getId())
                 .exhibitionImage(exhibition.getExhibitionImage())
                 .exhibitionTitle(exhibition.getExhibitionTitle())
 
+                .storyId(story.getId())
                 .storyTitle(story.getStoryTitle())
                 .storySatisfactionLevel(story.getStorySatisfactionLevel())
                 .storyWeather(story.getStoryWeather())
@@ -64,7 +67,7 @@ public class StoryConverter {
         StoryResponseDto.StoryThumbnailResponseDto storyThumbnailResponseDto = StoryResponseDto.StoryThumbnailResponseDto.builder()
                 .id(story.getId())
                 .storyTitle(story.getStoryTitle())
-                .storyImage(story.getStoryThumbnailImage())
+//                .storyImage(story.getStoryThumbnailImage())
                 .build();
 
         return storyThumbnailResponseDto;
