@@ -28,4 +28,14 @@ public class ScrapExhibitionController {
         scrapExhibitionService.scrapExhibition(memberId, exhibitionId);
         return ResponseEntity.ok("Exhibition scrapped successfully.");
     }
+    @Operation(summary = "전시회 스크랩 취소", description = "memberId, exhibitionId 필요")
+    @PostMapping("/exhibition-disScrapped")
+    public ResponseEntity<String> disScrapExhibition(
+            @RequestParam Long memberId,
+            @RequestParam Long exhibitionId
+    ) {
+        scrapExhibitionService.disScrapExhibition(memberId, exhibitionId);
+        return ResponseEntity.ok("Exhibition disScrapped successfully.");
+    }
+
 }

@@ -22,6 +22,7 @@ public class LikeExhibitionServiceImpl implements LikeExhibitionService {
     private final ExhibitionRepository exhibitionRepository;
 
 
+
     @Override
     @Transactional
     public void likeExhibition(Long memberId, Long exhibitionId) {
@@ -40,10 +41,6 @@ public class LikeExhibitionServiceImpl implements LikeExhibitionService {
                 // LikeExhibition이 존재하면 해당 객체를 가져와 isLiked를 true로 업데이트
                 LikeExhibition existingLikeExhibition = existingLikeExhibitionOptional.get();
                 existingLikeExhibition.setLiked(true);
-
-                // 해당 전시회의 전체 좋아요 수를 1 증가시킴
-                exhibition.setExhibitionLikeCount(exhibition.getExhibitionLikeCount() + 1);
-
             } else {
                 // LikeExhibition이 존재하지 않으면 새로 생성
                 LikeExhibition likeExhibition = LikeExhibition.builder()
@@ -56,8 +53,6 @@ public class LikeExhibitionServiceImpl implements LikeExhibitionService {
 
                 // 해당 전시회의 전체 좋아요 수를 1 증가시킴
                 exhibition.setExhibitionLikeCount(exhibition.getExhibitionLikeCount() + 1);
-
-
             }
         }
     }
@@ -80,11 +75,6 @@ public class LikeExhibitionServiceImpl implements LikeExhibitionService {
                 // LikeExhibition이 존재하면 해당 객체를 가져와 isLiked를 false로 업데이트
                 LikeExhibition existingLikeExhibition = existingLikeExhibitionOptional.get();
                 existingLikeExhibition.setLiked(false);
-
-                // 해당 전시회의 전체 좋아요 수를 1 감소시킴
-                exhibition.setExhibitionLikeCount(exhibition.getExhibitionLikeCount() - 1);
-
-
             } else {
                 // LikeExhibition이 존재하지 않으면 새로 생성
                 LikeExhibition likeExhibition = LikeExhibition.builder()
@@ -97,8 +87,6 @@ public class LikeExhibitionServiceImpl implements LikeExhibitionService {
 
                 // 해당 전시회의 전체 좋아요 수를 1 감소시킴
                 exhibition.setExhibitionLikeCount(exhibition.getExhibitionLikeCount() - 1);
-
-
             }
         }
     }
