@@ -2,7 +2,7 @@
 spring:
   config:
     activate:
-      on-profile: dev # 환경이름설정
+      on-profile: sj # 환경이름설정
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     #    url: jdbc:mysql://localhost:3306/artory?serverTimezone=Asia/Seoul
