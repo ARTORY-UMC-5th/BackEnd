@@ -30,8 +30,7 @@ public class LikeExhibition extends BaseEntity {
     @JoinColumn(name = "exhibition_id")
     private Exhibition exhibition;
 
-    private String exhibitionTitle; //제목, 크롤링기준: TITLE
-    private String exhibitionImage; //이미지 Url, 크롤링기준: MAIN_IMG
+
 
     private boolean isLiked = false; //전시회 좋아하는지
 

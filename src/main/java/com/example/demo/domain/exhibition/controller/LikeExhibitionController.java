@@ -36,13 +36,4 @@ public class LikeExhibitionController {
         return ResponseEntity.ok("Exhibition disliked successfully.");
     }
 
-//    @Operation(summary = "전시회 좋아요 여부 확인", description = "memberId, exhibitionId 필요")
-//    @GetMapping("/is-exhibition-liked")
-//    public ResponseEntity<Boolean> isExhibitionLiked(
-//            @RequestParam Long memberId,
-//            @RequestParam Long exhibitionId
-//    ) {
-//        boolean isLiked = likeExhibitionService.isExhibitionLiked(memberId, exhibitionId);
-//        return ResponseEntity.ok(isLiked);
-//    }
 }

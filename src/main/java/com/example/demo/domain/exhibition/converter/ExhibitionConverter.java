@@ -3,25 +3,24 @@ package com.example.demo.domain.exhibition.converter;
 
 
 import com.example.demo.domain.exhibition.dto.ExhibitionResponseDto;
-import com.example.demo.domain.exhibition.dto.TestExhibitionResponseDto;
 import com.example.demo.domain.exhibition.entity.Exhibition;
-import com.example.demo.domain.exhibition.entity.LikeExhibition;
-import com.example.demo.domain.exhibition.repository.ExhibitionRepository;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ExhibitionConverter {
 
 
-    public ExhibitionResponseDto.ExhibitionGeneralResponseDto convertToGeneralDto(Exhibition exhibition) {
-        return ExhibitionResponseDto.ExhibitionGeneralResponseDto.builder()
+    public ExhibitionResponseDto.ExhibitionGeneralResponseDto convertToGeneralDto(Exhibition exhibition, Boolean isLiked, Boolean isScrapped) {
+        ExhibitionResponseDto.ExhibitionGeneralResponseDto dto = ExhibitionResponseDto.ExhibitionGeneralResponseDto.builder()
                 .id(exhibition.getId())
                 .exhibitionTitle(exhibition.getExhibitionTitle())
                 .exhibitionImage(exhibition.getExhibitionImage())
+                .isLiked(isLiked != null && isLiked)
+                .isScrapped(isScrapped != null && isScrapped)
                 .build();
+        return dto;
     }
+
 
     public ExhibitionResponseDto.ExhibitionSpecificResponseDto convertToSpecificDto(Exhibition exhibition) {
         return ExhibitionResponseDto.ExhibitionSpecificResponseDto.builder()
