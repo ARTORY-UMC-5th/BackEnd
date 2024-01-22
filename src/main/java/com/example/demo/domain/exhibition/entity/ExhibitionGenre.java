@@ -25,16 +25,25 @@ public class ExhibitionGenre extends BaseEntity {
 
 
 
-
+    @Builder.Default
     private int media = 0;
+    @Builder.Default
     private int craft = 0;
+    @Builder.Default
     private int design = 0;
+    @Builder.Default
     private int picture = 0;
+    @Builder.Default
     private int specialExhibition = 0;
+    @Builder.Default
     private int sculpture = 0;
+    @Builder.Default
     private int planExhibition = 0;
+    @Builder.Default
     private int installationArt = 0;
+    @Builder.Default
     private int painting = 0;
+    @Builder.Default
     private int artistExhibition = 0;
 
     // 각 장르의 카운트를 증가시키는 메서드

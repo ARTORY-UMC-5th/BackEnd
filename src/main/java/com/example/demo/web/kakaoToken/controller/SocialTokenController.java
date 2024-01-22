@@ -42,7 +42,7 @@ public class SocialTokenController {
         return "home";
     }
 
-    @GetMapping("/kakao")
+    @GetMapping("/api/kakao")
     public String kakaoLogin() {
         String redirectUrl = "https://kauth.kakao.com/oauth/authorize?client_id="
                 +kakaoClientId
@@ -52,7 +52,7 @@ public class SocialTokenController {
 
         return "redirect:"+redirectUrl;
     }
-    @GetMapping("/naver")
+    @GetMapping("/api/naver")
     public String naverLogin() {
         String redirectUrl = "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id="
                 +NaverClientId

@@ -24,17 +24,14 @@ public class WebConfig implements WebMvcConfigurer {
     private final MemberInfoArgumentResolver memberInfoArgumentResolver;
     //다른 오리진, 즉 포트가 다른 프로그램의 요청을 허용한다.어떤 경로에 대해서 설정할 것인지.
     @Override
-    public void addCorsMappings(CorsRegistry registry){
-        registry.addMapping("/api/**")
-                .allowedOrigins("*")
-                .allowedMethods(
-                        HttpMethod.GET.name(),
-                        HttpMethod.PUT.name(),
-                        HttpMethod.POST.name(),
-                        HttpMethod.PATCH.name(),
-                        HttpMethod.DELETE.name(),
-                        HttpMethod.OPTIONS.name()
-                ).maxAge(3600);
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:8080","http://localhost:3000")
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedHeaders("Authorization", "Content-Type")
+                .exposedHeaders("Custom-Header")
+                .allowCredentials(true)
+                .maxAge(3600);
     }
     //인터셉터 설정, 인증을 위한 인터셉터 설정을 override한다.
 
@@ -47,7 +44,10 @@ public class WebConfig implements WebMvcConfigurer {
                         ,"/swagger-ui/**", "/v3/api-docs/"
                         ,"/api/access-token/issue"
                         ,"/api/logout"
+                        ,"/api/kakao"
+                        ,"/api/naver"
                         ,"/api/health");
+
         registry.addInterceptor(adminAuthorizationInterceptor)
                 .order(2)
                 .addPathPatterns("/api/admin/**");

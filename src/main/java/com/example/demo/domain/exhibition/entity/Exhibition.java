@@ -46,6 +46,7 @@ public class Exhibition extends BaseEntity {
     private String exhibitionStartDate; //시작날짜, 크롤링 기준: STRTDATE
     private String exhibitionEndDate; //종료날짜, 크롤링 기준: END_DATE
 
+    @Builder.Default
     private boolean isEnded = false; //전시회 종료되었는지, 안되었는지
 
     private int exhibitionLikeCount = 0; // 좋아요 수

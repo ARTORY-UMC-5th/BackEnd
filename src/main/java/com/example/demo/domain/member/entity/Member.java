@@ -128,23 +128,23 @@ public class Member extends BaseEntity {
 
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<ScrapMember> scrapMemberList = new ArrayList<>();
+    private List<ScrapMember> scrapMemberList;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Story> storyList = new ArrayList<>();
+    private List<Story> storyList;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<ScrapStory> scrapStoryList = new ArrayList<>();
+    private List<ScrapStory> scrapStoryList;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Comment> commentList = new ArrayList<>();
+    private List<Comment> commentList;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<ScrapExhibition> scrapExhibitionList = new ArrayList<>();
+    private List<ScrapExhibition> scrapExhibitionList;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<LikeExhibition> likeExhibitionList = new ArrayList<>();
+    private List<LikeExhibition> likeExhibitionList;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<LikeStory> likeStoryList = new ArrayList<>();
+    private List<LikeStory> likeStoryList;
 }
