@@ -8,9 +8,11 @@ import com.example.demo.domain.exhibition.service.ExhibitionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -21,16 +23,16 @@ import java.util.List;
 
 public class ExhibitionController {
     private final ExhibitionService exhibitionService;
-
-    @Operation(summary = "모든 전시회 목록 조회", description = "페이징 및 검색 기능 포함")
-    @PostMapping("/all")
-    public ResponseEntity<ExhibitionResponseDto.ExhibitionListResponseDto> getAllExhibitionList(
-            @RequestParam Long memberId,
-            @RequestParam(defaultValue = "1") int page,
-            @RequestBody(required = false) ExhibitionRequestDto requestDto) {
-        ExhibitionResponseDto.ExhibitionListResponseDto allExhibitionList = exhibitionService.getAllExhibitionList(memberId,page, requestDto);
-        return ResponseEntity.ok(allExhibitionList);
-    }
+//
+//    @Operation(summary = "모든 전시회 목록 조회", description = "페이징 및 검색 기능 포함")
+//    @PostMapping("/all")
+//    public ResponseEntity<ExhibitionResponseDto.ExhibitionListResponseDto> getAllExhibitionList(
+//            @RequestParam Long memberId,
+//            @RequestParam(defaultValue = "1") int page,
+//            @RequestBody(required = false) ExhibitionRequestDto requestDto) {
+//        ExhibitionResponseDto.ExhibitionListResponseDto allExhibitionList = exhibitionService.getAllExhibitionList(memberId,page, requestDto);
+//        return ResponseEntity.ok(allExhibitionList);
+//    }
 
     @Operation(summary = "사용자에게 거리 기반 전시회 추천", description = "페이지와 검색 기능 포함")
     @PostMapping("/distanceRecommend")
@@ -49,11 +51,12 @@ public class ExhibitionController {
     @GetMapping("/recent")
     public ResponseEntity<List<ExhibitionResponseDto.ExhibitionGeneralResponseDto>> getRecentExhibitions(
             @RequestParam Long memberId,
+            @RequestParam(defaultValue = "2024-01-22", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate currentDate,
             @RequestParam(defaultValue = "1") int page) {
-        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> recentExhibitions = exhibitionService.getRecentExhibitions(memberId, page);
+
+        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> recentExhibitions = exhibitionService.getRecentExhibitions(memberId, currentDate, page);
         return ResponseEntity.ok(recentExhibitions);
     }
-
 
     @Operation(summary = "인기 전시회 목록 조회", description = "페이징 기능 포함")
     @GetMapping("/popularity")

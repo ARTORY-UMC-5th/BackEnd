@@ -10,8 +10,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,29 +28,29 @@ public class ExhibitionServiceImpl implements ExhibitionService {
 
 
 
-    @Override
-    public ExhibitionResponseDto.ExhibitionListResponseDto getAllExhibitionList(Long memberId, int page, ExhibitionRequestDto requestDto) {
-        ExhibitionResponseDto.ExhibitionListResponseDto allResponseDto = new ExhibitionResponseDto.ExhibitionListResponseDto();
-        // 최근 전시회 가져오기
-        allResponseDto.setRecentExhibitionDtoList(getRecentExhibitions(memberId,page));
-
-        // 인기 있는 전시회 가져오기
-        allResponseDto.setPopluarExhibitionDtoList(getPopularityExhibitions(memberId,page));
-
-        // 거리 추천된 전시회 가져오기
-        allResponseDto.setDistanceRecommendExhibitionDtoList(getDistanceRecommendExhibitions(requestDto,memberId, page));
-
-        // 랜덤 전시회 가져오기
-        allResponseDto.setRandomExhibitionDtoList(getRandomExhibitions(memberId, page));
-
-//        // 비슷한 전시회 가져오기
-//        allResponseDto.setRecommendExhibitionDtoList(getRecommendExhibitions(memberId,page));
-//        // 추천 전시회 가져오기
-//        allResponseDto.setSimilarExhibitionDtoList(getSimilarExhibitions(memberId,page));
-
-
-        return allResponseDto;
-    }
+//    @Override
+//    public ExhibitionResponseDto.ExhibitionListResponseDto getAllExhibitionList(Long memberId, int page, ExhibitionRequestDto requestDto) {
+//        ExhibitionResponseDto.ExhibitionListResponseDto allResponseDto = new ExhibitionResponseDto.ExhibitionListResponseDto();
+//        // 최근 전시회 가져오기
+//        allResponseDto.setRecentExhibitionDtoList(getRecentExhibitions(memberId,page));
+//
+//        // 인기 있는 전시회 가져오기
+//        allResponseDto.setPopluarExhibitionDtoList(getPopularityExhibitions(memberId,page));
+//
+//        // 거리 추천된 전시회 가져오기
+//        allResponseDto.setDistanceRecommendExhibitionDtoList(getDistanceRecommendExhibitions(requestDto,memberId, page));
+//
+//        // 랜덤 전시회 가져오기
+//        allResponseDto.setRandomExhibitionDtoList(getRandomExhibitions(memberId, page));
+//
+////        // 비슷한 전시회 가져오기
+////        allResponseDto.setRecommendExhibitionDtoList(getRecommendExhibitions(memberId,page));
+////        // 추천 전시회 가져오기
+////        allResponseDto.setSimilarExhibitionDtoList(getSimilarExhibitions(memberId,page));
+//
+//
+//        return allResponseDto;
+//    }
 
 
     @Override
@@ -75,10 +77,13 @@ public class ExhibitionServiceImpl implements ExhibitionService {
 
 
     @Override
-    public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecentExhibitions(Long memberId, int page) {
+    public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecentExhibitions(Long memberId, LocalDate currentDate, int page) {
         int pageSize = 10;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
-        Page<Object[]> recentExhibitionsPage = exhibitionRepository.findAllByOrderByCreateTimeByDesc(memberId, pageable);
+//        Page<Object[]> recentExhibitionsPage = exhibitionRepository.findAllByOrderByCreateTimeByDesc(memberId, pageable);
+
+        Page<Object[]> recentExhibitionsPage = exhibitionRepository.findActiveExhibitions(memberId,currentDate,pageable);
+
 
         List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> recentExhibitions = recentExhibitionsPage.getContent()
                 .stream()

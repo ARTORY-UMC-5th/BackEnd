@@ -8,13 +8,15 @@ import com.example.demo.domain.exhibition.dto.ExhibitionRequestDto;
 import com.example.demo.domain.exhibition.dto.ExhibitionResponseDto;
 import com.example.demo.domain.exhibition.entity.Exhibition;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ExhibitionService {
-    ExhibitionResponseDto.ExhibitionListResponseDto getAllExhibitionList(Long memberId, int page, ExhibitionRequestDto requestDto);
+//    ExhibitionResponseDto.ExhibitionListResponseDto getAllExhibitionList(Long memberId, int page, ExhibitionRequestDto requestDto);
    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getDistanceRecommendExhibitions(ExhibitionRequestDto requestDto, Long memberId, int page);
 
-    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecentExhibitions(Long memberId, int page);
+//    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecentExhibitions(Long memberId, int page);
+    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecentExhibitions(Long memberId, LocalDate currentDate, int page);
 
 
 

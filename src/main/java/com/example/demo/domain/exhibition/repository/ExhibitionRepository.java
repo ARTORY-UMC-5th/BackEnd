@@ -9,8 +9,25 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+
 @Repository
 public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
+
+    @Query("SELECT e, " +
+            "le.isLiked, " +
+            "se.isScrapped " +
+            "FROM Exhibition e " +
+            "LEFT JOIN LikeExhibition le ON e.id = le.exhibition.id AND le.member.memberId = :memberId " +
+            "LEFT JOIN ScrapExhibition se ON e.id = se.exhibition.id AND se.member.memberId = :memberId " +
+            "WHERE e.isEnded = false " +
+            "AND e.isStarted = true " +
+            "AND CAST(e.exhibitionStartDate AS LocalDate) >= :currentDate " +
+            "ORDER BY e.exhibitionStartDate ASC")
+    Page<Object[]> findActiveExhibitions(@Param("memberId") Long memberId,
+                                         @Param("currentDate") LocalDate currentDate,
+                                         Pageable pageable);
+
 
     @Query("SELECT e, " +
             "le.isLiked, " +
