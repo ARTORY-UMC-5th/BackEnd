@@ -10,13 +10,17 @@ import org.springframework.stereotype.Component;
 public class ExhibitionConverter {
 
 
-    public ExhibitionResponseDto.ExhibitionGeneralResponseDto convertToGeneralDto(Exhibition exhibition) {
-        return ExhibitionResponseDto.ExhibitionGeneralResponseDto.builder()
+    public ExhibitionResponseDto.ExhibitionGeneralResponseDto convertToGeneralDto(Exhibition exhibition, Boolean isLiked, Boolean isScrapped) {
+        ExhibitionResponseDto.ExhibitionGeneralResponseDto dto = ExhibitionResponseDto.ExhibitionGeneralResponseDto.builder()
                 .id(exhibition.getId())
                 .exhibitionTitle(exhibition.getExhibitionTitle())
                 .exhibitionImage(exhibition.getExhibitionImage())
+                .isLiked(isLiked != null && isLiked)
+                .isScrapped(isScrapped != null && isScrapped)
                 .build();
+        return dto;
     }
+
 
     public ExhibitionResponseDto.ExhibitionSpecificResponseDto convertToSpecificDto(Exhibition exhibition) {
         return ExhibitionResponseDto.ExhibitionSpecificResponseDto.builder()

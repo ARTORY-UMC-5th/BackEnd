@@ -17,6 +17,8 @@ public class ExhibitionResponseDto {
         private Long id;
         private String exhibitionTitle;
         private String exhibitionImage;
+        private boolean isLiked;
+        private boolean isScrapped;
 
     }
 

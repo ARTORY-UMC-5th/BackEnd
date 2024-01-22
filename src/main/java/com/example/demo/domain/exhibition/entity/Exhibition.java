@@ -46,6 +46,8 @@ public class Exhibition extends BaseEntity {
     private String exhibitionStartDate; //시작날짜, 크롤링 기준: STRTDATE
     private String exhibitionEndDate; //종료날짜, 크롤링 기준: END_DATE
 
+
+    private boolean isStarted = false; //전시회 시작되었는지, 안되었는지
     private boolean isEnded = false; //전시회 종료되었는지, 안되었는지
 
     private int exhibitionLikeCount = 0; // 좋아요 수
@@ -63,9 +65,8 @@ public class Exhibition extends BaseEntity {
     @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL)
     private List<ScrapExhibition> scrapExhibitionList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL)
     private List<LikeExhibition> likeExhibitionList = new ArrayList<>();
-
 
     @OneToOne(mappedBy = "exhibition", cascade = CascadeType.ALL)
     private ExhibitionGenre exhibitionGenre;

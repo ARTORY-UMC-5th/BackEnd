@@ -15,7 +15,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class ScrapExhibition extends BaseEntity {
-//My Story 달력에 필요
+    //My Story 달력에 필요
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "scrapExhibition_id")
@@ -35,6 +35,11 @@ public class ScrapExhibition extends BaseEntity {
     @JoinColumn(name = "exhibition_id")
     private Exhibition exhibition;
 
+    private boolean isScrapped=false;
+
+    public void setScrapped(boolean isScrapped) {
+        this.isScrapped = isScrapped;
+    }
 
 
 }
