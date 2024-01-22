@@ -49,6 +49,8 @@ public class Exhibition extends BaseEntity {
     @Builder.Default
     private boolean isEnded = false; //전시회 종료되었는지, 안되었는지
 
+    @Builder.Default
+    private boolean isStarted = false; //전시회 시작되었는지, 안되었는지
     private int exhibitionLikeCount = 0; // 좋아요 수
 
     private String genreCategory;

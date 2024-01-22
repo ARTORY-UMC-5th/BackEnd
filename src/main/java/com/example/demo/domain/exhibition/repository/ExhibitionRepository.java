@@ -22,7 +22,7 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
             "LEFT JOIN ScrapExhibition se ON e.id = se.exhibition.id AND se.member.memberId = :memberId " +
             "WHERE e.isEnded = false " +
             "AND e.isStarted = true " +
-            "AND CAST(e.exhibitionStartDate AS LocalDate) >= :currentDate " +
+            "AND CAST(e.exhibitionStartDate AS LocalDate) <= :currentDate " +
             "ORDER BY e.exhibitionStartDate ASC")
     Page<Object[]> findActiveExhibitions(@Param("memberId") Long memberId,
                                          @Param("currentDate") LocalDate currentDate,

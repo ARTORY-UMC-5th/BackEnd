@@ -51,8 +51,12 @@ public class ExhibitionController {
     @GetMapping("/recent")
     public ResponseEntity<List<ExhibitionResponseDto.ExhibitionGeneralResponseDto>> getRecentExhibitions(
             @RequestParam Long memberId,
-            @RequestParam(defaultValue = "2024-01-22", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate currentDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate currentDate,
             @RequestParam(defaultValue = "1") int page) {
+
+        if (currentDate == null) {
+            currentDate = LocalDate.now();
+        }
 
         List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> recentExhibitions = exhibitionService.getRecentExhibitions(memberId, currentDate, page);
         return ResponseEntity.ok(recentExhibitions);
