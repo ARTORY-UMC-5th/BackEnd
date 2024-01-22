@@ -23,10 +23,11 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
             "WHERE e.isEnded = false " +
             "AND e.isStarted = true " +
             "AND CAST(e.exhibitionStartDate AS LocalDate) <= :currentDate " +
-            "ORDER BY e.exhibitionStartDate ASC")
+            "ORDER BY ABS(DATEDIFF(CURRENT_DATE, CAST(e.exhibitionStartDate AS LocalDate))), e.exhibitionStartDate ASC")
     Page<Object[]> findActiveExhibitions(@Param("memberId") Long memberId,
                                          @Param("currentDate") LocalDate currentDate,
                                          Pageable pageable);
+
 
 
     @Query("SELECT e, " +
