@@ -6,6 +6,8 @@ import com.example.demo.domain.exhibition.repository.ExhibitionRepository;
 import com.example.demo.domain.exhibition.repository.LikeExhibitionRepository;
 import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.member.repository.MemberRepository;
+import com.example.demo.global.resolver.memberInfo.MemberInfo;
+import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +27,9 @@ public class LikeExhibitionServiceImpl implements LikeExhibitionService {
 
     @Override
     @Transactional
-    public void likeExhibition(Long memberId, Long exhibitionId) {
+    public void likeExhibition(@MemberInfo MemberInfoDto memberInfoDto, Long exhibitionId) {
+        Long memberId = memberInfoDto.getMemberId();
+
         // 해당 맴버와 전시회 정보를 찾음
         Optional<Member> memberOptional = memberRepository.findById(memberId);
         Optional<Exhibition> exhibitionOptional = exhibitionRepository.findById(exhibitionId);
@@ -59,7 +63,9 @@ public class LikeExhibitionServiceImpl implements LikeExhibitionService {
 
     @Override
     @Transactional
-    public void disLikeExhibition(Long memberId, Long exhibitionId) {
+    public void disLikeExhibition(@MemberInfo MemberInfoDto memberInfoDto, Long exhibitionId) {
+        Long memberId = memberInfoDto.getMemberId();
+
         // 해당 맴버와 전시회 정보를 찾음
         Optional<Member> memberOptional = memberRepository.findById(memberId);
         Optional<Exhibition> exhibitionOptional = exhibitionRepository.findById(exhibitionId);

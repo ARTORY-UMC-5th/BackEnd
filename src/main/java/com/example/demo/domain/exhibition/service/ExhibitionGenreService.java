@@ -1,30 +1,32 @@
 package com.example.demo.domain.exhibition.service;
 
 import com.example.demo.domain.exhibition.dto.ExhibitionResponseDto;
+import com.example.demo.global.resolver.memberInfo.MemberInfo;
+import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 
 import java.util.List;
 
 public interface ExhibitionGenreService {
 
+    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getMediaExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page);
 
-    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getMediaExhibitions(Long memberId, int page);
-    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getCraftExhibitions(Long memberId, int page);
+    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getCraftExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page);
 
-    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getDesignExhibitions(Long memberId, int page);
+    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getDesignExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page);
 
-    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getPictureExhibitions(Long memberId, int page);
+    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getPictureExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page);
 
-    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getSpecialExhibitionExhibitions(Long memberId, int page);
+    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getSpecialExhibitionExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page);
 
-    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getSculptureExhibitions(Long memberId, int page);
+    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getSculptureExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page);
 
-    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getPlanExhibitionExhibitions(Long memberId, int page);
+    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getPlanExhibitionExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page);
 
-    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getInstallationArtExhibitions(Long memberId, int page);
+    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getInstallationArtExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page);
 
-    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getPaintingExhibitions(Long memberId, int page);
+    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getPaintingExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page);
 
-    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getArtistExhibitionExhibitions(Long memberId, int page);
+    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getArtistExhibitionExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page);
 
 
 

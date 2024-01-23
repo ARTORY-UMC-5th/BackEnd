@@ -1,6 +1,8 @@
 package com.example.demo.domain.exhibition.controller;
 
 import com.example.demo.domain.exhibition.service.LikeExhibitionService;
+import com.example.demo.global.resolver.memberInfo.MemberInfo;
+import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -19,20 +21,20 @@ public class LikeExhibitionController {
     @Operation(summary = "전시회 좋아요", description = "memberId, exhibitionId 필요")
     @PostMapping("/exhibition-liked")
     public ResponseEntity<String> likeExhibition(
-            @RequestParam Long memberId,
+            @MemberInfo MemberInfoDto memberInfoDto,
             @RequestParam Long exhibitionId
     ) {
-        likeExhibitionService.likeExhibition(memberId, exhibitionId);
+        likeExhibitionService.likeExhibition(memberInfoDto, exhibitionId);
         return ResponseEntity.ok("Exhibition liked successfully.");
     }
 
     @Operation(summary = "전시회 좋아요 취소", description = "memberId, exhibitionId 필요")
     @PostMapping("/exhibition-disliked")
     public ResponseEntity<String> disLikeExhibition(
-            @RequestParam Long memberId,
+            @MemberInfo MemberInfoDto memberInfoDto,
             @RequestParam Long exhibitionId
     ) {
-        likeExhibitionService.disLikeExhibition(memberId, exhibitionId);
+        likeExhibitionService.disLikeExhibition(memberInfoDto, exhibitionId);
         return ResponseEntity.ok("Exhibition disliked successfully.");
     }
 

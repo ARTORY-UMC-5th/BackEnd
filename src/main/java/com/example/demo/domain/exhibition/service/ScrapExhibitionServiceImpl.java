@@ -6,6 +6,8 @@ import com.example.demo.domain.exhibition.repository.ExhibitionRepository;
 import com.example.demo.domain.exhibition.repository.ScrapExhibitionRepository;
 import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.member.repository.MemberRepository;
+import com.example.demo.global.resolver.memberInfo.MemberInfo;
+import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +26,9 @@ public class ScrapExhibitionServiceImpl implements ScrapExhibitionService {
 
     @Override
     @Transactional
-    public void scrapExhibition(Long memberId, Long exhibitionId) {
+    public void scrapExhibition(@MemberInfo MemberInfoDto memberInfoDto, Long exhibitionId) {
+        Long memberId = memberInfoDto.getMemberId();
+
         // 해당 맴버와 전시회 정보를 찾음
         Optional<Member> memberOptional = memberRepository.findById(memberId);
         Optional<Exhibition> exhibitionOptional = exhibitionRepository.findById(exhibitionId);
@@ -58,7 +62,9 @@ public class ScrapExhibitionServiceImpl implements ScrapExhibitionService {
 
     @Override
     @Transactional
-    public void disScrapExhibition(Long memberId, Long exhibitionId) {
+    public void disScrapExhibition(@MemberInfo MemberInfoDto memberInfoDto, Long exhibitionId) {
+        Long memberId = memberInfoDto.getMemberId();
+
         // 해당 맴버와 전시회 정보를 찾음
         Optional<Member> memberOptional = memberRepository.findById(memberId);
         Optional<Exhibition> exhibitionOptional = exhibitionRepository.findById(exhibitionId);

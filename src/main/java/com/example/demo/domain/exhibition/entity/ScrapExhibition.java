@@ -35,11 +35,9 @@ public class ScrapExhibition extends BaseEntity {
     @JoinColumn(name = "exhibition_id")
     private Exhibition exhibition;
 
+    @Setter
     private boolean isScrapped=false;
 
-    public void setScrapped(boolean isScrapped) {
-        this.isScrapped = isScrapped;
-    }
 
 
 }

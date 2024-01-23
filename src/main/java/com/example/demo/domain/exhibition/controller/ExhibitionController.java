@@ -5,6 +5,8 @@ package com.example.demo.domain.exhibition.controller;
 import com.example.demo.domain.exhibition.dto.ExhibitionRequestDto;
 import com.example.demo.domain.exhibition.dto.ExhibitionResponseDto;
 import com.example.demo.domain.exhibition.service.ExhibitionService;
+import com.example.demo.global.resolver.memberInfo.MemberInfo;
+import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -29,15 +31,14 @@ public class ExhibitionController {
     @Operation(summary = "모든 전시회 목록 조회", description = "페이징 및 검색 기능 포함")
     @PostMapping("/all")
     public ResponseEntity<ExhibitionResponseDto.ExhibitionListResponseDto> getAllExhibitionList(
-            @RequestParam Long memberId,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate currentDate,
+            @MemberInfo MemberInfoDto memberInfoDto,
             @RequestParam(defaultValue = "1") int page,
             @RequestBody(required = false) ExhibitionRequestDto requestDto) {
-        if (currentDate == null) {
-            currentDate = LocalDate.now();
-        }
 
-        ExhibitionResponseDto.ExhibitionListResponseDto allExhibitionList = exhibitionService.getAllExhibitionList(memberId,currentDate,page, requestDto);
+        LocalDate currentDate = LocalDate.now();
+
+
+        ExhibitionResponseDto.ExhibitionListResponseDto allExhibitionList = exhibitionService.getAllExhibitionList(memberInfoDto,currentDate,page, requestDto);
         return ResponseEntity.ok(allExhibitionList);
     }
 
@@ -45,11 +46,11 @@ public class ExhibitionController {
     @Operation(summary = "사용자에게 거리 기반 전시회 추천", description = "페이지와 검색 기능 포함")
     @PostMapping("/distanceRecommend")
     public ResponseEntity<List<ExhibitionResponseDto.ExhibitionGeneralResponseDto>> distanceRecommendExhibitionForUser(
-            @RequestParam Long memberId,
+            @MemberInfo MemberInfoDto memberInfoDto,
             @RequestParam(defaultValue = "1") int page,
             @RequestBody(required = false) ExhibitionRequestDto requestDto) {
 
-        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> distanceRecommendExhibitions = exhibitionService.getDistanceRecommendExhibitions(requestDto,memberId, page);
+        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> distanceRecommendExhibitions = exhibitionService.getDistanceRecommendExhibitions(requestDto,memberInfoDto, page);
 
         return ResponseEntity.ok(distanceRecommendExhibitions);
     }
@@ -58,24 +59,22 @@ public class ExhibitionController {
     @Operation(summary = "최근 전시회 목록 조회", description = "페이징 기능 포함")
     @GetMapping("/recent")
     public ResponseEntity<List<ExhibitionResponseDto.ExhibitionGeneralResponseDto>> getRecentExhibitions(
-            @RequestParam Long memberId,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate currentDate,
+            @MemberInfo MemberInfoDto memberInfoDto,
             @RequestParam(defaultValue = "1") int page) {
 
-        if (currentDate == null) {
-            currentDate = LocalDate.now();
-        }
+        LocalDate currentDate = LocalDate.now();
 
-        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> recentExhibitions = exhibitionService.getRecentExhibitions(memberId, currentDate, page);
+        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> recentExhibitions = exhibitionService.getRecentExhibitions(memberInfoDto, currentDate, page);
         return ResponseEntity.ok(recentExhibitions);
     }
+
 
     @Operation(summary = "인기 전시회 목록 조회", description = "페이징 기능 포함")
     @GetMapping("/popularity")
     public ResponseEntity<List<ExhibitionResponseDto.ExhibitionGeneralResponseDto>> getPopularityExhibitions(
-            @RequestParam Long memberId,
+            @MemberInfo MemberInfoDto memberInfoDto,
             @RequestParam(defaultValue = "1") int page) {
-        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> popularityExhibitions = exhibitionService.getPopularityExhibitions(memberId, page);
+        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> popularityExhibitions = exhibitionService.getPopularityExhibitions(memberInfoDto, page);
         return ResponseEntity.ok(popularityExhibitions);
     }
 
@@ -83,9 +82,9 @@ public class ExhibitionController {
     @GetMapping("/search")
     public ResponseEntity<List<ExhibitionResponseDto.ExhibitionGeneralResponseDto>> searchExhibitionsByTitle(
             @RequestParam String title,
-            @RequestParam Long memberId,
+            @MemberInfo MemberInfoDto memberInfoDto,
             @RequestParam(defaultValue = "1") int page) {
-        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> searchResults = exhibitionService.searchExhibitionsByTitle(title, memberId, page);
+        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> searchResults = exhibitionService.searchExhibitionsByTitle(title, memberInfoDto, page);
         return ResponseEntity.ok(searchResults);
     }
 
@@ -99,20 +98,21 @@ public class ExhibitionController {
     @Operation(summary = "랜덤 전시회 목록 조회", description = "페이징 기능 포함")
     @GetMapping("/random")
     public ResponseEntity<List<ExhibitionResponseDto.ExhibitionGeneralResponseDto>> getRandomExhibitions(
-            @RequestParam Long memberId,
+            @MemberInfo MemberInfoDto memberInfoDto,
             @RequestParam(defaultValue = "1") int page) {
-        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> randomExhibitions = exhibitionService.getRandomExhibitions(memberId, page);
+        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> randomExhibitions = exhibitionService.getRandomExhibitions(memberInfoDto, page);
         return ResponseEntity.ok(randomExhibitions);
     }
 
 
-//    @Operation(summary = "추천 전시회 목록 조회", description = "페이징 기능 포함")
-//    @GetMapping("/recommend")
-//    public ResponseEntity<List<ExhibitionResponseDto.ExhibitionGeneralResponseDto>> getRecommendExhibitions(
-//            @RequestParam(defaultValue = "1") int page) {
-//        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> recommendExhibitions = exhibitionService.getRecommendExhibitions(page);
-//        return ResponseEntity.ok(recommendExhibitions);
-//    }
+    @Operation(summary = "추천 전시회 목록 조회", description = "페이징 기능 포함")
+    @GetMapping("/recommend")
+    public ResponseEntity<List<ExhibitionResponseDto.ExhibitionGeneralResponseDto>> getRecommendExhibitions(
+            @MemberInfo MemberInfoDto memberInfoDto,
+            @RequestParam(defaultValue = "1") int page) {
+        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> recommendExhibitions = exhibitionService.getRecommendExhibitions(memberInfoDto,page);
+        return ResponseEntity.ok(recommendExhibitions);
+    }
 //    @Operation(summary = "유사한 전시회 목록 조회", description = "페이징 기능 포함")
 //    @GetMapping("/similar")
 //    public ResponseEntity<List<ExhibitionResponseDto.ExhibitionGeneralResponseDto>> getSimilarExhibitions(

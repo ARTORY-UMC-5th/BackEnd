@@ -1,6 +1,8 @@
 package com.example.demo.domain.exhibition.controller;
 
 import com.example.demo.domain.exhibition.service.ScrapExhibitionService;
+import com.example.demo.global.resolver.memberInfo.MemberInfo;
+import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -22,19 +24,19 @@ public class ScrapExhibitionController {
     @Operation(summary = "전시회 스크랩", description = "memberId, exhibitionId 필요")
     @PostMapping("/exhibition-scrapped")
     public ResponseEntity<String> scrapExhibition(
-            @RequestParam Long memberId,
+            @MemberInfo MemberInfoDto memberInfoDto,
             @RequestParam Long exhibitionId
     ) {
-        scrapExhibitionService.scrapExhibition(memberId, exhibitionId);
+        scrapExhibitionService.scrapExhibition(memberInfoDto, exhibitionId);
         return ResponseEntity.ok("Exhibition scrapped successfully.");
     }
     @Operation(summary = "전시회 스크랩 취소", description = "memberId, exhibitionId 필요")
     @PostMapping("/exhibition-disScrapped")
     public ResponseEntity<String> disScrapExhibition(
-            @RequestParam Long memberId,
+            @MemberInfo MemberInfoDto memberInfoDto,
             @RequestParam Long exhibitionId
     ) {
-        scrapExhibitionService.disScrapExhibition(memberId, exhibitionId);
+        scrapExhibitionService.disScrapExhibition(memberInfoDto, exhibitionId);
         return ResponseEntity.ok("Exhibition disScrapped successfully.");
     }
 

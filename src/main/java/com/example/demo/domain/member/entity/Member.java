@@ -19,6 +19,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -88,11 +89,11 @@ public class Member extends BaseEntity {
 
 //    private String memberUserInfo;
 
-
+    @Setter
     @Column(nullable = true, length = 10)
     private String nickname;
 
-
+    @Setter
     private String image;
 
 
@@ -119,7 +120,10 @@ public class Member extends BaseEntity {
 
 
     //mypage에서 사용
+    @Setter
     private String introduction;
+
+    @Setter
     private String myKeyword;
 
     //mystory에서 사용

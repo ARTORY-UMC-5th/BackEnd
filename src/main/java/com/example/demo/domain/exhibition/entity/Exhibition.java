@@ -51,14 +51,12 @@ public class Exhibition extends BaseEntity {
 
     @Builder.Default
     private boolean isStarted = false; //전시회 시작되었는지, 안되었는지
+
+    @Setter
     private int exhibitionLikeCount = 0; // 좋아요 수
 
     private String genreCategory;
 
-
-    public void setExhibitionLikeCount(int exhibitionLikeCount) {
-        this.exhibitionLikeCount = exhibitionLikeCount;
-    }
 
     @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL)
     private List<Story> storyList = new ArrayList<>();
