@@ -23,16 +23,24 @@ import java.util.List;
 
 public class ExhibitionController {
     private final ExhibitionService exhibitionService;
-//
-//    @Operation(summary = "모든 전시회 목록 조회", description = "페이징 및 검색 기능 포함")
-//    @PostMapping("/all")
-//    public ResponseEntity<ExhibitionResponseDto.ExhibitionListResponseDto> getAllExhibitionList(
-//            @RequestParam Long memberId,
-//            @RequestParam(defaultValue = "1") int page,
-//            @RequestBody(required = false) ExhibitionRequestDto requestDto) {
-//        ExhibitionResponseDto.ExhibitionListResponseDto allExhibitionList = exhibitionService.getAllExhibitionList(memberId,page, requestDto);
-//        return ResponseEntity.ok(allExhibitionList);
-//    }
+
+
+
+    @Operation(summary = "모든 전시회 목록 조회", description = "페이징 및 검색 기능 포함")
+    @PostMapping("/all")
+    public ResponseEntity<ExhibitionResponseDto.ExhibitionListResponseDto> getAllExhibitionList(
+            @RequestParam Long memberId,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate currentDate,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestBody(required = false) ExhibitionRequestDto requestDto) {
+        if (currentDate == null) {
+            currentDate = LocalDate.now();
+        }
+
+        ExhibitionResponseDto.ExhibitionListResponseDto allExhibitionList = exhibitionService.getAllExhibitionList(memberId,currentDate,page, requestDto);
+        return ResponseEntity.ok(allExhibitionList);
+    }
+
 
     @Operation(summary = "사용자에게 거리 기반 전시회 추천", description = "페이지와 검색 기능 포함")
     @PostMapping("/distanceRecommend")

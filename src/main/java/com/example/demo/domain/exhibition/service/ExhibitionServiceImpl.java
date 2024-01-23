@@ -28,29 +28,29 @@ public class ExhibitionServiceImpl implements ExhibitionService {
 
 
 
-//    @Override
-//    public ExhibitionResponseDto.ExhibitionListResponseDto getAllExhibitionList(Long memberId, int page, ExhibitionRequestDto requestDto) {
-//        ExhibitionResponseDto.ExhibitionListResponseDto allResponseDto = new ExhibitionResponseDto.ExhibitionListResponseDto();
-//        // 최근 전시회 가져오기
-//        allResponseDto.setRecentExhibitionDtoList(getRecentExhibitions(memberId,page));
-//
-//        // 인기 있는 전시회 가져오기
-//        allResponseDto.setPopluarExhibitionDtoList(getPopularityExhibitions(memberId,page));
-//
-//        // 거리 추천된 전시회 가져오기
-//        allResponseDto.setDistanceRecommendExhibitionDtoList(getDistanceRecommendExhibitions(requestDto,memberId, page));
-//
-//        // 랜덤 전시회 가져오기
-//        allResponseDto.setRandomExhibitionDtoList(getRandomExhibitions(memberId, page));
-//
-////        // 비슷한 전시회 가져오기
-////        allResponseDto.setRecommendExhibitionDtoList(getRecommendExhibitions(memberId,page));
-////        // 추천 전시회 가져오기
-////        allResponseDto.setSimilarExhibitionDtoList(getSimilarExhibitions(memberId,page));
-//
-//
-//        return allResponseDto;
-//    }
+    @Override
+    public ExhibitionResponseDto.ExhibitionListResponseDto getAllExhibitionList(Long memberId, LocalDate currentDate,int page, ExhibitionRequestDto requestDto) {
+        ExhibitionResponseDto.ExhibitionListResponseDto allResponseDto = new ExhibitionResponseDto.ExhibitionListResponseDto();
+        // 최근 전시회 가져오기
+        allResponseDto.setRecentExhibitionDtoList(getRecentExhibitions(memberId,currentDate,page));
+
+        // 인기 있는 전시회 가져오기
+        allResponseDto.setPopluarExhibitionDtoList(getPopularityExhibitions(memberId,page));
+
+        // 거리 추천된 전시회 가져오기
+        allResponseDto.setDistanceRecommendExhibitionDtoList(getDistanceRecommendExhibitions(requestDto,memberId, page));
+
+        // 랜덤 전시회 가져오기
+        allResponseDto.setRandomExhibitionDtoList(getRandomExhibitions(memberId, page));
+
+//        // 비슷한 전시회 가져오기
+//        allResponseDto.setRecommendExhibitionDtoList(getRecommendExhibitions(memberId,page));
+//        // 추천 전시회 가져오기
+//        allResponseDto.setSimilarExhibitionDtoList(getSimilarExhibitions(memberId,page));
+
+
+        return allResponseDto;
+    }
 
 
     @Override
@@ -80,7 +80,6 @@ public class ExhibitionServiceImpl implements ExhibitionService {
     public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecentExhibitions(Long memberId, LocalDate currentDate, int page) {
         int pageSize = 10;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
-//        Page<Object[]> recentExhibitionsPage = exhibitionRepository.findAllByOrderByCreateTimeByDesc(memberId, pageable);
 
         Page<Object[]> recentExhibitionsPage = exhibitionRepository.findActiveExhibitions(memberId,currentDate,pageable);
 
@@ -90,7 +89,7 @@ public class ExhibitionServiceImpl implements ExhibitionService {
                 .map(array -> {
                     Exhibition exhibition = (Exhibition) array[0];
                     Boolean isLiked = (Boolean) array[1];
-                    Boolean isScrapped =  (Boolean) array[1];
+                    Boolean isScrapped =  (Boolean) array[2];
                     return exhibitionConverter.convertToGeneralDto(exhibition, isLiked,isScrapped);
                 })
                 .collect(Collectors.toList());
@@ -111,7 +110,7 @@ public class ExhibitionServiceImpl implements ExhibitionService {
                 .map(array -> {
                     Exhibition exhibition = (Exhibition) array[0];
                     Boolean isLiked = (Boolean) array[1];
-                    Boolean isScrapped =  (Boolean) array[1];
+                    Boolean isScrapped =  (Boolean) array[2];
                     return exhibitionConverter.convertToGeneralDto(exhibition,isLiked,isScrapped);
                 })
                 .collect(Collectors.toList());
@@ -134,7 +133,7 @@ public class ExhibitionServiceImpl implements ExhibitionService {
                 .map(array -> {
                     Exhibition exhibition = (Exhibition) array[0];
                     Boolean isLiked = (Boolean) array[1];
-                    Boolean isScrapped =  (Boolean) array[1];
+                    Boolean isScrapped =  (Boolean) array[2];
                     return exhibitionConverter.convertToGeneralDto(exhibition,isLiked,isScrapped);
                 })
                 .collect(Collectors.toList());
@@ -171,7 +170,7 @@ public class ExhibitionServiceImpl implements ExhibitionService {
                 .map(array -> {
                     Exhibition exhibition = (Exhibition) array[0];
                     Boolean isLiked = (Boolean) array[1];
-                    Boolean isScrapped =  (Boolean) array[1];
+                    Boolean isScrapped =  (Boolean) array[2];
                     return exhibitionConverter.convertToGeneralDto(exhibition,isLiked,isScrapped);
                 })
                 .collect(Collectors.toList());

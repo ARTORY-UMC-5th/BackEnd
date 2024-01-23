@@ -1,3 +1,7 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
 
 spring:
   config:
@@ -5,10 +9,11 @@ spring:
       on-profile: sj # 환경이름설정
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    #    url: jdbc:mysql://localhost:3306/artory?serverTimezone=Asia/Seoul
     url: jdbc:mysql://localhost:3306/artory?serverTimezone=Asia/Seoul
     username: root
     password:
+
+
     jpa:
       hibernate:
         ddl-auto: update
