@@ -30,8 +30,9 @@ public class LikeExhibition extends BaseEntity {
     @JoinColumn(name = "exhibition_id")
     private Exhibition exhibition;
 
+    @Builder.Default
     @Setter
-    private boolean isLiked; //전시회 좋아하는지
+    private boolean isLiked = false; //전시회 좋아하는지
 
 
 
