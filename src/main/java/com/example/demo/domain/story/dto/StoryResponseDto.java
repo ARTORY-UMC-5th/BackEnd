@@ -1,8 +1,8 @@
-package com.example.demo.domain.story.dto;
-
-
-public class StoryResponseDto {
-
-
-
-}
+//package com.example.demo.domain.story.dto;
+//
+//
+//public class StoryResponseDto {
+//
+//
+//
+//}
