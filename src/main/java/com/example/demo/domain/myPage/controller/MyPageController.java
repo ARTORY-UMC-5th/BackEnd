@@ -23,7 +23,7 @@ public class MyPageController {
 
 
     @Operation(summary = "마이페이지 정보 조회", description = "마이페이지 창 들어갈때 호출되는 url")
-    @GetMapping("/member/{memberId}")
+    @GetMapping("/info")
     public ResponseEntity<MyPageResponseDto> getMemberInfo(@MemberInfo MemberInfoDto memberInfoDto) {
         MyPageResponseDto mypageResponseDto = myPageService.getMemberInfo(memberInfoDto);
         return ResponseEntity.ok(mypageResponseDto);
@@ -32,7 +32,7 @@ public class MyPageController {
 
 
     @Operation(summary = "마이페이지 정보 수정하기", description = "수정하기 버튼 누르면 이게 호출되어서 update")
-    @PostMapping("/member/{memberId}")
+    @PostMapping("/update")
     public ResponseEntity<Void> updateMemberInfo(
             @MemberInfo MemberInfoDto memberInfoDto,
             @RequestBody MyPageRequestDto myPageRequestDto

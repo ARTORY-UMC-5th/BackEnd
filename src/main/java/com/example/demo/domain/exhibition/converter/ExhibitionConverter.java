@@ -12,7 +12,7 @@ public class ExhibitionConverter {
 
     public ExhibitionResponseDto.ExhibitionGeneralResponseDto convertToGeneralDto(Exhibition exhibition, Boolean isLiked, Boolean isScrapped) {
         ExhibitionResponseDto.ExhibitionGeneralResponseDto dto = ExhibitionResponseDto.ExhibitionGeneralResponseDto.builder()
-                .id(exhibition.getId())
+                .ExhibitionId(exhibition.getId())
                 .exhibitionTitle(exhibition.getExhibitionTitle())
                 .exhibitionImage(exhibition.getExhibitionImage())
                 .isLiked(isLiked != null && isLiked)
@@ -24,7 +24,7 @@ public class ExhibitionConverter {
 
     public ExhibitionResponseDto.ExhibitionSpecificResponseDto convertToSpecificDto(Exhibition exhibition) {
         return ExhibitionResponseDto.ExhibitionSpecificResponseDto.builder()
-                .id(exhibition.getId())
+                .ExhibitionId(exhibition.getId())
                 .exhibitionTitle(exhibition.getExhibitionTitle())
                 .exhibitionImage(exhibition.getExhibitionImage())
                 .exhibitionAddress(exhibition.getExhibitionAddress())

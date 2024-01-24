@@ -14,7 +14,7 @@ public class ExhibitionResponseDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ExhibitionGeneralResponseDto {
-        private Long id;
+        private Long ExhibitionId;
         private String exhibitionTitle;
         private String exhibitionImage;
         private boolean isLiked;
@@ -27,7 +27,7 @@ public class ExhibitionResponseDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ExhibitionSpecificResponseDto {
-        private Long id;
+        private Long ExhibitionId;
         private String exhibitionTitle; //제목, 크롤링기준: TITLE
         private String exhibitionImage; //이미지 Url, 크롤링기준: MAIN_IMG
         private String exhibitionAddress; //자치구, 크롤링기준: GUNAME
