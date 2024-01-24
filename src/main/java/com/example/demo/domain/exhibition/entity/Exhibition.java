@@ -56,7 +56,9 @@ public class Exhibition extends BaseEntity {
     @Builder.Default
     private int exhibitionLikeCount = 0; // 좋아요 수
 
-    private String genreCategory;
+    private String genreCategory1;
+    private String genreCategory2;
+    private String genreCategory3;
 
 
     @OneToMany(mappedBy = "exhibition",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -67,7 +69,6 @@ public class Exhibition extends BaseEntity {
 
     @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<LikeExhibition> likeExhibitionList;
-
 
     @OneToOne(mappedBy = "exhibition", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ExhibitionGenre exhibitionGenre;
@@ -94,7 +95,10 @@ public class Exhibition extends BaseEntity {
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
 
-        this.genreCategory = String.join(", ", topGenres);
+        System.out.println("topGenres = " + topGenres);
+        this.genreCategory1 = topGenres.get(0);
+        this.genreCategory2 = topGenres.get(1);
+        this.genreCategory3 = topGenres.get(2);
     }
 
 }

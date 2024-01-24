@@ -68,7 +68,7 @@ public class StoryConverter {
     public static StoryResponseDto.StoryThumbnailResponseDto convertToStoryThumbnailResponseDto(Story story, Boolean isLiked, Boolean isScrapped){
 
         StoryResponseDto.StoryThumbnailResponseDto storyThumbnailResponseDto = StoryResponseDto.StoryThumbnailResponseDto.builder()
-                .id(story.getId())
+                .storyId(story.getId())
                 .storyTitle(story.getStoryTitle())
                 .storyImage(story.getStoryThumbnailImage())
                 .isLiked(isLiked)
@@ -81,7 +81,7 @@ public class StoryConverter {
     public static StoryResponseDto.MemberThumbnailResponseDto convertToMemberThumbnailResponseDto(Member member, Boolean isScrapped) {
 
         StoryResponseDto.MemberThumbnailResponseDto memberThumbnailResponseDto = StoryResponseDto.MemberThumbnailResponseDto.builder()
-                .id(member.getMemberId())
+                .storyId(member.getMemberId())
                 .memberNickname(member.getNickname())
                 .memberProfile(member.getProfile())
                 .isScrapped(isScrapped)

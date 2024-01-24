@@ -8,6 +8,8 @@ import com.example.demo.domain.story.repository.LikeStoryRepository;
 import com.example.demo.domain.story.repository.StoryRepository;
 import com.example.demo.global.error.ErrorCode;
 import com.example.demo.global.error.exception.StoryException;
+import com.example.demo.global.resolver.memberInfo.MemberInfo;
+import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +28,8 @@ public class LikeStoryServiceImpl implements LikeStoryService{
 
     // memberId, storyId에 해당하는 데이터를 생성 + 해당 스토리에 좋아요 카운트 ++
     @Transactional
-    public void likeStory(Long memberId, Long storyId) {
+    public void likeStory(@MemberInfo MemberInfoDto memberInfoDto, Long storyId) {
+        Long memberId = memberInfoDto.getMemberId();
 
         Member member = memberRepository.getReferenceById(memberId);
         Story story = storyRepository.findById(storyId)
@@ -64,7 +67,8 @@ public class LikeStoryServiceImpl implements LikeStoryService{
 
     // memberId, storyId에 해당하는 데이터의 isLiked를 false로 변경 + 해당 스토리에 좋아요 카운트 --
     @Transactional
-    public void unlikeStory(Long memberId, Long storyId) {
+    public void unlikeStory(@MemberInfo MemberInfoDto memberInfoDto, Long storyId) {
+        Long memberId = memberInfoDto.getMemberId();
 
         Story story = storyRepository.findById(storyId).orElseThrow(() -> new StoryException(ErrorCode.STORY_NOT_EXISTS));
 

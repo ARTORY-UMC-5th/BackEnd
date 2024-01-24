@@ -14,7 +14,7 @@ public class StoryResponseDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class StoryThumbnailResponseDto {
-        private Long id;
+        private Long storyId;
         private String storyTitle;
         private String storyImage;
         private Boolean isLiked;
@@ -58,7 +58,7 @@ public class StoryResponseDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class MemberThumbnailResponseDto {
-        private Long id;
+        private Long storyId;
         private String memberNickname;
         private String memberProfile;
         private Boolean isScrapped;

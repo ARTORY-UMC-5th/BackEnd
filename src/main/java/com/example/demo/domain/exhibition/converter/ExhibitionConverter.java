@@ -40,7 +40,9 @@ public class ExhibitionConverter {
                 .exhibitionStartDate(exhibition.getExhibitionStartDate())
                 .exhibitionEndDate(exhibition.getExhibitionEndDate())
                 .isEnded(exhibition.isEnded())
-                .genreCategory(exhibition.getGenreCategory())
+                .genreCategory1(exhibition.getGenreCategory1())
+                .genreCategory2(exhibition.getGenreCategory2())
+                .genreCategory3(exhibition.getGenreCategory3())
                 .build();
     }
 

@@ -42,8 +42,8 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
             "AND CAST(e.exhibitionStartDate AS LocalDate) <= :currentDate " +
             "ORDER BY ABS(DATEDIFF(CURRENT_DATE, CAST(e.exhibitionStartDate AS LocalDate))), e.exhibitionStartDate ASC")
     Page<Object[]> findAllByOrderByCreateTimeByDesc(@Param("memberId") Long memberId,
-                                         @Param("currentDate") LocalDate currentDate,
-                                         Pageable pageable);
+                                                    @Param("currentDate") LocalDate currentDate,
+                                                    Pageable pageable);
 
 
 
@@ -94,11 +94,11 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
             "LEFT JOIN ScrapExhibition se ON e.id = se.exhibition.id AND se.member.memberId = :memberId " +
             "WHERE e.isEnded = false " +
             "AND e.isStarted = true " +
-            "AND (e.genreCategory = :genre1 OR e.genreCategory = :genre2 OR e.genreCategory = :genre3) " +
+            "AND (e.genreCategory1 = :genre1 OR e.genreCategory2 = :genre2 OR e.genreCategory3 = :genre3) " +
             "ORDER BY CASE " +
-            "  WHEN e.genreCategory = :genre1 THEN 1 " +
-            "  WHEN e.genreCategory = :genre2 THEN 2 " +
-            "  WHEN e.genreCategory = :genre3 THEN 3 " +
+            "  WHEN e.genreCategory1 = :genre1 THEN 1 " +
+            "  WHEN e.genreCategory2 = :genre2 THEN 2 " +
+            "  WHEN e.genreCategory3 = :genre3 THEN 3 " +
             "  ELSE 4 END, e.creatTime DESC")
     Page<Object[]> findRecommendedExhibitions(@Param("memberId") Long memberId,
                                               @Param("genre1") String genre1,
@@ -116,4 +116,3 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
 
 
 }
-

@@ -2,6 +2,7 @@ package com.example.demo.domain.story.service;
 
 import com.example.demo.domain.exhibition.entity.Exhibition;
 import com.example.demo.domain.exhibition.entity.ExhibitionGenre;
+import com.example.demo.domain.exhibition.repository.ExhibitionGenreRepository;
 import com.example.demo.domain.exhibition.repository.ExhibitionRepository;
 import com.example.demo.domain.member.constant.Genre;
 import com.example.demo.domain.member.entity.Member;
@@ -43,6 +44,7 @@ public class StoryServiceImpl implements StoryService{
     private final StoryRepository storyRepository;
     private final ScrapStoryRepository scrapStoryRepository;
     private final StoryConverter storyConverter;
+    private final ExhibitionGenreRepository exhibitionGenreRepository;
 
     // 해당 스토리 id, 열람하는 memberId
     @Transactional
@@ -189,34 +191,98 @@ public class StoryServiceImpl implements StoryService{
     }
 
 
+    public void updateExhibitionGenreAndCreateIfNotExist(Exhibition exhibition, Genre genre1, Genre genre2, Genre genre3) {
+        if (exhibition != null) {
+            ExhibitionGenre exhibitionGenre = exhibition.getExhibitionGenre();
 
+            // ExhibitionGenre가 존재하지 않으면 생성
+            if (exhibitionGenre == null) {
+                exhibitionGenre = ExhibitionGenre.builder()
+                        .exhibition(exhibition)
+                        .build();
+                exhibitionGenreRepository.save(exhibitionGenre);
+            }
+
+            // 선택된 장르로 ExhibitionGenre 업데이트
+            updateExhibitionGenre(exhibitionGenre, genre1);
+            updateExhibitionGenre(exhibitionGenre, genre2);
+            updateExhibitionGenre(exhibitionGenre, genre3);
+        }
+    }
+
+    public void updateExhibitionGenre(ExhibitionGenre exhibitionGenre, Genre genre) {
+        if (genre != null) {
+            switch (genre) {
+                case MEDIA:
+                    exhibitionGenre.increaseMediaCount();
+                    break;
+                case CRAFT:
+                    exhibitionGenre.increaseCraftCount();
+                    break;
+                case DESIGN:
+                    exhibitionGenre.increaseDesignCount();
+                    break;
+                case PICTURE:
+                    exhibitionGenre.increasePictureCount();
+                    break;
+                case SPECIAL_EXHIBITION:
+                    exhibitionGenre.increaseSpecialExhibitionCount();
+                    break;
+                case SCULPTURE:
+                    exhibitionGenre.increaseSculptureCount();
+                    break;
+                case PLAN_EXHIBITION:
+                    exhibitionGenre.increasePlanExhibitionCount();
+                    break;
+                case INSTALLATION_ART:
+                    exhibitionGenre.increaseInstallationArtCount();
+                    break;
+                case PAINTING:
+                    exhibitionGenre.increasePaintingCount();
+                    break;
+                case ARTIST_EXHIBITION:
+                    exhibitionGenre.increaseArtistExhibitionCount();
+                    break;
+            }
+        }
+    }
     @Transactional
     public void saveStory(StoryRequestDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
+
+
+        // 스토리 저장 전에 스토리-전시회에 해당하는 ExhibitionGenre 있는지 확인
+
+        // ExhibitionGenre가 있으면 pass, 없으면 만들어서 전시회와 매핑
+
+        // 스토리의 category1, 2, 3을 해당 전시회 ExhibitionGenre에 1 증가시키고 -> 전시회 category 업데이트
+
+        // 후 스토리 저장
+
         Long memberId = memberInfoDto.getMemberId();
+        Member member = memberRepository.getById(memberId);
         Long exhibitionId = storyRequestDto.getExhibitionId();
+        Exhibition exhibition = exhibitionRepository.getById(exhibitionId);
 
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXISTS));
 
-        Exhibition exhibition = exhibitionRepository.findById(exhibitionId)
-                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.EXHIBITION_NOT_EXISTS));
+        Boolean isExisted = exhibitionGenreRepository.existsByExhibitionId(exhibitionId);
+
+        // 테이블이 존재하면, 패스
+        if (isExisted == null) {
+            ExhibitionGenre exhibitionGenre = ExhibitionGenre.builder()
+                    .exhibition(exhibitionRepository.getById(exhibitionId))
+                    .build();
+
+            exhibitionGenreRepository.save(exhibitionGenre);
+        }
 
         Story story = storyConverter.convertToEntity(storyRequestDto, member, exhibition);
+
+        story.updateExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), storyRequestDto.getGenre1());
+        story.updateExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), storyRequestDto.getGenre2());
+        story.updateExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), storyRequestDto.getGenre3());
+
+        exhibition.updateCategory();
         storyRepository.save(story);
-
-
-//        // 저장한 장르 3개 값을 해당 전시회 장르 카테고리에 1++
-//        List<Genre> genreList = Arrays.asList(storyRequestDto.getGenre1(), storyRequestDto.getGenre2(), storyRequestDto.getGenre3());
-//        ExhibitionGenre exhibitionGenre = exhibition.getExhibitionGenre();
-//
-//        genreList.stream().forEach(genre -> {
-//            try {
-//                Method increaseMethod = ExhibitionGenre.class.getDeclaredMethod("increase" + capitalize(genre) + "Count");
-//                increaseMethod.invoke(exhibitionGenre);
-//            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-//                e.printStackTrace();
-//            }
-//        });
 
     }
 
