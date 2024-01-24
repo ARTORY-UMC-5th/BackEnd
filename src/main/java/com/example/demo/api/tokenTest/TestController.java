@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/test")
-class TokenTestController {
-
-
+class TestController {
     @GetMapping("/upload")
     public String createJwtTokenDto() {
         return "fileUpload";
