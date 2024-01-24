@@ -36,7 +36,7 @@ public class ScrapExhibition extends BaseEntity {
     private Exhibition exhibition;
 
     @Setter
-    private boolean isScrapped=false;
+    private boolean isScrapped;
 
 
 

@@ -18,6 +18,18 @@ import java.util.Set;
 public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
 
 
+    //스크랩한거 전체(myStory 위한 것)
+    @Query("SELECT se, " +
+            "le.isLiked, " +
+            "se.isScrapped " +
+            "FROM ScrapExhibition se " +
+            "JOIN se.exhibition e " +
+            "LEFT JOIN LikeExhibition le ON e.id = le.exhibition.id AND le.member.memberId = :memberId " +
+            "WHERE e.isEnded = false " +
+            "AND e.isStarted = true " +
+            "ORDER BY se.id DESC")
+    Page<Object[]> findAllByOrderByUpdateTimeExhibition(@Param("memberId") Long memberId, Pageable pageable);
+
     //최신순
     @Query("SELECT e, " +
             "le.isLiked, " +
