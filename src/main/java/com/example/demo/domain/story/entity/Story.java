@@ -28,6 +28,7 @@ public class Story extends BaseEntity {
 
 
     private String storyTitle;
+    private String storyThumbnailImage;
     private String storySatisfactionLevel;
     private String storyWeather;
     private String storyCompanion;
@@ -40,7 +41,6 @@ public class Story extends BaseEntity {
 
     @OneToMany(mappedBy = "story", cascade = CascadeType.ALL)
     private List<StoryPicture> storyPictureList; //사진
-
 
     //member가 Story쓸때 장르3개 선택
     @Enumerated(EnumType.STRING)
@@ -56,7 +56,7 @@ public class Story extends BaseEntity {
     private Genre genre3;
 
     @Builder.Default
-    private boolean isOpen = false; //공개, 비공개 여부
+    private Boolean isOpen = true; //공개, 비공개 여부
 
     @Builder.Default
     private int storyLikeCount = 0; // 좋아요 수
@@ -97,34 +97,34 @@ public class Story extends BaseEntity {
     private void updateExhibitionGenre(ExhibitionGenre exhibitionGenre, Genre genre) {
         if (genre != null) {
             switch (genre) {
-                case MEDIA:
+                case Media:
                     exhibitionGenre.increaseMediaCount();
                     break;
-                case CRAFT:
+                case Craft:
                     exhibitionGenre.increaseCraftCount();
                     break;
-                case DESIGN:
+                case Design:
                     exhibitionGenre.increaseDesignCount();
                     break;
-                case PICTURE:
+                case Picture:
                     exhibitionGenre.increasePictureCount();
                     break;
-                case SPECIAL_EXHIBITION:
+                case SpecialExhibition:
                     exhibitionGenre.increaseSpecialExhibitionCount();
                     break;
-                case SCULPTURE:
+                case Sculpture:
                     exhibitionGenre.increaseSculptureCount();
                     break;
-                case PLANEXHIBITION:
+                case PlanExhibition:
                     exhibitionGenre.increasePlanExhibitionCount();
                     break;
-                case INSTALLATION_ART:
+                case InstallationArt:
                     exhibitionGenre.increaseInstallationArtCount();
                     break;
-                case PAINTING:
+                case Painting:
                     exhibitionGenre.increasePaintingCount();
                     break;
-                case ARTIST_EXHIBITION:
+                case ArtistExhibition:
                     exhibitionGenre.increaseArtistExhibitionCount();
                     break;
             }

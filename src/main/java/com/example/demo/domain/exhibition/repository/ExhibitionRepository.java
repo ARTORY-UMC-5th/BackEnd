@@ -27,7 +27,7 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
             "LEFT JOIN LikeExhibition le ON e.id = le.exhibition.id AND le.member.memberId = :memberId " +
             "WHERE e.isEnded = false " +
             "AND e.isStarted = true " +
-            "ORDER BY se.id DESC")
+            "ORDER BY se.updateTime DESC")
     Page<Object[]> findAllByOrderByUpdateTimeExhibition(@Param("memberId") Long memberId, Pageable pageable);
 
     //최신순
