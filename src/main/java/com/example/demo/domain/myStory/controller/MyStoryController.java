@@ -1,10 +1,7 @@
 package com.example.demo.domain.myStory.controller;
 
-import com.example.demo.domain.exhibition.dto.ExhibitionResponseDto;
-import com.example.demo.domain.myPage.dto.MyPageResponseDto;
-import com.example.demo.domain.myPage.service.MyPageService;
 import com.example.demo.domain.myStory.dto.MyStoryResponseDto;
-import com.example.demo.domain.myStory.service.MyStoryService;
+import com.example.demo.domain.myStory.service.MyStoryServiceImpl;
 import com.example.demo.global.resolver.memberInfo.MemberInfo;
 import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,15 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @Tag(name = "마이스토리 정보 관리", description = "마이스토리 정보 조회 및 수정하기 API")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/mystory")
 public class MyStoryController {
 
-    private final MyStoryService myStoryService;
+    private final MyStoryServiceImpl myStoryService;
 
 //    @Operation(summary = "마이스토리에 내정보 조회", description = "마이스토리 창 들어갈때 호출되는 url")
 //    @GetMapping("/info")

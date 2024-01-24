@@ -130,9 +130,17 @@ public class Member extends BaseEntity {
     @Lob
     private String memo;
 
+//원재
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<ScrapMember> scrapMemberList;
+    @OneToMany(mappedBy = "fromMember", cascade = CascadeType.ALL)
+    private List<ScrapMember> scrapfromMemberList;
+
+    @OneToMany(mappedBy = "toMember", cascade = CascadeType.ALL)
+    private List<ScrapMember> scraptoMemberList;
+
+//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+//    private List<ScrapMember> scrapMemberList;
+// 여기까지
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Story> storyList;
