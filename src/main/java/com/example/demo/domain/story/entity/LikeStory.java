@@ -21,6 +21,9 @@ public class LikeStory extends BaseEntity {
     @Column(name = "likeStory_id")
     private Long id;
 
+    @Builder.Default
+    @Setter
+    private Boolean isLiked=false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

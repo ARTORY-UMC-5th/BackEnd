@@ -26,7 +26,23 @@ public enum ErrorCode {//우리가 사용할 에러코드를 담은 dto
     ALREADY_REGISTERED_EMAIL(HttpStatus.BAD_REQUEST, "M-004", "이미 다른 소셜로그인으로 가입된 이메일 입니다."),
 
     //전시회
-    EXHIBITION_NOT_EXISTS(HttpStatus.BAD_REQUEST, "E-003", "해당 전시회는 존재하지 않습니다.");
+    EXHIBITION_NOT_EXISTS(HttpStatus.BAD_REQUEST, "E-003", "해당 전시회는 존재하지 않습니다."),
+
+
+    // 스토리
+    STORY_NOT_EXISTS(HttpStatus.BAD_REQUEST, "S-003", "해당 스토리는 존재하지 않습니다."),
+
+    // 스토리 좋아요
+    LIKE_EXISTS(HttpStatus.BAD_REQUEST, "S-005", "이미 좋아요 한 상태입니다."),
+    UNLIKE_EXISTS(HttpStatus.BAD_REQUEST, "S-006", "이미 좋아요 하지 않은 상태입니다."),
+
+    // 스토리 스크랩
+    SCRAP_EXISTS(HttpStatus.BAD_REQUEST, "S-007", "이미 스크랩을 한 상태입니다."),
+    UNSCRAP_EXISTS(HttpStatus.BAD_REQUEST, "S-008", "이미 스크랩 하지 않은 상태입니다."),
+    STORY_PRIVATE(HttpStatus.BAD_REQUEST, "S-009", "해당 스토리는 비공개 처리 되어있습니다.");
+
+    // etc
+
     ErrorCode(HttpStatus httpStatus, String errorCode, String message){
         this.httpStatus = httpStatus;
         this.errorCode = errorCode;

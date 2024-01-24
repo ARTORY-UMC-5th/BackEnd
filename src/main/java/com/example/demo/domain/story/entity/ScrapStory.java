@@ -21,6 +21,11 @@ public class ScrapStory extends BaseEntity {
     @Column(name = "scrapStory_id")
     private Long id;
 
+
+    @Builder.Default
+    @Setter
+    private Boolean isScrapped=false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
