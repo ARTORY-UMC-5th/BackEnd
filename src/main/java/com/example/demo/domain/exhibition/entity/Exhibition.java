@@ -53,19 +53,20 @@ public class Exhibition extends BaseEntity {
     private boolean isStarted = false; //전시회 시작되었는지, 안되었는지
 
     @Setter
+    @Builder.Default
     private int exhibitionLikeCount = 0; // 좋아요 수
 
     private String genreCategory;
 
 
     @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL)
-    private List<Story> storyList = new ArrayList<>();
+    private List<Story> storyList;
 
     @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL)
-    private List<ScrapExhibition> scrapExhibitionList = new ArrayList<>();
+    private List<ScrapExhibition> scrapExhibitionList;
 
     @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<LikeExhibition> likeExhibitionList = new ArrayList<>();
+    private List<LikeExhibition> likeExhibitionList;
 
 
     @OneToOne(mappedBy = "exhibition", cascade = CascadeType.ALL)

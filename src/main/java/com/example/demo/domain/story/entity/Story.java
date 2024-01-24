@@ -39,7 +39,7 @@ public class Story extends BaseEntity {
 
 
     @OneToMany(mappedBy = "story", cascade = CascadeType.ALL)
-    private List<StoryPicture> storyPictureList = new ArrayList<>(); //사진
+    private List<StoryPicture> storyPictureList; //사진
 
 
     //member가 Story쓸때 장르3개 선택
@@ -55,11 +55,10 @@ public class Story extends BaseEntity {
     @Column(columnDefinition = "VARCHAR(20)")
     private Genre genre3;
 
-
-
+    @Builder.Default
     private boolean isOpen = false; //공개, 비공개 여부
 
-
+    @Builder.Default
     private int storyLikeCount = 0; // 좋아요 수
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -71,14 +70,14 @@ public class Story extends BaseEntity {
     private Exhibition exhibition;
 
     @OneToMany(mappedBy = "story", cascade = CascadeType.ALL)
-    private List<Comment> commentList = new ArrayList<>();
+    private List<Comment> commentList;
 
 
     @OneToMany(mappedBy = "story", cascade = CascadeType.ALL)
-    private List<ScrapStory> scrapStoryList = new ArrayList<>();
+    private List<ScrapStory> scrapStoryList;
 
     @OneToMany(mappedBy = "story", cascade = CascadeType.ALL)
-    private List<LikeStory> likeStoryList = new ArrayList<>();
+    private List<LikeStory> likeStoryList;
 
     // 연결된 전시회가 있다면 해당 전시회의 ExhibitionGenre를 업데이트
     @PrePersist
