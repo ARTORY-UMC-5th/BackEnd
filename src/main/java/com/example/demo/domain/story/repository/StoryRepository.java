@@ -38,7 +38,7 @@ public interface StoryRepository extends JpaRepository<Story, Long> {
             "left join LikeStory ls on s.id = ls.story.id and ls.member.memberId = :memberId " +
             "left join ScrapStory ss on s.id = ss.story.id and ss.member.memberId = :memberId " +
             "where s.isOpen = true " +
-            "order by s.creatTime desc")
+            "order by s.updateTime desc")
     Page<Object[]> findAllByOrderByCreateTimeDesc(Pageable pageable, Long memberId);
 
 

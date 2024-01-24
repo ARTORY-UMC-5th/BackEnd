@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,20 +35,23 @@ public class MyStoryServiceImpl implements MyStoryService{
 //        return myStoryConverter.convertToGeneralDto(member);
 //    }
 //
+//    @Transactional
 //    public List<MyStoryResponseDto.ExhibitionGeneralResponseDto> getScrappedExhibitionInfo(@MemberInfo MemberInfoDto memberInfoDto, int page) {
 //        Long memberId = memberInfoDto.getMemberId();
 //
 //        int pageSize = 10;
 //        Pageable pageable = PageRequest.of(page - 1, pageSize);
 //        Page<Object[]> scrapExhibitionsPage = exhibitionRepository.findAllByOrderByUpdateTimeExhibition(memberId, pageable);
-//
+//        System.out.println("scrapExhibitionsPage = " + scrapExhibitionsPage);
 //        List<MyStoryResponseDto.ExhibitionGeneralResponseDto> exhibitions = scrapExhibitionsPage.getContent()
 //                .stream()
 //                .map(array -> {
 //                    ScrapExhibition scrapExhibition = (ScrapExhibition) array[0];
 //                    Boolean isLiked = (Boolean) array[1];
 //                    Boolean isScrapped =  (Boolean) array[2];
-//
+//                    System.out.println("isScrapped = " + isScrapped);
+//                    System.out.println("isLiked = " + isLiked);
+//                    System.out.println("scrapExhibition = " + scrapExhibition);
 //                    return myStoryConverter.convertToExhibitionDto(scrapExhibition.getExhibition(), isLiked, isScrapped);
 //                })
 //                .collect(Collectors.toList());
@@ -56,6 +60,8 @@ public class MyStoryServiceImpl implements MyStoryService{
 //    }
 
     @Override
+    @Transactional
+
     public MyStoryResponseDto.MemberGeneralResponseDto getAllMyStoryInfo(@MemberInfo MemberInfoDto memberInfoDto, int page) {
         Long memberId = memberInfoDto.getMemberId();
 

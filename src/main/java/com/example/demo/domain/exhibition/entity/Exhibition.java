@@ -59,17 +59,17 @@ public class Exhibition extends BaseEntity {
     private String genreCategory;
 
 
-    @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "exhibition",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Story> storyList;
 
-    @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ScrapExhibition> scrapExhibitionList;
 
-    @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<LikeExhibition> likeExhibitionList;
 
 
-    @OneToOne(mappedBy = "exhibition", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "exhibition", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ExhibitionGenre exhibitionGenre;
 
 
