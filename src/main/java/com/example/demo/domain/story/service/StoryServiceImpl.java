@@ -2,6 +2,7 @@ package com.example.demo.domain.story.service;
 
 import com.example.demo.domain.exhibition.entity.Exhibition;
 import com.example.demo.domain.exhibition.entity.ExhibitionGenre;
+import com.example.demo.domain.exhibition.repository.ExhibitionGenreRepository;
 import com.example.demo.domain.exhibition.repository.ExhibitionRepository;
 import com.example.demo.domain.member.constant.Genre;
 import com.example.demo.domain.member.entity.Member;
@@ -43,6 +44,7 @@ public class StoryServiceImpl implements StoryService{
     private final StoryRepository storyRepository;
     private final ScrapStoryRepository scrapStoryRepository;
     private final StoryConverter storyConverter;
+    private final ExhibitionGenreRepository exhibitionGenreRepository;
 
     // 해당 스토리 id, 열람하는 memberId
     @Transactional
@@ -201,23 +203,27 @@ public class StoryServiceImpl implements StoryService{
         Exhibition exhibition = exhibitionRepository.findById(exhibitionId)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.EXHIBITION_NOT_EXISTS));
 
+        if (exhibition.getExhibitionGenre() == null) {
+            ExhibitionGenre exhibitionGenre = ExhibitionGenre.builder()
+                    .exhibition(exhibition)
+                    .build();
+
+            exhibitionGenreRepository.save(exhibitionGenre);
+        }
+
         Story story = storyConverter.convertToEntity(storyRequestDto, member, exhibition);
         storyRepository.save(story);
 
 
-//        // 저장한 장르 3개 값을 해당 전시회 장르 카테고리에 1++
-//        List<Genre> genreList = Arrays.asList(storyRequestDto.getGenre1(), storyRequestDto.getGenre2(), storyRequestDto.getGenre3());
-//        ExhibitionGenre exhibitionGenre = exhibition.getExhibitionGenre();
-//
-//        genreList.stream().forEach(genre -> {
-//            try {
-//                Method increaseMethod = ExhibitionGenre.class.getDeclaredMethod("increase" + capitalize(genre) + "Count");
-//                increaseMethod.invoke(exhibitionGenre);
-//            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-//                e.printStackTrace();
-//            }
-//        });
+        // 저장한 장르 3개 값을 해당 전시회 장르 카테고리에 1++
+        List<Genre> genreList = Arrays.asList(storyRequestDto.getGenre1(), storyRequestDto.getGenre2(), storyRequestDto.getGenre3());
+        ExhibitionGenre exhibitionGenre = exhibitionGenreRepository.findByExhibitionId(exhibitionId);
 
+        genreList.stream().forEach(genre -> {
+            story.updateExhibitionGenre(exhibitionGenre, genre);
+        });
+
+        exhibition.updateCategory();
     }
 
 

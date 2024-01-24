@@ -9,7 +9,6 @@ import com.example.demo.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -94,37 +93,37 @@ public class Story extends BaseEntity {
 
 
     // ExhibitionGenre를 업데이트하는 메서드
-    private void updateExhibitionGenre(ExhibitionGenre exhibitionGenre, Genre genre) {
+    public void updateExhibitionGenre(ExhibitionGenre exhibitionGenre, Genre genre) {
         if (genre != null) {
             switch (genre) {
-                case Media:
+                case MEDIA:
                     exhibitionGenre.increaseMediaCount();
                     break;
-                case Craft:
+                case CRAFT:
                     exhibitionGenre.increaseCraftCount();
                     break;
-                case Design:
+                case DESIGN:
                     exhibitionGenre.increaseDesignCount();
                     break;
-                case Picture:
+                case PICTURE:
                     exhibitionGenre.increasePictureCount();
                     break;
-                case SpecialExhibition:
+                case SPECIAL_EXHIBITION:
                     exhibitionGenre.increaseSpecialExhibitionCount();
                     break;
-                case Sculpture:
+                case SCULPTURE:
                     exhibitionGenre.increaseSculptureCount();
                     break;
-                case PlanExhibition:
+                case PLAN_EXHIBITION:
                     exhibitionGenre.increasePlanExhibitionCount();
                     break;
-                case InstallationArt:
+                case INSTALLATION_ART:
                     exhibitionGenre.increaseInstallationArtCount();
                     break;
-                case Painting:
+                case PAINTING:
                     exhibitionGenre.increasePaintingCount();
                     break;
-                case ArtistExhibition:
+                case ARTIST_EXHIBITION:
                     exhibitionGenre.increaseArtistExhibitionCount();
                     break;
             }
