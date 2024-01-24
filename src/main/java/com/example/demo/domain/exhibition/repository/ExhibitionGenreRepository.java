@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 
 @Repository
 public interface ExhibitionGenreRepository extends JpaRepository<ExhibitionGenre, Long> {
@@ -114,5 +116,11 @@ public interface ExhibitionGenreRepository extends JpaRepository<ExhibitionGenre
     Page<Object[]> findArtistExhibitionExhibitions(@Param("memberId") Long memberId, Pageable pageable);
 
 
-    ExhibitionGenre findByExhibitionId(Long exhibitionId);
+    @Query("select true " +
+            "from ExhibitionGenre eg " +
+            "where eg.exhibition.id = :exhibitionId ")
+    Boolean existsByExhibitionId(Long exhibitionId);
+
+
+    ExhibitionGenre getByExhibitionId(Long exhibitionId);
 }

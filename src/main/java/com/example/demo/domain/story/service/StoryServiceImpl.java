@@ -194,36 +194,76 @@ public class StoryServiceImpl implements StoryService{
 
     @Transactional
     public void saveStory(StoryRequestDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
+
+
+        // 스토리 저장 전에 스토리-전시회에 해당하는 ExhibitionGenre 있는지 확인
+
+        // ExhibitionGenre가 있으면 pass, 없으면 만들어서 전시회와 매핑
+
+        // 스토리의 category1, 2, 3을 해당 전시회 ExhibitionGenre에 1 증가시키고 -> 전시회 category 업데이트
+
+        // 후 스토리 저장
+
         Long memberId = memberInfoDto.getMemberId();
+        Member member = memberRepository.getById(memberId);
         Long exhibitionId = storyRequestDto.getExhibitionId();
+        Exhibition exhibition = exhibitionRepository.getById(exhibitionId);
 
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXISTS));
 
-        Exhibition exhibition = exhibitionRepository.findById(exhibitionId)
-                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.EXHIBITION_NOT_EXISTS));
+        Boolean isExisted = exhibitionGenreRepository.existsByExhibitionId(exhibitionId);
 
-        if (exhibition.getExhibitionGenre() == null) {
+        // 테이블이 존재하면, 패스
+        if (isExisted == null) {
             ExhibitionGenre exhibitionGenre = ExhibitionGenre.builder()
-                    .exhibition(exhibition)
+                    .exhibition(exhibitionRepository.getById(exhibitionId))
                     .build();
 
             exhibitionGenreRepository.save(exhibitionGenre);
         }
 
         Story story = storyConverter.convertToEntity(storyRequestDto, member, exhibition);
-        storyRepository.save(story);
 
-
-        // 저장한 장르 3개 값을 해당 전시회 장르 카테고리에 1++
-        List<Genre> genreList = Arrays.asList(storyRequestDto.getGenre1(), storyRequestDto.getGenre2(), storyRequestDto.getGenre3());
-        ExhibitionGenre exhibitionGenre = exhibitionGenreRepository.findByExhibitionId(exhibitionId);
-
-        genreList.stream().forEach(genre -> {
-            story.updateExhibitionGenre(exhibitionGenre, genre);
-        });
+        story.updateExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), storyRequestDto.getGenre1());
+        story.updateExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), storyRequestDto.getGenre2());
+        story.updateExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), storyRequestDto.getGenre3());
 
         exhibition.updateCategory();
+        storyRepository.save(story);
+
+//        Long memberId = memberInfoDto.getMemberId();
+//        Long exhibitionId = storyRequestDto.getExhibitionId();
+//
+//        Member member = memberRepository.findById(memberId)
+//                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXISTS));
+//
+//        Exhibition exhibition = exhibitionRepository.findById(exhibitionId)
+//                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.EXHIBITION_NOT_EXISTS));
+//
+//
+//        Optional<ExhibitionGenre> optionalExhibitionGenre = exhibitionGenreRepository.findByExhibitionId(exhibitionId);
+//
+//        if (optionalExhibitionGenre.isEmpty()) {
+//            ExhibitionGenre exhibitionGenre = ExhibitionGenre.builder()
+//                    .exhibition(exhibition)
+//                    .build();
+//
+//            exhibitionGenreRepository.save(exhibitionGenre);
+//        }
+//
+//
+//        Story story = storyConverter.convertToEntity(storyRequestDto, member, exhibition);
+//        storyRepository.save(story);
+//
+//
+//        // 저장한 장르 3개 값을 해당 전시회 장르 카테고리에 1++
+//        List<Genre> genreList = Arrays.asList(storyRequestDto.getGenre1(), storyRequestDto.getGenre2(), storyRequestDto.getGenre3());
+//        ExhibitionGenre exhibitionGenre = exhibitionGenreRepository.getByExhibitionId(exhibitionId);
+//
+//        genreList.stream().forEach(genre -> {
+//            story.updateExhibitionGenre(exhibitionGenre, genre);
+//        });
+//
+//        exhibition.updateCategory();
     }
 
 

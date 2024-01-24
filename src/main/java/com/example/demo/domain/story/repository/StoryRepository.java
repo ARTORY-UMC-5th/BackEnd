@@ -27,7 +27,7 @@ public interface StoryRepository extends JpaRepository<Story, Long> {
             "LEFT JOIN LikeStory ls ON s.id = ls.story.id AND ls.member.memberId = :memberId " +
             "LEFT JOIN ScrapStory ss ON s.id = ss.story.id AND ss.member.memberId = :memberId " +
             "WHERE s.isOpen = true " +
-            "ORDER BY s.storyLikeCount, s.creatTime DESC")
+            "ORDER BY s.storyLikeCount desc , s.creatTime DESC")
     Page<Object[]> findAllByOrderByStoryLikeCountDesc(Pageable pageable, @Param("memberId") Long memberId);
 
 

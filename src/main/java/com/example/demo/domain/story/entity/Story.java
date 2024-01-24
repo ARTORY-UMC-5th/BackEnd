@@ -78,19 +78,6 @@ public class Story extends BaseEntity {
     @OneToMany(mappedBy = "story", cascade = CascadeType.ALL)
     private List<LikeStory> likeStoryList;
 
-    // 연결된 전시회가 있다면 해당 전시회의 ExhibitionGenre를 업데이트
-    @PrePersist
-    public void beforePersist() {
-        if (exhibition != null) {
-            ExhibitionGenre exhibitionGenre = exhibition.getExhibitionGenre();
-            if (exhibitionGenre != null) {
-                updateExhibitionGenre(exhibitionGenre, genre1);
-                updateExhibitionGenre(exhibitionGenre, genre2);
-                updateExhibitionGenre(exhibitionGenre, genre3);
-            }
-        }
-    }
-
 
     // ExhibitionGenre를 업데이트하는 메서드
     public void updateExhibitionGenre(ExhibitionGenre exhibitionGenre, Genre genre) {

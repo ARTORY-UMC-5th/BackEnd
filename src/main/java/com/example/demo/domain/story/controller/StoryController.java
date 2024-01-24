@@ -28,12 +28,8 @@ public class StoryController {
     @Operation(summary = "스토리 저장")
     @PostMapping("/save")
     public ResponseEntity<String> saveStory(@RequestBody StoryRequestDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
-        try {
-            storyService.saveStory(storyRequestDto,memberInfoDto);
-            return ResponseEntity.ok("Story saved successfully!");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save the story.");
-        }
+        storyService.saveStory(storyRequestDto,memberInfoDto);
+        return ResponseEntity.ok("Story saved successfully!");
     }
 
 

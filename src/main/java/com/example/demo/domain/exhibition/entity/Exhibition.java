@@ -70,7 +70,6 @@ public class Exhibition extends BaseEntity {
     @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<LikeExhibition> likeExhibitionList;
 
-
     @OneToOne(mappedBy = "exhibition", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ExhibitionGenre exhibitionGenre;
 
