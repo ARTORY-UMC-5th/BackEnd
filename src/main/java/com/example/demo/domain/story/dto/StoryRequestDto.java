@@ -27,9 +27,14 @@ public class StoryRequestDto {
     @Lob
     private String storyContext;
 
-    private Genre genre1;
-    private Genre genre2;
-    private Genre genre3;
+    @Builder.Default
+    private Genre genre1 = null;
+
+    @Builder.Default
+    private Genre genre2 = null;
+
+    @Builder.Default
+    private Genre genre3 = null;
 
     private Boolean isOpen;
 

@@ -34,7 +34,4 @@ public interface StoryService {
 
     // 스토리 검색
     List<StoryResponseDto.StoryThumbnailResponseDto> getSearchStoriesByTitle(int page, String title, @MemberInfo MemberInfoDto memberInfoDto);
-
-    // 테스트용
-    int getLikeCount(Long storyId);
 }

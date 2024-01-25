@@ -47,8 +47,9 @@ public interface StoryRepository extends JpaRepository<Story, Long> {
             "from Story s " +
             "left join LikeStory ls on s.id = ls.story.id and ls.member.memberId = :memberId " +
             "left join ScrapStory ss on s.id = ss.story.id and ss.member.memberId = :memberId " +
-            "where s.isOpen = true " +
-            "order by s.id asc")
+            "left join Member m on m.memberId = :memberId " +
+            "where s.isOpen = true and (s.genre1 = m.genre1 or s.genre1 = m.genre2 or s.genre1 = m.genre3 or s.genre2 = m.genre1 or s.genre2 = m.genre2 or s.genre2 = m.genre3 or s.genre3 = m.genre1 or s.genre3 = m.genre2 or s.genre3 = m.genre3) " +
+            "order by s.storyLikeCount desc, s.creatTime desc, rand() ")
     Page<Object[]> findAllByRecommend(Pageable pageable, Long memberId);
 
 

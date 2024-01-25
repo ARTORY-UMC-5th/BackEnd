@@ -7,7 +7,6 @@ import com.example.demo.domain.story.entity.Story;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -74,7 +73,7 @@ public class Exhibition extends BaseEntity {
     private ExhibitionGenre exhibitionGenre;
 
 
-    //가장 높은 3개의 값을 가지는 장르 선택
+    //가장 높은 3개의 값을 가지는 장르 선택, 만약 선택된 장르중 count가 0이면 제외
     public void updateCategory() {
         Map<String, Integer> genreCounts = Map.of(
                 "media", exhibitionGenre.getMedia(),
@@ -91,14 +90,20 @@ public class Exhibition extends BaseEntity {
 
         List<String> topGenres = genreCounts.entrySet().stream()
                 .sorted(Comparator.comparing(Map.Entry::getValue, Comparator.reverseOrder()))
+                .filter(entry -> entry.getValue() > 0)
                 .limit(3)
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
 
         System.out.println("topGenres = " + topGenres);
-        this.genreCategory1 = topGenres.get(0);
-        this.genreCategory2 = topGenres.get(1);
-        this.genreCategory3 = topGenres.get(2);
+        // 1개 이상이면, Genre1 추가
+        this.genreCategory1 = topGenres.size() > 0 ? topGenres.get(0) : null;
+
+        // 2개 이상이면, Genre2 추가
+        this.genreCategory2 = topGenres.size() > 1 ? topGenres.get(1) : null;
+
+        // 3개 이상이면, Genre3 추가
+        this.genreCategory3 = topGenres.size() > 2 ? topGenres.get(2) : null;
     }
 
 }

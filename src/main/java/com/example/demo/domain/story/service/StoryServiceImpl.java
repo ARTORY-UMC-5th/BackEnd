@@ -66,7 +66,7 @@ public class StoryServiceImpl implements StoryService{
     }
 
 
-    @Override
+    @Transactional
     public StoryResponseDto.StoryListResponseDto getAllStoryList(int page,  @MemberInfo MemberInfoDto memberInfoDto) {
 
         StoryResponseDto.StoryListResponseDto allStoryDto = StoryResponseDto.StoryListResponseDto.builder()
@@ -80,7 +80,7 @@ public class StoryServiceImpl implements StoryService{
     }
 
 
-    @Override
+    @Transactional
     public List<StoryResponseDto.StoryThumbnailResponseDto> getPopularStories(int page,  @MemberInfo MemberInfoDto memberInfoDto) {
         Long memberId = memberInfoDto.getMemberId();
 
@@ -102,7 +102,7 @@ public class StoryServiceImpl implements StoryService{
     }
 
 
-    @Override
+    @Transactional
     public List<StoryResponseDto.StoryThumbnailResponseDto> getRecommendStories(int page,  @MemberInfo MemberInfoDto memberInfoDto) {
         Long memberId = memberInfoDto.getMemberId();
 
@@ -125,7 +125,7 @@ public class StoryServiceImpl implements StoryService{
     }
 
 
-    @Override
+    @Transactional
     public List<StoryResponseDto.StoryThumbnailResponseDto> getRecentStories(int page,  @MemberInfo MemberInfoDto memberInfoDto) {
         Long memberId = memberInfoDto.getMemberId();
 
@@ -169,7 +169,7 @@ public class StoryServiceImpl implements StoryService{
     }
 
 
-    @Override
+    @Transactional
     public List<StoryResponseDto.MemberThumbnailResponseDto> getRecommendMembers(int page,  @MemberInfo MemberInfoDto memberInfoDto) {
         Long memberId = memberInfoDto.getMemberId();
 
@@ -223,58 +223,18 @@ public class StoryServiceImpl implements StoryService{
 
         Story story = storyConverter.convertToEntity(storyRequestDto, member, exhibition);
 
+        /**
+         * 스토리에서 선택한 장르가 3개가 아닐수도 있음
+         * story -> 해당 exhibitionGenre를 1 증가 (updateExhibitionGenre) 장르가 null이면, pass
+         *
+         *
+         */
         story.updateExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), storyRequestDto.getGenre1());
         story.updateExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), storyRequestDto.getGenre2());
         story.updateExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), storyRequestDto.getGenre3());
 
         exhibition.updateCategory();
         storyRepository.save(story);
-
-//        Long memberId = memberInfoDto.getMemberId();
-//        Long exhibitionId = storyRequestDto.getExhibitionId();
-//
-//        Member member = memberRepository.findById(memberId)
-//                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXISTS));
-//
-//        Exhibition exhibition = exhibitionRepository.findById(exhibitionId)
-//                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.EXHIBITION_NOT_EXISTS));
-//
-//
-//        Optional<ExhibitionGenre> optionalExhibitionGenre = exhibitionGenreRepository.findByExhibitionId(exhibitionId);
-//
-//        if (optionalExhibitionGenre.isEmpty()) {
-//            ExhibitionGenre exhibitionGenre = ExhibitionGenre.builder()
-//                    .exhibition(exhibition)
-//                    .build();
-//
-//            exhibitionGenreRepository.save(exhibitionGenre);
-//        }
-//
-//
-//        Story story = storyConverter.convertToEntity(storyRequestDto, member, exhibition);
-//        storyRepository.save(story);
-//
-//
-//        // 저장한 장르 3개 값을 해당 전시회 장르 카테고리에 1++
-//        List<Genre> genreList = Arrays.asList(storyRequestDto.getGenre1(), storyRequestDto.getGenre2(), storyRequestDto.getGenre3());
-//        ExhibitionGenre exhibitionGenre = exhibitionGenreRepository.getByExhibitionId(exhibitionId);
-//
-//        genreList.stream().forEach(genre -> {
-//            story.updateExhibitionGenre(exhibitionGenre, genre);
-//        });
-//
-//        exhibition.updateCategory();
     }
-
-
-    // 테스트용
-    @Transactional
-    public int getLikeCount(Long storyId) {
-
-        Story story = storyRepository.getById(storyId);
-
-        return story.getStoryLikeCount();
-    }
-
 
 }
