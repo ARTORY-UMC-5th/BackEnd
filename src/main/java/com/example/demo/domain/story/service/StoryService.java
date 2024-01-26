@@ -11,7 +11,7 @@ import java.util.List;
 public interface StoryService {
 
     // 특정 스토리 조회
-    StoryResponseDto.StorySpecificResponseDto getStoryById(Long storyId,@MemberInfo MemberInfoDto memberInfoDto) throws Exception;
+    StoryResponseDto.StorySpecificResponseDto getStoryById(Long storyId,@MemberInfo MemberInfoDto memberInfoDto);
 
     // 전체 스토리 리스트 조회
     StoryResponseDto.StoryListResponseDto getAllStoryList(int page, @MemberInfo MemberInfoDto memberInfoDto);
@@ -30,11 +30,13 @@ public interface StoryService {
     List<StoryResponseDto.MemberThumbnailResponseDto> getRecommendMembers(int page,@MemberInfo MemberInfoDto memberInfoDto);
 
     // 스토리 저장
-    void saveStory(StoryRequestDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto);
+    void saveStory(StoryRequestDto.StoryRequestGeneralDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto);
 
     // 스토리 검색
     List<StoryResponseDto.StoryThumbnailResponseDto> getSearchStoriesByTitle(int page, String title, @MemberInfo MemberInfoDto memberInfoDto);
 
-    // 테스트용
-    int getLikeCount(Long storyId);
-}
+
+
+
+    void updateStory(StoryRequestDto.StoryRequestGeneralDto storyRequestDto, Long storyId, MemberInfoDto memberInfoDto);
+    }

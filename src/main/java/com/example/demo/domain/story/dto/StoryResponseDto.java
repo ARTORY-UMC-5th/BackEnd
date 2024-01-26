@@ -46,6 +46,9 @@ public class StoryResponseDto {
         private String storySatisfactionLevel;
         private String storyWeather;
         private String storyCompanion;
+        private int year;
+        private int month;
+        private int day;
         private Genre storyGenre1;
         private Genre storyGenre2;
         private Genre storyGenre3;
@@ -58,7 +61,7 @@ public class StoryResponseDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class MemberThumbnailResponseDto {
-        private Long storyId;
+        private Long memberId;
         private String memberNickname;
         private String memberProfile;
         private Boolean isScrapped;

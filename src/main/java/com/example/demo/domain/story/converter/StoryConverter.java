@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class StoryConverter {
-    public Story convertToEntity(StoryRequestDto storyRequestDto, Member member, Exhibition exhibition) {
+    public Story convertToEntity(StoryRequestDto.StoryRequestGeneralDto storyRequestDto, Member member, Exhibition exhibition) {
         return Story.builder()
                 .storyTitle(storyRequestDto.getStoryTitle())
                 .storySatisfactionLevel(storyRequestDto.getStorySatisfactionLevel())
@@ -20,6 +20,9 @@ public class StoryConverter {
                 .storyKeyword(storyRequestDto.getStoryKeyword())
                 .storyViewingTime(storyRequestDto.getStoryViewingTime())
                 .storyContext(storyRequestDto.getStoryContext())
+                .year(storyRequestDto.getYear())
+                .month(storyRequestDto.getMonth())
+                .day(storyRequestDto.getDay())
                 .genre1(storyRequestDto.getGenre1())
                 .genre2(storyRequestDto.getGenre2())
                 .genre3(storyRequestDto.getGenre3())
@@ -28,6 +31,17 @@ public class StoryConverter {
                 .exhibition(exhibition)
                 .build();
     }
+
+    public Story convertToDateEntity(StoryRequestDto.StoryRequestDateDto storyRequestDto, Member member, Exhibition exhibition) {
+        return Story.builder()
+                .exhibition(exhibition)
+                .member(member)
+                .year(storyRequestDto.getYear())
+                .month(storyRequestDto.getMonth())
+                .day(storyRequestDto.getDay())
+                .build();
+    }
+
     // story 엔티티를 dto로 변환
     public StoryResponseDto.StorySpecificResponseDto convertToSpecificResponseDto(Story story, Boolean isMemberScrapped){
 
@@ -54,6 +68,9 @@ public class StoryConverter {
                 .storySatisfactionLevel(story.getStorySatisfactionLevel())
                 .storyWeather(story.getStoryWeather())
                 .storyCompanion(story.getStoryCompanion())
+                .year(story.getYear())
+                .month(story.getMonth())
+                .day(story.getDay())
                 .storyGenre1(story.getGenre1())
                 .storyGenre2(story.getGenre2())
                 .storyGenre3(story.getGenre3())
@@ -81,7 +98,7 @@ public class StoryConverter {
     public static StoryResponseDto.MemberThumbnailResponseDto convertToMemberThumbnailResponseDto(Member member, Boolean isScrapped) {
 
         StoryResponseDto.MemberThumbnailResponseDto memberThumbnailResponseDto = StoryResponseDto.MemberThumbnailResponseDto.builder()
-                .storyId(member.getMemberId())
+                .memberId(member.getMemberId())
                 .memberNickname(member.getNickname())
                 .memberProfile(member.getProfile())
                 .isScrapped(isScrapped)

@@ -27,7 +27,7 @@ public class StoryController {
 
     @Operation(summary = "스토리 저장")
     @PostMapping("/save")
-    public ResponseEntity<String> saveStory(@RequestBody StoryRequestDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
+    public ResponseEntity<String> saveStory(@RequestBody StoryRequestDto.StoryRequestGeneralDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
         try {
             storyService.saveStory(storyRequestDto,memberInfoDto);
             return ResponseEntity.ok("Story saved successfully!");
@@ -35,7 +35,13 @@ public class StoryController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save the story.");
         }
     }
+    @Operation(summary = "스토리 수정")
+    @PatchMapping("/upadte/{story-id}")
+    public ResponseEntity<String> updateStory(@RequestBody StoryRequestDto.StoryRequestGeneralDto storyRequestDto, @RequestParam Long storyId, @MemberInfo MemberInfoDto memberInfoDto) {
+        storyService.updateStory(storyRequestDto, storyId, memberInfoDto);
+        return ResponseEntity.ok("story updated successfully!");
 
+    }
 
     @Operation(summary = "특정 스토리 조회")
     @GetMapping("/{storyId}")

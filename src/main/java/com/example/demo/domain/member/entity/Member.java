@@ -127,7 +127,9 @@ public class Member extends BaseEntity {
     private String myKeyword;
 
     //mystory에서 사용
+    @Setter
     @Lob
+    @Column(length = 1000000)
     private String memo;
 
 //원재
