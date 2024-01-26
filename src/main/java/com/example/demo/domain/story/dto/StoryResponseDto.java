@@ -58,7 +58,7 @@ public class StoryResponseDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class MemberThumbnailResponseDto {
-        private Long storyId;
+        private Long memberId;
         private String memberNickname;
         private String memberProfile;
         private Boolean isScrapped;
