@@ -182,7 +182,7 @@ public class StoryServiceImpl implements StoryService{
         // 추후 구현
         int pageSize = 10;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
-        Page<Object[]> recommendMemberPage = memberRepository.recommendMemberWithScrapped(pageable, memberId);
+        Page<Object[]> recommendMemberPage = memberRepository.recommendMember(pageable, memberId);
 
         List<StoryResponseDto.MemberThumbnailResponseDto> recommendMembers = recommendMemberPage.getContent()
                 .stream()

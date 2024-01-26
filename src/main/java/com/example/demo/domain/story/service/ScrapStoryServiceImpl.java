@@ -8,6 +8,7 @@ import com.example.demo.domain.story.repository.ScrapStoryRepository;
 import com.example.demo.domain.story.repository.StoryRepository;
 import com.example.demo.global.error.ErrorCode;
 import com.example.demo.global.error.exception.StoryException;
+import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +22,9 @@ public class ScrapStoryServiceImpl implements ScrapStoryService{
     private final StoryRepository storyRepository;
 
     @Transactional
-    public void scrapStory(Long memberId, Long storyId) {
+    public void scrapStory(MemberInfoDto memberInfoDto, Long storyId) {
 
+        Long memberId = memberInfoDto.getMemberId();
         Member member = memberRepository.getReferenceById(memberId);
         Story story = storyRepository.findById(storyId)
                 .orElseThrow(() -> new StoryException(ErrorCode.STORY_NOT_EXISTS));
@@ -34,10 +36,10 @@ public class ScrapStoryServiceImpl implements ScrapStoryService{
             ScrapStory scrapStory = ScrapStory.builder()
                     .member(member)
                     .story(story)
+                    .isScrapped(true)
                     .build();
 
             scrapStoryRepository.save(scrapStory);
-            scrapStoryRepository.setIsScrappedTrue(scrapStory);
 
             // 스크랩 로그에서 isScrapped 가 false이거나 null일때 -> true로 변경
         } else if (temp.getIsScrapped() == null || temp.getIsScrapped() == false) {
@@ -51,7 +53,9 @@ public class ScrapStoryServiceImpl implements ScrapStoryService{
 
 
     @Transactional
-    public void unscrapStory(Long memberId, Long storyId) {
+    public void unscrapStory(MemberInfoDto memberInfoDto, Long storyId) {
+
+        Long memberId = memberInfoDto.getMemberId();
 
         storyRepository.findById(storyId).orElseThrow(() -> new StoryException(ErrorCode.STORY_NOT_EXISTS));
 
@@ -59,7 +63,7 @@ public class ScrapStoryServiceImpl implements ScrapStoryService{
 
         if (scrapStory == null || scrapStory.getIsScrapped() == null || !scrapStory.getIsScrapped()) {
             throw new StoryException(ErrorCode.UNSCRAP_EXISTS);
-        } else if (scrapStory.getIsScrapped()) {
+        } else {
             scrapStoryRepository.setIsLikedFalse(scrapStory);
         }
 

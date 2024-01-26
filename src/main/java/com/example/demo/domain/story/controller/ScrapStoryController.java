@@ -1,6 +1,8 @@
 package com.example.demo.domain.story.controller;
 
 import com.example.demo.domain.story.service.ScrapStoryService;
+import com.example.demo.global.resolver.memberInfo.MemberInfo;
+import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -20,18 +22,18 @@ public class ScrapStoryController {
 
     @Operation(summary = "스토리 스크랩", description = "param : memberId, storyId")
     @GetMapping("/story-scrapped")
-    public ResponseEntity<String> scrapStory(@RequestParam Long memberId, @RequestParam Long storyId){
+    public ResponseEntity<String> scrapStory(@MemberInfo MemberInfoDto memberInfoDto, @RequestParam Long storyId){
 
-        scrapStoryService.scrapStory(memberId, storyId);
+        scrapStoryService.scrapStory(memberInfoDto, storyId);
         return ResponseEntity.ok("success scrapped");
     }
 
 
     @Operation(summary = "스토리 스크랩 취소", description = "param : memberId, storyId")
     @GetMapping("/story-unscrapped")
-    public ResponseEntity<String> unscrapStory(@RequestParam Long memberId, @RequestParam Long storyId){
+    public ResponseEntity<String> unscrapStory(@MemberInfo MemberInfoDto memberInfoDto, @RequestParam Long storyId){
 
-        scrapStoryService.unscrapStory(memberId, storyId);
+        scrapStoryService.unscrapStory(memberInfoDto, storyId);
         return ResponseEntity.ok("success unscrapped");
     }
 }

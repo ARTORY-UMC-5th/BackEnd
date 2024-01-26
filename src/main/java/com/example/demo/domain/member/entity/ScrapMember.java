@@ -33,9 +33,4 @@ public class ScrapMember extends BaseEntity {
     @JoinColumn(name = "to_member_id")
     private Member toMember;
 
-    //원재
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "member_id")
-//    private Member member;
-
 }

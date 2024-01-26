@@ -16,8 +16,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 //    Member findMemberByMemberId(Long id);
 
     //원재
-    @Query("select m, sm.isScrapped " +
-            "from Member m " +
-            "left join ScrapMember sm on sm.fromMember.memberId = :memberId and m.memberId = sm.toMember.memberId ")
-    Page<Object[]> recommendMemberWithScrapped(Pageable pageable, Long memberId);
+    @Query("select fromMember, COALESCE(sm.isScrapped, false) " +
+            "from ScrapMember sm " +
+            "join Member fromMember on sm.fromMember.memberId = fromMember.memberId " +
+            "join Member toMember on sm.toMember.memberId = toMember.memberId " +
+            "where toMember.memberId = :memberId")
+    Page<Object[]> recommendMember(Pageable pageable, Long memberId);
 }
