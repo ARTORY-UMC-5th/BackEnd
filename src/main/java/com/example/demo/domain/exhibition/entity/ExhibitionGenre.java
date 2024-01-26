@@ -88,5 +88,46 @@ public class ExhibitionGenre extends BaseEntity {
     }
 
 
+    // 각 장르의 카운트를 감소시키는 메서드
+    public void decreaseMediaCount() {
+        this.media--;
+    }
+
+    public void decreaseCraftCount() {
+        this.craft--;
+    }
+
+    public void decreaseDesignCount() {
+        this.design--;
+    }
+
+    public void decreasePictureCount() {
+        this.picture--;
+    }
+
+    public void decreaseSculptureCount() {
+        this.sculpture--;
+    }
+
+    public void decreasePlanExhibitionCount() {
+        this.planExhibition--;
+    }
+
+    public void decreaseSpecialExhibitionCount() {
+        this.specialExhibition--;
+    }
+
+    public void decreaseInstallationArtCount() {
+        this.installationArt--;
+    }
+
+    public void decreasePaintingCount() {
+        this.painting--;
+    }
+
+    public void decreaseArtistExhibitionCount() {
+        this.artistExhibition--;
+    }
+
 
 }

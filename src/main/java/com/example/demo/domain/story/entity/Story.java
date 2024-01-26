@@ -14,6 +14,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -80,7 +81,7 @@ public class Story extends BaseEntity {
 
 
     // ExhibitionGenre를 업데이트하는 메서드
-    public void updateExhibitionGenre(ExhibitionGenre exhibitionGenre, Genre genre) {
+    public void updateIncreaseExhibitionGenre(ExhibitionGenre exhibitionGenre, Genre genre) {
         if (genre != null) {
             switch (genre) {
                 case MEDIA:
@@ -112,6 +113,43 @@ public class Story extends BaseEntity {
                     break;
                 case ARTIST_EXHIBITION:
                     exhibitionGenre.increaseArtistExhibitionCount();
+                    break;
+            }
+        }
+    }
+
+    public void updateDecreaseExhibitionGenre(ExhibitionGenre exhibitionGenre, Genre genre) {
+        if (genre != null) {
+            switch (genre) {
+                case MEDIA:
+                    exhibitionGenre.decreaseMediaCount();
+                    break;
+                case CRAFT:
+                    exhibitionGenre.decreaseCraftCount();
+                    break;
+                case DESIGN:
+                    exhibitionGenre.decreaseDesignCount();
+                    break;
+                case PICTURE:
+                    exhibitionGenre.decreasePictureCount();
+                    break;
+                case SPECIAL_EXHIBITION:
+                    exhibitionGenre.decreaseSpecialExhibitionCount();
+                    break;
+                case SCULPTURE:
+                    exhibitionGenre.decreaseSculptureCount();
+                    break;
+                case PLAN_EXHIBITION:
+                    exhibitionGenre.decreasePlanExhibitionCount();
+                    break;
+                case INSTALLATION_ART:
+                    exhibitionGenre.decreaseInstallationArtCount();
+                    break;
+                case PAINTING:
+                    exhibitionGenre.decreasePaintingCount();
+                    break;
+                case ARTIST_EXHIBITION:
+                    exhibitionGenre.decreaseArtistExhibitionCount();
                     break;
             }
         }

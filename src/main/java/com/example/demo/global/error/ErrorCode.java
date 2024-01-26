@@ -31,6 +31,7 @@ public enum ErrorCode {//우리가 사용할 에러코드를 담은 dto
 
     // 스토리
     STORY_NOT_EXISTS(HttpStatus.BAD_REQUEST, "S-003", "해당 스토리는 존재하지 않습니다."),
+    NOT_YOUR_STORY(HttpStatus.BAD_REQUEST, "S-004", "본인의 스토리가 아닙니다."),
 
     // 스토리 좋아요
     LIKE_EXISTS(HttpStatus.BAD_REQUEST, "S-005", "이미 좋아요 한 상태입니다."),

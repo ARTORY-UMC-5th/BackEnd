@@ -12,11 +12,14 @@ import com.example.demo.domain.story.dto.StoryRequestDto;
 import com.example.demo.domain.story.dto.StoryResponseDto;
 import com.example.demo.domain.story.entity.ScrapStory;
 import com.example.demo.domain.story.entity.Story;
+import com.example.demo.domain.story.entity.StoryPicture;
 import com.example.demo.domain.story.repository.ScrapStoryRepository;
+import com.example.demo.domain.story.repository.StoryPictureRepository;
 import com.example.demo.domain.story.repository.StoryRepository;
 import com.example.demo.global.error.ErrorCode;
 import com.example.demo.global.error.exception.EntityNotFoundException;
 
+import com.example.demo.global.error.exception.StoryException;
 import com.example.demo.global.resolver.memberInfo.MemberInfo;
 import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +49,7 @@ public class StoryServiceImpl implements StoryService{
     private final ScrapStoryRepository scrapStoryRepository;
     private final StoryConverter storyConverter;
     private final ExhibitionGenreRepository exhibitionGenreRepository;
+    private final StoryPictureRepository storyPictureRepository;
 
     // 해당 스토리 id, 열람하는 memberId
     @Transactional
@@ -169,6 +174,7 @@ public class StoryServiceImpl implements StoryService{
     }
 
 
+
     @Transactional
     public List<StoryResponseDto.MemberThumbnailResponseDto> getRecommendMembers(int page,  @MemberInfo MemberInfoDto memberInfoDto) {
         Long memberId = memberInfoDto.getMemberId();
@@ -221,20 +227,122 @@ public class StoryServiceImpl implements StoryService{
             exhibitionGenreRepository.save(exhibitionGenre);
         }
 
+
+        // 스토리로 변환, 이때 List<StoryPicture>는 null값
         Story story = storyConverter.convertToEntity(storyRequestDto, member, exhibition);
+
+
+        // 스토리의 사진 저장(repository에 저장)
+        List<StoryPicture> storyPictureList = new ArrayList<>();
+        for (String pictureUrl : storyRequestDto.getPictures()) {
+            StoryPicture storyPicture = StoryPicture.builder()
+                    .story(story)
+                    .pictureUrl(pictureUrl)
+                    .build();
+
+            storyPictureList.add(storyPicture);
+        }
+
+        // 스토리에 List<StoryPicture> set
+        story.setStoryPictureList(storyPictureList);
+
 
         /**
          * 스토리에서 선택한 장르가 3개가 아닐수도 있음
          * story -> 해당 exhibitionGenre를 1 증가 (updateExhibitionGenre) 장르가 null이면, pass
-         *
-         *
          */
-        story.updateExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), storyRequestDto.getGenre1());
-        story.updateExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), storyRequestDto.getGenre2());
-        story.updateExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), storyRequestDto.getGenre3());
+        story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), storyRequestDto.getGenre1());
+        story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), storyRequestDto.getGenre2());
+        story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), storyRequestDto.getGenre3());
 
+        /**
+         * updateCategory : 해당 전시회의 상위 3개 Genre 선택해서 업데이트
+         */
         exhibition.updateCategory();
+
+        /**
+         * Story, 해당 Story의 사진 모음 저장
+         */
         storyRepository.save(story);
+        storyPictureRepository.saveAll(storyPictureList);
+    }
+
+
+
+    @Transactional
+    /**
+     * 1. 해당 스토리가 자신이 쓴건지 체크 -> 아니면 해당 스토리 수정 권한이 없습니다.
+     * 2. 자신이 쓴 스토리라면 수정
+     */
+    public void updateStory(StoryRequestDto storyRequestDto, Long storyId, MemberInfoDto memberInfoDto) {
+        Long memberId = memberInfoDto.getMemberId();
+
+        Optional<Story> optionalStory = storyRepository.findById(storyId);
+
+        if (optionalStory.isEmpty()) {
+            throw new StoryException(ErrorCode.STORY_NOT_EXISTS);
+        }
+
+
+        Story story = optionalStory.get();
+
+        // 장르 수정을 위해 설정되어있는 장르를 -1 업데이트
+        story.updateDecreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(storyRequestDto.getExhibitionId()), story.getGenre1());
+        story.updateDecreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(storyRequestDto.getExhibitionId()), story.getGenre2());
+        story.updateDecreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(storyRequestDto.getExhibitionId()), story.getGenre3());
+
+        // 장르 수정을 위해 기존의 사진 삭제
+        storyPictureRepository.deleteByStoryId(storyId);
+
+
+        // 해당 스토리가 자신이 쓴 스토리가 아니라면 예외 발생
+        if (!memberId.equals(story.getMember().getMemberId())) {
+            throw new StoryException(ErrorCode.NOT_YOUR_STORY);
+        }
+
+        // 스토리 생성 (StoryPicture 할당 x)
+        story = Story.builder()
+                .id(storyId)
+                .member(memberRepository.getById(memberInfoDto.getMemberId()))
+                .exhibition(exhibitionRepository.getById(storyRequestDto.getExhibitionId()))
+                .storyTitle(storyRequestDto.getStoryTitle())
+                .storySatisfactionLevel(storyRequestDto.getStorySatisfactionLevel())
+                .storyWeather(storyRequestDto.getStoryWeather())
+                .storyCompanion(storyRequestDto.getStoryCompanion())
+                .storyKeyword(storyRequestDto.getStoryKeyword())
+                .storyViewingTime(storyRequestDto.getStoryViewingTime())
+                .storyContext(storyRequestDto.getStoryContext())
+                .genre1(storyRequestDto.getGenre1())
+                .genre2(storyRequestDto.getGenre2())
+                .genre3(storyRequestDto.getGenre3())
+                .isOpen(storyRequestDto.getIsOpen())
+                .build();
+
+
+        List<StoryPicture> storyPictureList = new ArrayList<>();
+        for (String pictureUrl : storyRequestDto.getPictures()) {
+            StoryPicture storyPicture = StoryPicture.builder()
+                    .story(story)
+                    .pictureUrl(pictureUrl)
+                    .build();
+
+            storyPictureList.add(storyPicture);
+        }
+
+        story.setStoryPictureList(storyPictureList);
+
+        Exhibition exhibition = story.getExhibition();
+        story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibition.getId()), storyRequestDto.getGenre1());
+        story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibition.getId()), storyRequestDto.getGenre2());
+        story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibition.getId()), storyRequestDto.getGenre3());
+
+        /**
+         * updateCategory : 해당 전시회의 상위 3개 Genre 선택해서 업데이트
+         */
+        exhibition.updateCategory();
+
+        storyRepository.save(story);
+        storyPictureRepository.saveAll(storyPictureList);
     }
 
 }

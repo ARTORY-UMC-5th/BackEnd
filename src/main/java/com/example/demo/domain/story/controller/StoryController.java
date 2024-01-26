@@ -32,6 +32,14 @@ public class StoryController {
         return ResponseEntity.ok("Story saved successfully!");
     }
 
+    @Operation(summary = "스토리 수정")
+    @PatchMapping("/upadte/{story-id}")
+    public ResponseEntity<String> updateStory(@RequestBody StoryRequestDto storyRequestDto, @RequestParam Long storyId, @MemberInfo MemberInfoDto memberInfoDto) {
+        storyService.updateStory(storyRequestDto, storyId, memberInfoDto);
+        return ResponseEntity.ok("story updated successfully!");
+
+    }
+
 
     @Operation(summary = "특정 스토리 조회")
     @GetMapping("/{storyId}")

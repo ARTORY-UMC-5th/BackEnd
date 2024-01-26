@@ -38,7 +38,6 @@ public class StoryRequestDto {
 
     private Boolean isOpen;
 
-    private List<String> picture;
-
+    private List<String> pictures;
 
 }
