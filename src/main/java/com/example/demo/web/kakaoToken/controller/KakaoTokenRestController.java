@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "소셜 로그인", description = "서버 콜백 API (서버 내부용)")
 @RestController
 @RequiredArgsConstructor
-public class KakaoTokenRestController {
+public class  KakaoTokenRestController {
 
     private final KakaoTokenClient kakaoTokenClient;
     private final OauthLoginService oauthLoginService;

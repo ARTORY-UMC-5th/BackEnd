@@ -16,6 +16,13 @@ import java.util.Optional;
 public interface StoryRepository extends JpaRepository<Story, Long> {
 
 
+    //스토리작성한거 전체(myPage 위한 것)
+    @Query("SELECT s " +
+            "FROM Story s " +
+            "WHERE s.isOpen = true " +
+            "ORDER BY s.updateTime DESC")
+    Page<Story> findAllByOrderByUpdateTimeExhibition(@Param("memberId") Long memberId, Pageable pageable);
+
     // 스토리 엔티티 + 조회하는 멤버가 스토리를 생성한 멤버를 스크랩 했는지 여부 (isScrapped)
 //    Optional<Story> findById(Long storyId);
 

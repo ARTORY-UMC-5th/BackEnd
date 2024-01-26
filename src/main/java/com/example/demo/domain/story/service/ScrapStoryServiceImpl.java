@@ -9,6 +9,7 @@ import com.example.demo.domain.story.repository.StoryRepository;
 import com.example.demo.global.error.ErrorCode;
 import com.example.demo.global.error.exception.StoryException;
 import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
+import com.example.demo.global.resolver.memberInfo.MemberInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,9 +22,9 @@ public class ScrapStoryServiceImpl implements ScrapStoryService{
     private final MemberRepository memberRepository;
     private final StoryRepository storyRepository;
 
-    @Transactional
-    public void scrapStory(MemberInfoDto memberInfoDto, Long storyId) {
 
+    @Transactional
+    public void scrapStory(@MemberInfo MemberInfoDto memberInfoDto, Long storyId) {
         Long memberId = memberInfoDto.getMemberId();
         Member member = memberRepository.getReferenceById(memberId);
         Story story = storyRepository.findById(storyId)
@@ -53,9 +54,8 @@ public class ScrapStoryServiceImpl implements ScrapStoryService{
 
 
     @Transactional
-    public void unscrapStory(MemberInfoDto memberInfoDto, Long storyId) {
-
-        Long memberId = memberInfoDto.getMemberId();
+    public void unscrapStory(@MemberInfo MemberInfoDto memberInfoDto, Long storyId) {
+            Long memberId = memberInfoDto.getMemberId();
 
         storyRepository.findById(storyId).orElseThrow(() -> new StoryException(ErrorCode.STORY_NOT_EXISTS));
 

@@ -42,8 +42,8 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
             "AND CAST(e.exhibitionStartDate AS LocalDate) <= :currentDate " +
             "ORDER BY ABS(DATEDIFF(CURRENT_DATE, CAST(e.exhibitionStartDate AS LocalDate))), e.exhibitionStartDate ASC")
     Page<Object[]> findAllByOrderByCreateTimeByDesc(@Param("memberId") Long memberId,
-                                         @Param("currentDate") LocalDate currentDate,
-                                         Pageable pageable);
+                                                    @Param("currentDate") LocalDate currentDate,
+                                                    Pageable pageable);
 
 
 
@@ -116,4 +116,3 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
 
 
 }
-

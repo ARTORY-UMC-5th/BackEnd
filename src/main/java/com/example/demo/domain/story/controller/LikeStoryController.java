@@ -1,6 +1,8 @@
 package com.example.demo.domain.story.controller;
 
 import com.example.demo.domain.story.service.LikeStoryService;
+import com.example.demo.global.resolver.memberInfo.MemberInfo;
+import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -20,18 +22,18 @@ public class LikeStoryController {
 
     @Operation(summary = "스토리 좋아요", description = "param : memberId, storyId")
     @GetMapping("/story-liked")
-    public ResponseEntity<String> likeStory(@RequestParam Long memberId, @RequestParam Long storyId){
+    public ResponseEntity<String> likeStory(@MemberInfo MemberInfoDto memberInfoDto, @RequestParam Long storyId){
 
-        likeStoryService.likeStory(memberId, storyId);
+        likeStoryService.likeStory(memberInfoDto, storyId);
         return ResponseEntity.ok("success liked");
     }
 
 
     @Operation(summary = "스토리 좋아요 취소", description = "param memberId, storyId")
     @GetMapping("/story-unliked")
-    public ResponseEntity<String> unlikeStory(@RequestParam Long memberId, @RequestParam Long storyId){
+    public ResponseEntity<String> unlikeStory(@MemberInfo MemberInfoDto memberInfoDto, @RequestParam Long storyId){
 
-        likeStoryService.unlikeStory(memberId, storyId);
+        likeStoryService.unlikeStory(memberInfoDto, storyId);
         return ResponseEntity.ok("success unliked");
     }
 }
