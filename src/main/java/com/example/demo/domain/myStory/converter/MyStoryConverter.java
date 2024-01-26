@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class MyStoryConverter {
 
-    public MyStoryResponseDto convertToGeneralDto(Member member){
-        MyStoryResponseDto dto = MyStoryResponseDto.builder()
+    public MyStoryResponseDto.MemberGeneralResponseDto convertToGeneralDto(Member member){
+        MyStoryResponseDto.MemberGeneralResponseDto dto = MyStoryResponseDto.MemberGeneralResponseDto.builder()
                 .image(member.getImage())
                 .nickname(member.getNickname())
                 .memo(member.getMemo())

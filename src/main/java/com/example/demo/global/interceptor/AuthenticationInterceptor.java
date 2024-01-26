@@ -28,7 +28,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if(request.getMethod().equals("OPTIONS")) {
+        if (isPreflightRequest(request)) {
             return true;
         }
         // 1. Authorization Header 검증
@@ -46,8 +46,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             throw new AuthenticationException(ErrorCode.NOT_ACCESS_TOKEN_TYPE);
         }
         // 4. 리프레시 토큰 만료
-//        Long memberId = Long.valueOf( (Integer) tokenClaims.get("memberId"));
-//        tokenManager.validateToken(memberRepository.findByMemberId(memberId).getRefreshToken());
+        Long memberId = Long.valueOf( (Integer) tokenClaims.get("memberId"));
+        tokenManager.validateToken(memberRepository.findByMemberId(memberId).getRefreshToken());
 
 
         return true;
