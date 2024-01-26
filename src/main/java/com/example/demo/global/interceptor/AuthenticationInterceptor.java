@@ -45,9 +45,9 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         if (!TokenType.isAccessToken(tokenType)) {
             throw new AuthenticationException(ErrorCode.NOT_ACCESS_TOKEN_TYPE);
         }
-//        // 4. 리프레시 토큰 만료
-//        Long memberId = Long.valueOf( (Integer) tokenClaims.get("memberId"));
-//        tokenManager.validateToken(memberRepository.findByMemberId(memberId).getRefreshToken());
+        // 4. 리프레시 토큰 만료
+        Long memberId = Long.valueOf( (Integer) tokenClaims.get("memberId"));
+        tokenManager.validateToken(memberRepository.findByMemberId(memberId).getRefreshToken());
 
 
         return true;

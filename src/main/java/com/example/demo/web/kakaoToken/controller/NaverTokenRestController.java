@@ -35,9 +35,36 @@ public class NaverTokenRestController {
     private String NaverCallbackUrl;
 
 
+//    @GetMapping("login/oauth2/code/naver")//콜백 주소
+//    public @ResponseBody OauthLoginDto.Response naverCallback(@RequestParam(name = "code", required = true) String code,
+//                                                              @RequestParam(name = "state", required = true) String state) throws UnsupportedEncodingException {
+//
+//        String redirectURI = URLEncoder.encode(NaverCallbackUrl, "UTF-8");
+//        String contentType = "application/x-www-form-urlencoded;charset=utf-8";
+//        NaverTokenDto.Request naverTokenRequestDto = NaverTokenDto.Request.builder()
+//                .client_id(NaverClientId)
+//                .client_secret(NaverClientSecret)
+//                .grant_type("authorization_code")
+//                .code(code)
+//                .state(state)
+////                .redirect_uri(redirectURI)
+//                .build();
+//        System.out.println("CODE : " + code);
+//
+//        NaverTokenDto.Response naverToken = naverTokenClient.requestNaverToken(contentType, naverTokenRequestDto);
+//
+//        System.out.println("getAccess_token : " + naverToken.getAccess_token());
+//
+//        System.out.println(naverToken);
+//
+//        return oauthLoginService.oauthLogin(naverToken.getAccess_token(), MemberType.from("NAVER"));
+//
+//    }
+
     @GetMapping("login/oauth2/code/naver")//콜백 주소
-    public @ResponseBody OauthLoginDto.Response naverCallback(@RequestParam(name = "code", required = true) String code,
-                                                              @RequestParam(name = "state", required = true) String state) throws UnsupportedEncodingException {
+    public NaverTokenDto.Response naverCallback(@RequestParam(name = "code", required = true) String code
+//                                                              , @RequestParam(name = "state", required = true) String state
+    ) throws UnsupportedEncodingException {
 
         String redirectURI = URLEncoder.encode(NaverCallbackUrl, "UTF-8");
         String contentType = "application/x-www-form-urlencoded;charset=utf-8";
@@ -46,8 +73,8 @@ public class NaverTokenRestController {
                 .client_secret(NaverClientSecret)
                 .grant_type("authorization_code")
                 .code(code)
-                .state(state)
-                .redirect_uri(redirectURI)
+                .state("YOUR_RANDOM_STATE")
+//                .redirect_uri(redirectURI)
                 .build();
         System.out.println("CODE : " + code);
 
@@ -57,7 +84,7 @@ public class NaverTokenRestController {
 
         System.out.println(naverToken);
 
-        return oauthLoginService.oauthLogin(naverToken.getAccess_token(), MemberType.from("NAVER"));
+        return naverToken;
 
     }
 
