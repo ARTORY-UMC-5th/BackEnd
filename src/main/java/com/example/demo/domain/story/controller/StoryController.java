@@ -3,6 +3,7 @@ package com.example.demo.domain.story.controller;
 
 import com.example.demo.domain.story.dto.StoryRequestDto;
 import com.example.demo.domain.story.dto.StoryResponseDto;
+import com.example.demo.domain.story.service.StoryService;
 import com.example.demo.domain.story.service.StoryServiceImpl;
 import com.example.demo.global.resolver.memberInfo.MemberInfo;
 import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
@@ -22,7 +23,7 @@ import java.util.List;
 @RequestMapping("/api/stories")
 public class StoryController {
 
-    private final StoryServiceImpl storyService;
+    private final StoryService storyService;
 
 
     @Operation(summary = "스토리 저장")
