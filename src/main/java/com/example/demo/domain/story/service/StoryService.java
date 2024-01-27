@@ -30,10 +30,10 @@ public interface StoryService {
     List<StoryResponseDto.MemberThumbnailResponseDto> getRecommendMembers(int page,@MemberInfo MemberInfoDto memberInfoDto);
 
     // 스토리 저장
-    void saveStory(StoryRequestDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto);
+    void saveStory(StoryRequestDto.StorySaveRequestDto storySaveRequestDto, @MemberInfo MemberInfoDto memberInfoDto);
 
     // 스토리 검색
     List<StoryResponseDto.StoryThumbnailResponseDto> getSearchStoriesByTitle(int page, String title, @MemberInfo MemberInfoDto memberInfoDto);
 
-    void updateStory(StoryRequestDto storyRequestDto, Long storyId, MemberInfoDto memberInfoDto);
+    void updateStory(StoryRequestDto.StoryUpdateRequestDto storyUpdateRequestDto, Long storyId, MemberInfoDto memberInfoDto);
 }

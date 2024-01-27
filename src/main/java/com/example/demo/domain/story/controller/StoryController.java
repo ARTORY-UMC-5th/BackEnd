@@ -28,15 +28,15 @@ public class StoryController {
 
     @Operation(summary = "스토리 저장")
     @PostMapping("/save")
-    public ResponseEntity<String> saveStory(@RequestBody StoryRequestDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
-        storyService.saveStory(storyRequestDto,memberInfoDto);
+    public ResponseEntity<String> saveStory(@RequestBody StoryRequestDto.StorySaveRequestDto storySaveRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
+        storyService.saveStory(storySaveRequestDto, memberInfoDto);
         return ResponseEntity.ok("Story saved successfully!");
     }
 
     @Operation(summary = "스토리 수정")
     @PatchMapping("/upadte/{story-id}")
-    public ResponseEntity<String> updateStory(@RequestBody StoryRequestDto storyRequestDto, @RequestParam Long storyId, @MemberInfo MemberInfoDto memberInfoDto) {
-        storyService.updateStory(storyRequestDto, storyId, memberInfoDto);
+    public ResponseEntity<String> updateStory(@RequestBody StoryRequestDto.StoryUpdateRequestDto storyUpdateRequestDto, @RequestParam Long storyId, @MemberInfo MemberInfoDto memberInfoDto) {
+        storyService.updateStory(storyUpdateRequestDto, storyId, memberInfoDto);
         return ResponseEntity.ok("story updated successfully!");
 
     }
