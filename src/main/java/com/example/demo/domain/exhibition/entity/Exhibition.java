@@ -7,6 +7,7 @@ import com.example.demo.domain.story.entity.Story;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +61,7 @@ public class Exhibition extends BaseEntity {
     private String genreCategory3;
 
 
-    @OneToMany(mappedBy = "exhibition",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Story> storyList;
 
     @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -73,7 +74,7 @@ public class Exhibition extends BaseEntity {
     private ExhibitionGenre exhibitionGenre;
 
 
-    //가장 높은 3개의 값을 가지는 장르 선택, 만약 선택된 장르중 count가 0이면 제외
+    //가장 높은 3개의 값을 가지는 장르 선택
     public void updateCategory() {
         Map<String, Integer> genreCounts = Map.of(
                 "media", exhibitionGenre.getMedia(),
@@ -104,6 +105,6 @@ public class Exhibition extends BaseEntity {
 
         // 3개 이상이면, Genre3 추가
         this.genreCategory3 = topGenres.size() > 2 ? topGenres.get(2) : null;
-    }
 
+    }
 }

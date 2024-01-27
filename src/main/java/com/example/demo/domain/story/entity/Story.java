@@ -14,7 +14,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -36,9 +35,11 @@ public class Story extends BaseEntity {
     private String storyViewingTime; //관람시간 ex) 60분
 
     @Lob
+    @Column(length = 1000000)
     private String storyContext; //글
 
 
+    @Setter
     @OneToMany(mappedBy = "story", cascade = CascadeType.ALL)
     private List<StoryPicture> storyPictureList; //사진
 
@@ -79,7 +80,24 @@ public class Story extends BaseEntity {
     @OneToMany(mappedBy = "story", cascade = CascadeType.ALL)
     private List<LikeStory> likeStoryList;
 
+    private int year;
+    private int month;
+    private int day;
+    public void initializeNullFields() {
+        // 기본적으로 null로 초기화되어야 하는 속성들을 여기에 추가
+        this.storyThumbnailImage = null;
+        this.storySatisfactionLevel = null;
+        this.storyWeather = null;
+        this.storyCompanion = null;
+        this.storyKeyword = null;
+        this.storyViewingTime = null;
+        this.storyContext = null;
+        this.genre1 = null;
+        this.genre2 = null;
+        this.genre3 = null;
+        this.isOpen = null;
 
+    }
     // ExhibitionGenre를 업데이트하는 메서드
     public void updateIncreaseExhibitionGenre(ExhibitionGenre exhibitionGenre, Genre genre) {
         if (genre != null) {
@@ -154,5 +172,4 @@ public class Story extends BaseEntity {
             }
         }
     }
-
 }

@@ -55,7 +55,7 @@ public class ScrapStoryServiceImpl implements ScrapStoryService{
 
     @Transactional
     public void unscrapStory(@MemberInfo MemberInfoDto memberInfoDto, Long storyId) {
-            Long memberId = memberInfoDto.getMemberId();
+        Long memberId = memberInfoDto.getMemberId();
 
         storyRepository.findById(storyId).orElseThrow(() -> new StoryException(ErrorCode.STORY_NOT_EXISTS));
 

@@ -11,42 +11,36 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class StoryConverter {
-    public Story convertSaveToEntity(StoryRequestDto.StorySaveRequestDto storySaveRequestDto, Member member, Exhibition exhibition) {
+    public Story convertToEntity(StoryRequestDto.StoryRequestGeneralDto storyRequestDto, Member member, Exhibition exhibition) {
         return Story.builder()
-                .storyTitle(storySaveRequestDto.getStoryTitle())
-                .storySatisfactionLevel(storySaveRequestDto.getStorySatisfactionLevel())
-                .storyWeather(storySaveRequestDto.getStoryWeather())
-                .storyCompanion(storySaveRequestDto.getStoryCompanion())
-                .storyKeyword(storySaveRequestDto.getStoryKeyword())
-                .storyViewingTime(storySaveRequestDto.getStoryViewingTime())
-                .storyContext(storySaveRequestDto.getStoryContext())
-                .genre1(storySaveRequestDto.getGenre1())
-                .genre2(storySaveRequestDto.getGenre2())
-                .genre3(storySaveRequestDto.getGenre3())
-                .isOpen(storySaveRequestDto.getIsOpen())
+                .storyTitle(storyRequestDto.getStoryTitle())
+                .storySatisfactionLevel(storyRequestDto.getStorySatisfactionLevel())
+                .storyWeather(storyRequestDto.getStoryWeather())
+                .storyCompanion(storyRequestDto.getStoryCompanion())
+                .storyKeyword(storyRequestDto.getStoryKeyword())
+                .storyViewingTime(storyRequestDto.getStoryViewingTime())
+                .storyContext(storyRequestDto.getStoryContext())
+                .year(storyRequestDto.getYear())
+                .month(storyRequestDto.getMonth())
+                .day(storyRequestDto.getDay())
+                .genre1(storyRequestDto.getGenre1())
+                .genre2(storyRequestDto.getGenre2())
+                .genre3(storyRequestDto.getGenre3())
+                .isOpen(storyRequestDto.getIsOpen())
                 .member(member)
                 .exhibition(exhibition)
                 .build();
     }
 
-    public Story convertUpdateToEntity(StoryRequestDto.StoryUpdateRequestDto storyUpdateRequestDto, Member member, Exhibition exhibition) {
+    public Story convertToDateEntity(StoryRequestDto.StoryRequestDateDto storyRequestDto, Member member, Exhibition exhibition) {
         return Story.builder()
-                .storyTitle(storyUpdateRequestDto.getStoryTitle())
-                .storySatisfactionLevel(storyUpdateRequestDto.getStorySatisfactionLevel())
-                .storyWeather(storyUpdateRequestDto.getStoryWeather())
-                .storyCompanion(storyUpdateRequestDto.getStoryCompanion())
-                .storyKeyword(storyUpdateRequestDto.getStoryKeyword())
-                .storyViewingTime(storyUpdateRequestDto.getStoryViewingTime())
-                .storyContext(storyUpdateRequestDto.getStoryContext())
-                .genre1(storyUpdateRequestDto.getGenre1())
-                .genre2(storyUpdateRequestDto.getGenre2())
-                .genre3(storyUpdateRequestDto.getGenre3())
-                .isOpen(storyUpdateRequestDto.getIsOpen())
-                .member(member)
                 .exhibition(exhibition)
+                .member(member)
+                .year(storyRequestDto.getYear())
+                .month(storyRequestDto.getMonth())
+                .day(storyRequestDto.getDay())
                 .build();
     }
-
 
     // story 엔티티를 dto로 변환
     public StoryResponseDto.StorySpecificResponseDto convertToSpecificResponseDto(Story story, Boolean isMemberScrapped){
@@ -74,6 +68,9 @@ public class StoryConverter {
                 .storySatisfactionLevel(story.getStorySatisfactionLevel())
                 .storyWeather(story.getStoryWeather())
                 .storyCompanion(story.getStoryCompanion())
+                .year(story.getYear())
+                .month(story.getMonth())
+                .day(story.getDay())
                 .storyGenre1(story.getGenre1())
                 .storyGenre2(story.getGenre2())
                 .storyGenre3(story.getGenre3())

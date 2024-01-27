@@ -4,7 +4,6 @@ package com.example.demo.domain.story.controller;
 import com.example.demo.domain.story.dto.StoryRequestDto;
 import com.example.demo.domain.story.dto.StoryResponseDto;
 import com.example.demo.domain.story.service.StoryService;
-import com.example.demo.domain.story.service.StoryServiceImpl;
 import com.example.demo.global.resolver.memberInfo.MemberInfo;
 import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,19 +27,21 @@ public class StoryController {
 
     @Operation(summary = "스토리 저장")
     @PostMapping("/save")
-    public ResponseEntity<String> saveStory(@RequestBody StoryRequestDto.StorySaveRequestDto storySaveRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
-        storyService.saveStory(storySaveRequestDto, memberInfoDto);
-        return ResponseEntity.ok("Story saved successfully!");
+    public ResponseEntity<String> saveStory(@RequestBody StoryRequestDto.StoryRequestGeneralDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
+        try {
+            storyService.saveStory(storyRequestDto,memberInfoDto);
+            return ResponseEntity.ok("Story saved successfully!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save the story.");
+        }
     }
-
     @Operation(summary = "스토리 수정")
     @PatchMapping("/upadte/{story-id}")
-    public ResponseEntity<String> updateStory(@RequestBody StoryRequestDto.StoryUpdateRequestDto storyUpdateRequestDto, @RequestParam Long storyId, @MemberInfo MemberInfoDto memberInfoDto) {
-        storyService.updateStory(storyUpdateRequestDto, storyId, memberInfoDto);
+    public ResponseEntity<String> updateStory(@RequestBody StoryRequestDto.StoryRequestGeneralDto storyRequestDto, @RequestParam Long storyId, @MemberInfo MemberInfoDto memberInfoDto) {
+        storyService.updateStory(storyRequestDto, storyId, memberInfoDto);
         return ResponseEntity.ok("story updated successfully!");
 
     }
-
 
     @Operation(summary = "특정 스토리 조회")
     @GetMapping("/{storyId}")

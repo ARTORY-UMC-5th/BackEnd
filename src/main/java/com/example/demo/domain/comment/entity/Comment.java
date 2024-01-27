@@ -22,7 +22,7 @@ public class Comment extends BaseEntity {
 
 
     private String commentSatisfactionLevel;
-    @Lob
+    @Column(length = 100000)
     private String commentContext;
 
     //대댓글 일단 보류
