@@ -81,7 +81,7 @@ public class StoryConverter {
     public static StoryResponseDto.MemberThumbnailResponseDto convertToMemberThumbnailResponseDto(Member member, Boolean isScrapped) {
 
         StoryResponseDto.MemberThumbnailResponseDto memberThumbnailResponseDto = StoryResponseDto.MemberThumbnailResponseDto.builder()
-                .storyId(member.getMemberId())
+                .memberId(member.getMemberId())
                 .memberNickname(member.getNickname())
                 .memberProfile(member.getProfile())
                 .isScrapped(isScrapped)
