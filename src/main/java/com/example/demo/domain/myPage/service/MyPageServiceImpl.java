@@ -44,6 +44,7 @@ import com.example.demo.domain.member.repository.MemberRepository;
 import com.example.demo.domain.myPage.converter.MyPageConverter;
 import com.example.demo.domain.myPage.dto.MyPageResponseDto;
 import com.example.demo.domain.story.entity.Story;
+import com.example.demo.domain.story.repository.StoryPictureRepository;
 import com.example.demo.domain.story.repository.StoryRepository;
 import com.example.demo.global.resolver.memberInfo.MemberInfo;
 import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
@@ -65,6 +66,7 @@ public class MyPageServiceImpl implements MyPageService {
     private final MyPageConverter myPageConverter;
     private final ExhibitionRepository exhibitionRepository;
     private final StoryRepository storyRepository;
+    private final StoryPictureRepository storyPictureRepository;
     @Override
     public MyPageResponseDto.MemberGeneralResponseDto getMemberInfo(@MemberInfo MemberInfoDto memberInfoDto) {
         Long memberId = memberInfoDto.getMemberId();
@@ -96,18 +98,53 @@ public class MyPageServiceImpl implements MyPageService {
         int pageSize = 10;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Story> storyPage = storyRepository.findAllByOrderByUpdateTimeExhibition(memberId, pageable);
-
-        List<MyPageResponseDto.StoryGeneralResponseDto> stories = storyPage.getContent()
+        List<MyPageResponseDto.MyStoryResponseDto> stories = storyPage.getContent()
                 .stream()
                 .map(story -> myPageConverter.convertToStoryDto(story))
                 .collect(Collectors.toList());
 
+        List<MyPageResponseDto.MyAlbumResponseDto> allStoryPictures = getAllStoryPictures(storyPage.getContent());
+        List<MyPageResponseDto.ScrappedStoryResponseDto> scrappedStoies = getScrappedStories(storyPage.getContent());
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 멤버를 찾을 수 없습니다. memberId: " + memberId));
+        List<MyPageResponseDto.ScrappedMemberResponseDto> scrappedMembers = getScrappedMembers(member);
 
         MyPageResponseDto.MemberGeneralResponseDto myPageResponseDto = myPageConverter.convertToGeneralDto(member);
         myPageResponseDto.setStories(stories);
+        myPageResponseDto.setStoryPictures(allStoryPictures);
+        myPageResponseDto.setScrappedStories(scrappedStoies);
+        myPageResponseDto.setScrappedMembers(scrappedMembers); // 추가
 
         return myPageResponseDto;
     }
+
+
+    //사진 위한 메서드
+
+
+    private List<MyPageResponseDto.MyAlbumResponseDto> getAllStoryPictures(List<Story> stories) {
+        return stories.stream()
+                .flatMap(story -> story.getStoryPictureList().stream()
+                        .map(myPageConverter::convertToMyAlbumDto))
+                .collect(Collectors.toList());
+    }
+
+
+
+    //저장 스토리
+    private List<MyPageResponseDto.ScrappedStoryResponseDto> getScrappedStories(List<Story> stories) {
+        return stories.stream()
+                .flatMap(story -> story.getScrapStoryList().stream())
+                .map(myPageConverter::convertToScrappedStory)
+                .collect(Collectors.toList());
+    }
+
+
+    //저장 유저
+    private List<MyPageResponseDto.ScrappedMemberResponseDto> getScrappedMembers(Member member) {
+        return member.getScraptoMemberList().stream()
+                .map(scrapMember -> myPageConverter.convertToScrappedMemberDto(scrapMember))
+                .collect(Collectors.toList());
+    }
+
 }

@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @Tag(name = "마이페이지 정보 관리", description = "마이페이지 정보 조회 및 수정하기 API")
 @RequiredArgsConstructor
@@ -53,4 +55,7 @@ public class MyPageController {
         MyPageResponseDto.MemberGeneralResponseDto myPageResponseDto = myPageService.getAllMyStoryInfo(memberInfoDto, page);
         return ResponseEntity.ok(myPageResponseDto);
     }
+
+
+
 }
