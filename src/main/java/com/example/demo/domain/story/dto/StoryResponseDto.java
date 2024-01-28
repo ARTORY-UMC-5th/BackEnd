@@ -1,5 +1,7 @@
 package com.example.demo.domain.story.dto;
 
+import com.example.demo.domain.comment.dto.CommentResponseDto;
+import com.example.demo.domain.comment.entity.Comment;
 import com.example.demo.domain.member.constant.Genre;
 import com.example.demo.domain.story.entity.Story;
 import lombok.*;
@@ -55,6 +57,9 @@ public class StoryResponseDto {
         private Genre storyGenre3;
         private String storyKeyword;
         private String storyContext;
+
+        // 댓글
+        private List<CommentResponseDto> commentResponseDtoList;
     }
 
     @Builder

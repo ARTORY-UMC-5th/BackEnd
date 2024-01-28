@@ -1,6 +1,7 @@
 package com.example.demo.domain.story.converter;
 
 
+import com.example.demo.domain.comment.dto.CommentResponseDto;
 import com.example.demo.domain.exhibition.entity.Exhibition;
 import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.story.dto.StoryRequestDto;
@@ -8,6 +9,8 @@ import com.example.demo.domain.story.dto.StoryResponseDto;
 import com.example.demo.domain.story.entity.Story;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class StoryConverter {
@@ -43,7 +46,7 @@ public class StoryConverter {
     }
 
     // story 엔티티를 dto로 변환
-    public StoryResponseDto.StorySpecificResponseDto convertToSpecificResponseDto(Story story, Boolean isMemberScrapped){
+    public StoryResponseDto.StorySpecificResponseDto convertToSpecificResponseDto(Story story, Boolean isMemberScrapped, List<CommentResponseDto> commentResponseDtoList){
 
         // 스토리생성한 멤버
         Member member = story.getMember();
@@ -77,7 +80,9 @@ public class StoryConverter {
                 .storyGenre3(story.getGenre3())
                 .storyKeyword(story.getStoryKeyword())
                 .storyContext(story.getStoryContext())
+                .commentResponseDtoList(commentResponseDtoList)
                 .build();
+
 
         return  storySpecificResponseDto;
     }
