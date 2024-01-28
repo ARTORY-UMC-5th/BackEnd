@@ -1,6 +1,7 @@
-package com.example.demo.domain.member.entity;
+package com.example.demo.domain.comment.entity;
 
 import com.example.demo.domain.common.BaseEntity;
+import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.story.entity.Story;
 import jakarta.persistence.*;
 import lombok.*;

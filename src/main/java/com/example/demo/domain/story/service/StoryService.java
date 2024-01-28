@@ -35,8 +35,6 @@ public interface StoryService {
     // 스토리 검색
     List<StoryResponseDto.StoryThumbnailResponseDto> getSearchStoriesByTitle(int page, String title, @MemberInfo MemberInfoDto memberInfoDto);
 
-
-
-
     void updateStory(StoryRequestDto.StoryRequestGeneralDto storyRequestDto, Long storyId, MemberInfoDto memberInfoDto);
-    }
+
+}

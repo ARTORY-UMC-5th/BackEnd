@@ -7,7 +7,6 @@ import com.example.demo.domain.exhibition.repository.ExhibitionRepository;
 import com.example.demo.domain.member.constant.Genre;
 import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.member.repository.MemberRepository;
-import com.example.demo.domain.myStory.dto.MyStoryRequestDto;
 import com.example.demo.domain.story.converter.StoryConverter;
 import com.example.demo.domain.story.dto.StoryRequestDto;
 import com.example.demo.domain.story.dto.StoryResponseDto;
@@ -182,7 +181,7 @@ public class StoryServiceImpl implements StoryService{
         // 추후 구현
         int pageSize = 10;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
-        Page<Object[]> recommendMemberPage = memberRepository.recommendMemberWithScrapped(pageable, memberId);
+        Page<Object[]> recommendMemberPage = memberRepository.recommendMember(pageable, memberId);
 
         List<StoryResponseDto.MemberThumbnailResponseDto> recommendMembers = recommendMemberPage.getContent()
                 .stream()
@@ -286,7 +285,7 @@ public class StoryServiceImpl implements StoryService{
         // 스토리로 변환, 이때 List<StoryPicture>는 null값
         Story story = storyConverter.convertToEntity(storyRequestDto, member, exhibition);
 
-        story.initializeNullFields();
+//        story.initializeNullFields();
 
         // 스토리의 사진 저장(repository에 저장)
         List<StoryPicture> storyPictureList = new ArrayList<>();
@@ -351,6 +350,8 @@ public class StoryServiceImpl implements StoryService{
 
         storyRepository.save(story);
     }
+
+
     @Transactional
     /**
      * 1. 해당 스토리가 자신이 쓴건지 체크 -> 아니면 해당 스토리 수정 권한이 없습니다.

@@ -24,13 +24,6 @@ public class MyPageController {
     private final MyPageServiceImpl myPageService;
 
 
-    @Operation(summary = "마이페이지 정보 조회", description = "마이페이지 창 들어갈때 호출되는 url")
-    @GetMapping("/info")
-    public ResponseEntity<MyPageResponseDto.MemberGeneralResponseDto> getMemberInfo(@MemberInfo MemberInfoDto memberInfoDto) {
-        MyPageResponseDto.MemberGeneralResponseDto mypageResponseDto = myPageService.getMemberInfo(memberInfoDto);
-        return ResponseEntity.ok(mypageResponseDto);
-    }
-
 
 
     @Operation(summary = "마이페이지 정보 수정하기", description = "수정하기 버튼 누르면 이게 호출되어서 update")

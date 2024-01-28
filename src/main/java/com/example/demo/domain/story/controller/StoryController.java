@@ -3,7 +3,7 @@ package com.example.demo.domain.story.controller;
 
 import com.example.demo.domain.story.dto.StoryRequestDto;
 import com.example.demo.domain.story.dto.StoryResponseDto;
-import com.example.demo.domain.story.service.StoryServiceImpl;
+import com.example.demo.domain.story.service.StoryService;
 import com.example.demo.global.resolver.memberInfo.MemberInfo;
 import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,7 +22,7 @@ import java.util.List;
 @RequestMapping("/api/stories")
 public class StoryController {
 
-    private final StoryServiceImpl storyService;
+    private final StoryService storyService;
 
 
     @Operation(summary = "스토리 저장")
@@ -112,7 +112,7 @@ public class StoryController {
     public ResponseEntity<List<StoryResponseDto.MemberThumbnailResponseDto>> getRecommendMembers(
             @RequestParam(defaultValue = "1") int page,
             @MemberInfo MemberInfoDto memberInfoDto
-            ) {
+    ) {
 
         List<StoryResponseDto.MemberThumbnailResponseDto> recommendMembers = storyService.getRecommendMembers(page, memberInfoDto);
         return ResponseEntity.ok(recommendMembers);

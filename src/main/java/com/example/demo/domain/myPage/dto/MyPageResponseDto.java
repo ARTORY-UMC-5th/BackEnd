@@ -62,6 +62,7 @@ public class MyPageResponseDto {
         private Long storyId;
         private String storyImage;
         private Boolean isScrapped;
+        @Setter
         private Boolean isLiked;
 
 
@@ -75,7 +76,7 @@ public class MyPageResponseDto {
         private Long memberId;
         private String profile;
         private Boolean isScrapped;
-//        private Boolean isLiked;
+        private Boolean isLiked;
 
 
     }

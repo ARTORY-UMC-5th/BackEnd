@@ -1,10 +1,10 @@
 package com.example.demo.domain.story.entity;
 
+import com.example.demo.domain.comment.entity.Comment;
 import com.example.demo.domain.common.BaseEntity;
 import com.example.demo.domain.exhibition.entity.Exhibition;
 import com.example.demo.domain.exhibition.entity.ExhibitionGenre;
 import com.example.demo.domain.member.constant.Genre;
-import com.example.demo.domain.member.entity.Comment;
 import com.example.demo.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;

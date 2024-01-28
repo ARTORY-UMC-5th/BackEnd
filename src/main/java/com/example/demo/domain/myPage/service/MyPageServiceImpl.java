@@ -43,7 +43,10 @@ import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.member.repository.MemberRepository;
 import com.example.demo.domain.myPage.converter.MyPageConverter;
 import com.example.demo.domain.myPage.dto.MyPageResponseDto;
+import com.example.demo.domain.story.entity.LikeStory;
+import com.example.demo.domain.story.entity.ScrapStory;
 import com.example.demo.domain.story.entity.Story;
+import com.example.demo.domain.story.repository.LikeStoryRepository;
 import com.example.demo.domain.story.repository.StoryPictureRepository;
 import com.example.demo.domain.story.repository.StoryRepository;
 import com.example.demo.global.resolver.memberInfo.MemberInfo;
@@ -55,6 +58,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,6 +71,7 @@ public class MyPageServiceImpl implements MyPageService {
     private final ExhibitionRepository exhibitionRepository;
     private final StoryRepository storyRepository;
     private final StoryPictureRepository storyPictureRepository;
+    private final LikeStoryRepository likeStoryRepository;
     @Override
     public MyPageResponseDto.MemberGeneralResponseDto getMemberInfo(@MemberInfo MemberInfoDto memberInfoDto) {
         Long memberId = memberInfoDto.getMemberId();
@@ -104,7 +109,7 @@ public class MyPageServiceImpl implements MyPageService {
                 .collect(Collectors.toList());
 
         List<MyPageResponseDto.MyAlbumResponseDto> allStoryPictures = getAllStoryPictures(storyPage.getContent());
-        List<MyPageResponseDto.ScrappedStoryResponseDto> scrappedStoies = getScrappedStories(storyPage.getContent());
+        List<MyPageResponseDto.ScrappedStoryResponseDto> scrappedStoies = getScrappedStories(storyPage.getContent(), memberId);
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 멤버를 찾을 수 없습니다. memberId: " + memberId));
         List<MyPageResponseDto.ScrappedMemberResponseDto> scrappedMembers = getScrappedMembers(member);
@@ -132,13 +137,24 @@ public class MyPageServiceImpl implements MyPageService {
 
 
     //저장 스토리
-    private List<MyPageResponseDto.ScrappedStoryResponseDto> getScrappedStories(List<Story> stories) {
-        return stories.stream()
-                .flatMap(story -> story.getScrapStoryList().stream())
-                .map(myPageConverter::convertToScrappedStory)
-                .collect(Collectors.toList());
-    }
+    private List<MyPageResponseDto.ScrappedStoryResponseDto> getScrappedStories(List<Story> stories, Long memberId) {
+        List<MyPageResponseDto.ScrappedStoryResponseDto> scrappedStories = new ArrayList<>();
 
+        for (Story story : stories) {
+            for (ScrapStory scrapStory : story.getScrapStoryList()) {
+                if (scrapStory.getMember().getMemberId().equals(memberId)) {
+                    LikeStory likeStory = likeStoryRepository.findByMemberAndStory(scrapStory.getMember(), scrapStory.getStory());
+                    boolean isLiked = likeStory != null && likeStory.getIsLiked();
+
+                    MyPageResponseDto.ScrappedStoryResponseDto scrappedStoryDto = myPageConverter.convertToScrappedStory(scrapStory);
+                    scrappedStoryDto.setIsLiked(isLiked);
+                    scrappedStories.add(scrappedStoryDto);
+                }
+            }
+        }
+
+        return scrappedStories;
+    }
 
     //저장 유저
     private List<MyPageResponseDto.ScrappedMemberResponseDto> getScrappedMembers(Member member) {

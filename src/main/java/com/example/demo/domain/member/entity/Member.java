@@ -1,6 +1,7 @@
 package com.example.demo.domain.member.entity;
 
 
+import com.example.demo.domain.comment.entity.Comment;
 import com.example.demo.domain.common.BaseEntity;
 import com.example.demo.domain.exhibition.entity.LikeExhibition;
 import com.example.demo.domain.exhibition.entity.ScrapExhibition;
@@ -18,8 +19,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Entity
