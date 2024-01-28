@@ -68,6 +68,7 @@ public class StoryConverter {
                 .storySatisfactionLevel(story.getStorySatisfactionLevel())
                 .storyWeather(story.getStoryWeather())
                 .storyCompanion(story.getStoryCompanion())
+                .storyViewingTime(story.getStoryViewingTime())
                 .year(story.getYear())
                 .month(story.getMonth())
                 .day(story.getDay())

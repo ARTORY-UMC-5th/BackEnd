@@ -46,6 +46,7 @@ public class StoryResponseDto {
         private String storySatisfactionLevel;
         private String storyWeather;
         private String storyCompanion;
+        private String storyViewingTime;
         private int year;
         private int month;
         private int day;
