@@ -46,7 +46,8 @@ public class WebConfig implements WebMvcConfigurer {
                         ,"/api/logout"
                         ,"/api/kakao"
                         ,"/api/naver"
-                        ,"/api/health");
+                        ,"/api/health"
+                        ,"/test/**");
 
         registry.addInterceptor(adminAuthorizationInterceptor)
                 .order(2)
