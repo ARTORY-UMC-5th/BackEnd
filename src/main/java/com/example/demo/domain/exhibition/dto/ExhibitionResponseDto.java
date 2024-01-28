@@ -55,6 +55,7 @@ public class ExhibitionResponseDto {
         private String genreCategory2;
         private String genreCategory3;
 
+
     }
 
 

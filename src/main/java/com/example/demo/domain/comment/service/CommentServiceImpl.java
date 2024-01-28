@@ -28,7 +28,7 @@ public class CommentServiceImpl implements CommentService{
     private final StoryRepository storyRepository;
 
 
-    @Override
+    @Transactional
     public void saveComment(CommentRequestDto.CommentSaveRequestDto commentSaveRequestDto, Long storyId, MemberInfoDto memberInfoDto) {
         Member member = memberRepository.getById(memberInfoDto.getMemberId());
         Optional<Story> optionalStory = storyRepository.findById(storyId);
@@ -51,7 +51,7 @@ public class CommentServiceImpl implements CommentService{
     }
 
 
-    @Override
+    @Transactional
     public void deleteComment(CommentRequestDto.CommentDeleteRequestDto commentDeleteRequestDto, Long storyId, MemberInfoDto memberInfoDto) {
 
         Comment comment = commentRepository.getById(commentDeleteRequestDto.getCommentId());
@@ -67,8 +67,33 @@ public class CommentServiceImpl implements CommentService{
     }
 
 
-    @Override
+    @Transactional
     public void updateComment(CommentRequestDto.CommentUpdateRequestDto commentUpdateRequestDto, Long storyId, MemberInfoDto memberInfoDto) {
+        Member member = memberRepository.getById(memberInfoDto.getMemberId());
+        Optional<Story> optionalStory = storyRepository.findById(storyId);
+        Long commentId = commentUpdateRequestDto.getCommentId();
+        Comment comment = commentRepository.getById(commentId);
+
+
+        if (optionalStory.isEmpty()) {
+            throw new StoryException(ErrorCode.STORY_NOT_EXISTS);
+        }
+
+        if (!Objects.equals(member.getMemberId(), comment.getMember().getMemberId())) {
+            throw new CommentException(ErrorCode.NOT_YOUR_COMMENT);
+        }
+
+        Story story = optionalStory.get();
+
+        comment = Comment.builder()
+                .id(commentId)
+                .story(story)
+                .member(member)
+                .commentContext(commentUpdateRequestDto.getCommentContext())
+                .commentSatisfactionLevel(commentUpdateRequestDto.getCommentSatisfactionLevel())
+                .build();
+
+        commentRepository.save(comment);
 
     }
 }

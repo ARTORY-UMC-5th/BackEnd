@@ -1,5 +1,8 @@
 package com.example.demo.domain.story.service;
 
+import com.example.demo.domain.comment.dto.CommentResponseDto;
+import com.example.demo.domain.comment.entity.Comment;
+import com.example.demo.domain.comment.repository.CommentRepository;
 import com.example.demo.domain.exhibition.entity.Exhibition;
 import com.example.demo.domain.exhibition.entity.ExhibitionGenre;
 import com.example.demo.domain.exhibition.repository.ExhibitionGenreRepository;
@@ -51,6 +54,8 @@ public class StoryServiceImpl implements StoryService{
     private final StoryConverter storyConverter;
     private final ExhibitionGenreRepository exhibitionGenreRepository;
     private final StoryPictureRepository storyPictureRepository;
+    private final CommentRepository commentRepository;
+
     // 해당 스토리 id, 열람하는 memberId
     @Transactional
     public StoryResponseDto.StorySpecificResponseDto getStoryById(Long storyId, @MemberInfo MemberInfoDto memberInfoDto) {
@@ -67,7 +72,23 @@ public class StoryServiceImpl implements StoryService{
         Boolean isMemberScrapped = (scrapStory != null && scrapStory.getIsScrapped() != null) ? scrapStory.getIsScrapped() : false;
 
 
-        return storyConverter.convertToSpecificResponseDto(story, isMemberScrapped);
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+
+        List<Comment> commentList = commentRepository.findByStoryId(storyId);
+        for (Comment comment : commentList) {
+            CommentResponseDto commentResponseDto = CommentResponseDto.builder()
+                    .commentId(comment.getId())
+                    .satisfactionLevel(comment.getCommentSatisfactionLevel())
+                    .commentContext(comment.getCommentContext())
+                    .memberId(comment.getMember().getMemberId())
+                    .memberProfile(comment.getMember().getProfile())
+                    .memberNickname(comment.getMember().getNickname())
+                    .build();
+
+            commentResponseDtoList.add(commentResponseDto);
+        }
+
+        return storyConverter.convertToSpecificResponseDto(story, isMemberScrapped, commentResponseDtoList);
     }
 
 

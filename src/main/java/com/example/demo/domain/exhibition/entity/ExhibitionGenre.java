@@ -86,6 +86,8 @@ public class ExhibitionGenre extends BaseEntity {
     public void increaseArtistExhibitionCount() {
         this.artistExhibition++;
     }
+
+
     // 각 장르의 카운트를 감소시키는 메서드
     public void decreaseMediaCount() {
         this.media--;
