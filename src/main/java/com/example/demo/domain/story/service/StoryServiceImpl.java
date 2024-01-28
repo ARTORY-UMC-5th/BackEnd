@@ -19,6 +19,7 @@ import com.example.demo.domain.story.entity.StoryPicture;
 import com.example.demo.domain.story.repository.ScrapStoryRepository;
 import com.example.demo.domain.story.repository.StoryPictureRepository;
 import com.example.demo.domain.story.repository.StoryRepository;
+import com.example.demo.exteranal.s3Bucket.service.S3Service;
 import com.example.demo.global.error.ErrorCode;
 import com.example.demo.global.error.exception.EntityNotFoundException;
 
@@ -31,17 +32,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.thymeleaf.util.StringUtils.capitalize;
 
 @Service
 @RequiredArgsConstructor
@@ -55,6 +52,7 @@ public class StoryServiceImpl implements StoryService{
     private final ExhibitionGenreRepository exhibitionGenreRepository;
     private final StoryPictureRepository storyPictureRepository;
     private final CommentRepository commentRepository;
+    private final S3Service s3Service;
 
     // 해당 스토리 id, 열람하는 memberId
     @Transactional
@@ -308,9 +306,18 @@ public class StoryServiceImpl implements StoryService{
 
 //        story.initializeNullFields();
 
+
+        List<String> picturesUrl = null;
+        try {
+            picturesUrl = s3Service.saveFileList(storyRequestDto.getPictures());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
         // 스토리의 사진 저장(repository에 저장)
         List<StoryPicture> storyPictureList = new ArrayList<>();
-        for (String pictureUrl : storyRequestDto.getPictures()) {
+        for (String pictureUrl : picturesUrl) {
             StoryPicture storyPicture = StoryPicture.builder()
                     .story(story)
                     .pictureUrl(pictureUrl)
@@ -423,8 +430,16 @@ public class StoryServiceImpl implements StoryService{
                 .build();
 
 
+        List<String> picturesUrl = null;
+        try {
+            picturesUrl = s3Service.saveFileList(storyRequestDto.getPictures());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
         List<StoryPicture> storyPictureList = new ArrayList<>();
-        for (String pictureUrl : storyRequestDto.getPictures()) {
+        for (String pictureUrl : picturesUrl) {
             StoryPicture storyPicture = StoryPicture.builder()
                     .story(story)
                     .pictureUrl(pictureUrl)
@@ -434,6 +449,7 @@ public class StoryServiceImpl implements StoryService{
         }
 
         story.setStoryPictureList(storyPictureList);
+
 
         Exhibition exhibition = story.getExhibition();
         story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibition.getId()), storyRequestDto.getGenre1());
