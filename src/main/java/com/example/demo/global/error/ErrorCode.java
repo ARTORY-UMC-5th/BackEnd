@@ -31,6 +31,7 @@ public enum ErrorCode {//우리가 사용할 에러코드를 담은 dto
 
     // 스토리
     STORY_NOT_EXISTS(HttpStatus.BAD_REQUEST, "S-003", "해당 스토리는 존재하지 않습니다."),
+    NOT_YOUR_STORY(HttpStatus.BAD_REQUEST, "S-004", "본인의 스토리가 아닙니다."),
 
     // 스토리 좋아요
     LIKE_EXISTS(HttpStatus.BAD_REQUEST, "S-005", "이미 좋아요 한 상태입니다."),
@@ -39,9 +40,10 @@ public enum ErrorCode {//우리가 사용할 에러코드를 담은 dto
     // 스토리 스크랩
     SCRAP_EXISTS(HttpStatus.BAD_REQUEST, "S-007", "이미 스크랩을 한 상태입니다."),
     UNSCRAP_EXISTS(HttpStatus.BAD_REQUEST, "S-008", "이미 스크랩 하지 않은 상태입니다."),
-    STORY_PRIVATE(HttpStatus.BAD_REQUEST, "S-009", "해당 스토리는 비공개 처리 되어있습니다.");
+    STORY_PRIVATE(HttpStatus.BAD_REQUEST, "S-009", "해당 스토리는 비공개 처리 되어있습니다."),
 
-    // etc
+    // 댓글
+    NOT_YOUR_COMMENT(HttpStatus.BAD_REQUEST, "C-001", "본인의 댓글이 아닙니다.");
 
     ErrorCode(HttpStatus httpStatus, String errorCode, String message){
         this.httpStatus = httpStatus;

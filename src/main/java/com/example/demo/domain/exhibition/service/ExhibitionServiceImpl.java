@@ -203,7 +203,8 @@ public class ExhibitionServiceImpl implements ExhibitionService {
     }
 
 
-//
+
+
 //    @Override
 //    public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecommendExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page) {
 //        Long memberId = memberInfoDto.getMemberId();
@@ -236,26 +237,49 @@ public class ExhibitionServiceImpl implements ExhibitionService {
 //                })
 //                .collect(Collectors.toList());
 //    }
-@Override
-public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecommendExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page) {
-    Long memberId = memberInfoDto.getMemberId();
 
-    int pageSize = 10;
-    Pageable pageable = PageRequest.of(page - 1, pageSize);
-    Page<Object[]> similarExhibitionsPage = exhibitionRepository.findRandomExhibitions(memberId, pageable);
+    @Override
+    public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecommendExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page) {
+        Long memberId = memberInfoDto.getMemberId();
 
-    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> similarExhibitions = similarExhibitionsPage.getContent()
-            .stream()
-            .map(array -> {
-                Exhibition exhibition = (Exhibition) array[0];
-                Boolean isLiked = (Boolean) array[1];
-                Boolean isScrapped =  (Boolean) array[2];
-                return exhibitionConverter.convertToGeneralDto(exhibition,isLiked,isScrapped);
-            })
-            .collect(Collectors.toList());
+        int pageSize = 10;
+        Pageable pageable = PageRequest.of(page - 1, pageSize);
+        Page<Object[]> similarExhibitionsPage = exhibitionRepository.findRandomExhibitions(memberId, pageable);
 
-    return similarExhibitions;
-}
+        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> similarExhibitions = similarExhibitionsPage.getContent()
+                .stream()
+                .map(array -> {
+                    Exhibition exhibition = (Exhibition) array[0];
+                    Boolean isLiked = (Boolean) array[1];
+                    Boolean isScrapped =  (Boolean) array[2];
+                    return exhibitionConverter.convertToGeneralDto(exhibition,isLiked,isScrapped);
+                })
+                .collect(Collectors.toList());
+
+        return similarExhibitions;
+    }
+
+    @Override
+    public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecommendExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page) {
+        Long memberId = memberInfoDto.getMemberId();
+
+        int pageSize = 10;
+        Pageable pageable = PageRequest.of(page - 1, pageSize);
+        Page<Object[]> similarExhibitionsPage = exhibitionRepository.findRandomExhibitions(memberId, pageable);
+
+        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> similarExhibitions = similarExhibitionsPage.getContent()
+                .stream()
+                .map(array -> {
+                    Exhibition exhibition = (Exhibition) array[0];
+                    Boolean isLiked = (Boolean) array[1];
+                    Boolean isScrapped =  (Boolean) array[2];
+                    return exhibitionConverter.convertToGeneralDto(exhibition,isLiked,isScrapped);
+                })
+                .collect(Collectors.toList());
+
+        return similarExhibitions;
+    }
+
 
     @Override
     public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getSimilarExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page) {

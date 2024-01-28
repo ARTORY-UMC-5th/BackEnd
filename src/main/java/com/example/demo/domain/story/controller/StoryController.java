@@ -3,7 +3,7 @@ package com.example.demo.domain.story.controller;
 
 import com.example.demo.domain.story.dto.StoryRequestDto;
 import com.example.demo.domain.story.dto.StoryResponseDto;
-import com.example.demo.domain.story.service.StoryServiceImpl;
+import com.example.demo.domain.story.service.StoryService;
 import com.example.demo.global.resolver.memberInfo.MemberInfo;
 import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,12 +22,12 @@ import java.util.List;
 @RequestMapping("/api/stories")
 public class StoryController {
 
-    private final StoryServiceImpl storyService;
+    private final StoryService storyService;
 
 
     @Operation(summary = "스토리 저장")
     @PostMapping("/save")
-    public ResponseEntity<String> saveStory(@RequestBody StoryRequestDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
+    public ResponseEntity<String> saveStory(@RequestBody StoryRequestDto.StoryRequestGeneralDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
         try {
             storyService.saveStory(storyRequestDto,memberInfoDto);
             return ResponseEntity.ok("Story saved successfully!");
@@ -35,7 +35,13 @@ public class StoryController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save the story.");
         }
     }
+    @Operation(summary = "스토리 수정")
+    @PatchMapping("/upadte/{story-id}")
+    public ResponseEntity<String> updateStory(@RequestBody StoryRequestDto.StoryRequestGeneralDto storyRequestDto, @RequestParam Long storyId, @MemberInfo MemberInfoDto memberInfoDto) {
+        storyService.updateStory(storyRequestDto, storyId, memberInfoDto);
+        return ResponseEntity.ok("story updated successfully!");
 
+    }
 
     @Operation(summary = "특정 스토리 조회")
     @GetMapping("/{storyId}")
@@ -106,7 +112,7 @@ public class StoryController {
     public ResponseEntity<List<StoryResponseDto.MemberThumbnailResponseDto>> getRecommendMembers(
             @RequestParam(defaultValue = "1") int page,
             @MemberInfo MemberInfoDto memberInfoDto
-            ) {
+    ) {
 
         List<StoryResponseDto.MemberThumbnailResponseDto> recommendMembers = storyService.getRecommendMembers(page, memberInfoDto);
         return ResponseEntity.ok(recommendMembers);

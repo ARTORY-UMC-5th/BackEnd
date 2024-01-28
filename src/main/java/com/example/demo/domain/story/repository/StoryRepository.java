@@ -1,5 +1,6 @@
 package com.example.demo.domain.story.repository;
 
+import com.example.demo.domain.myStory.dto.MyStoryResponseDto;
 import com.example.demo.domain.story.dto.StoryResponseDto;
 import com.example.demo.domain.story.entity.Story;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -24,7 +27,10 @@ public interface StoryRepository extends JpaRepository<Story, Long> {
     Page<Story> findAllByOrderByUpdateTimeExhibition(@Param("memberId") Long memberId, Pageable pageable);
 
     // 스토리 엔티티 + 조회하는 멤버가 스토리를 생성한 멤버를 스크랩 했는지 여부 (isScrapped)
-//    Optional<Story> findById(Long storyId);
+
+
+    @Query("SELECT s FROM Story s JOIN FETCH s.exhibition WHERE s.member.memberId = :memberId")
+    List<Story> findByMemberId(@Param("memberId") Long memberId);
 
 
     // 인기순 스토리 조회
@@ -54,8 +60,9 @@ public interface StoryRepository extends JpaRepository<Story, Long> {
             "from Story s " +
             "left join LikeStory ls on s.id = ls.story.id and ls.member.memberId = :memberId " +
             "left join ScrapStory ss on s.id = ss.story.id and ss.member.memberId = :memberId " +
-            "where s.isOpen = true " +
-            "order by s.id asc")
+            "left join Member m on m.memberId = :memberId " +
+            "where s.isOpen = true and (s.genre1 = m.genre1 or s.genre1 = m.genre2 or s.genre1 = m.genre3 or s.genre2 = m.genre1 or s.genre2 = m.genre2 or s.genre2 = m.genre3 or s.genre3 = m.genre1 or s.genre3 = m.genre2 or s.genre3 = m.genre3) " +
+            "order by s.storyLikeCount desc, s.creatTime desc ")
     Page<Object[]> findAllByRecommend(Pageable pageable, Long memberId);
 
 
