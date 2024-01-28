@@ -13,14 +13,12 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Member findByRefreshToken(String refreshToken);
 
     Member findByMemberId(Long memberid);
+//    Member findMemberByMemberId(Long id);
 
-
-    //원재
     @Query("SELECT m, COALESCE(sm1.isScrapped, false) " +
             "FROM Member m " +
             "JOIN ScrapMember sm ON sm.fromMember.memberId = :memberId " +
             "JOIN ScrapMember sm1 ON sm.toMember.memberId = sm1.toMember.memberId " +
             "WHERE m.memberId = sm1.fromMember.memberId and m.memberId != :memberId " )
     Page<Object[]> recommendMember(Pageable pageable, Long memberId);
-
 }

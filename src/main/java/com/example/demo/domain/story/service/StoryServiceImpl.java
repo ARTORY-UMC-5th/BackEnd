@@ -306,7 +306,7 @@ public class StoryServiceImpl implements StoryService{
         // 스토리로 변환, 이때 List<StoryPicture>는 null값
         Story story = storyConverter.convertToEntity(storyRequestDto, member, exhibition);
 
-        story.initializeNullFields();
+//        story.initializeNullFields();
 
         // 스토리의 사진 저장(repository에 저장)
         List<StoryPicture> storyPictureList = new ArrayList<>();

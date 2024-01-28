@@ -112,7 +112,7 @@ public class StoryController {
     public ResponseEntity<List<StoryResponseDto.MemberThumbnailResponseDto>> getRecommendMembers(
             @RequestParam(defaultValue = "1") int page,
             @MemberInfo MemberInfoDto memberInfoDto
-            ) {
+    ) {
 
         List<StoryResponseDto.MemberThumbnailResponseDto> recommendMembers = storyService.getRecommendMembers(page, memberInfoDto);
         return ResponseEntity.ok(recommendMembers);

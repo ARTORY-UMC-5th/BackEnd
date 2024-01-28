@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @Tag(name = "마이페이지 정보 관리", description = "마이페이지 정보 조회 및 수정하기 API")
 @RequiredArgsConstructor
@@ -21,13 +23,6 @@ public class MyPageController {
 
     private final MyPageServiceImpl myPageService;
 
-
-    @Operation(summary = "마이페이지 정보 조회", description = "마이페이지 창 들어갈때 호출되는 url")
-    @GetMapping("/info")
-    public ResponseEntity<MyPageResponseDto.MemberGeneralResponseDto> getMemberInfo(@MemberInfo MemberInfoDto memberInfoDto) {
-        MyPageResponseDto.MemberGeneralResponseDto mypageResponseDto = myPageService.getMemberInfo(memberInfoDto);
-        return ResponseEntity.ok(mypageResponseDto);
-    }
 
 
 
@@ -53,4 +48,7 @@ public class MyPageController {
         MyPageResponseDto.MemberGeneralResponseDto myPageResponseDto = myPageService.getAllMyStoryInfo(memberInfoDto, page);
         return ResponseEntity.ok(myPageResponseDto);
     }
+
+
+
 }
