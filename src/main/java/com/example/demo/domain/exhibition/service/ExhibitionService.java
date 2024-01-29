@@ -25,11 +25,11 @@ public interface ExhibitionService {
 
     List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> searchExhibitionsByTitle(String title, @MemberInfo MemberInfoDto memberInfoDto, int page);
     ExhibitionResponseDto.ExhibitionSpecificResponseDto getExhibitionById(Long id);
-        List<Exhibition> getAllExhibitions();
+    List<Exhibition> getAllExhibitions();
     List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRandomExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page);
-
+    ExhibitionResponseDto.ExhibitionGeneralOneResponseDto getRandomOneExhibition();
     List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getSimilarExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page) ;
-     List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecommendExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page);
+    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecommendExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page);
 
 
 
