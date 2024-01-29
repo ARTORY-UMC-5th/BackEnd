@@ -27,7 +27,7 @@ public interface ExhibitionService {
     ExhibitionResponseDto.ExhibitionSpecificResponseDto getExhibitionById(Long id);
         List<Exhibition> getAllExhibitions();
     List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRandomExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page);
-
+    ExhibitionResponseDto.ExhibitionGeneralOneResponseDto getRandomOneExhibition();
     List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getSimilarExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page) ;
      List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecommendExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page);
 
