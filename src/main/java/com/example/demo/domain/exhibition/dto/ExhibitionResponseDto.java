@@ -21,17 +21,6 @@ public class ExhibitionResponseDto {
         private boolean isScrapped;
 
     }
-    @Builder
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class ExhibitionGeneralOneResponseDto {
-        private Long ExhibitionId;
-        private String exhibitionTitle;
-        private String exhibitionImage;
-
-
-    }
 
     @Builder
     @Getter
