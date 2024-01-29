@@ -51,10 +51,10 @@ public class ExhibitionServiceImpl implements ExhibitionService {
         // 랜덤 전시회 가져오기
         allResponseDto.setRandomExhibitionDtoList(getRandomExhibitions(memberInfoDto, page));
 
-//        // 비슷한 전시회 가져오기
-//        allResponseDto.setRecommendExhibitionDtoList(getRecommendExhibitions(memberId,page));
-//        // 추천 전시회 가져오기
-//        allResponseDto.setSimilarExhibitionDtoList(getSimilarExhibitions(memberId,page));
+        // 비슷한 전시회 가져오기
+        allResponseDto.setRecommendExhibitionDtoList(getRandomExhibitions(memberInfoDto,page));
+        // 추천 전시회 가져오기
+        allResponseDto.setSimilarExhibitionDtoList(getRecommendExhibitions(memberInfoDto,page));
 
 
         return allResponseDto;
@@ -198,7 +198,11 @@ public class ExhibitionServiceImpl implements ExhibitionService {
 
         return randomExhibitions;
     }
-
+    @Override
+    public ExhibitionResponseDto.ExhibitionGeneralOneResponseDto getRandomOneExhibition() {
+        Exhibition randomExhibition = exhibitionRepository.findRandomOneExhibition();
+        return exhibitionConverter.convertToOneDto(randomExhibition);
+    }
 
 
     @Override
@@ -218,14 +222,10 @@ public class ExhibitionServiceImpl implements ExhibitionService {
         String genre2String = genre2.name();
         String genre3String = genre3.name();
 
-        System.out.println("genre1String: " + genre1String);
-        System.out.println("genre2String: " + genre2String);
-        System.out.println("genre3String: " + genre3String);
+
 
         Page<Object[]> recommendExhibitionsPage = exhibitionRepository.findRecommendedExhibitions(memberId, genre1String, genre2String, genre3String, pageable);
-        System.out.println("Total elements: " + recommendExhibitionsPage.getTotalElements()); // 전체 결과 개수
-        System.out.println("Number of elements: " + recommendExhibitionsPage.getNumberOfElements()); // 현재 페이지의 결과 개수
-        System.out.println("Content: " + recommendExhibitionsPage.getContent()); // 페이지 내용
+
 
         return recommendExhibitionsPage.getContent()
                 .stream()

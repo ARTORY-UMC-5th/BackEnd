@@ -12,7 +12,7 @@ public class ExhibitionConverter {
 
     public ExhibitionResponseDto.ExhibitionGeneralResponseDto convertToGeneralDto(Exhibition exhibition, Boolean isLiked, Boolean isScrapped) {
         ExhibitionResponseDto.ExhibitionGeneralResponseDto dto = ExhibitionResponseDto.ExhibitionGeneralResponseDto.builder()
-                .id(exhibition.getId())
+                .ExhibitionId(exhibition.getId())
                 .exhibitionTitle(exhibition.getExhibitionTitle())
                 .exhibitionImage(exhibition.getExhibitionImage())
                 .isLiked(isLiked != null && isLiked)
@@ -20,11 +20,17 @@ public class ExhibitionConverter {
                 .build();
         return dto;
     }
-
+    public ExhibitionResponseDto.ExhibitionGeneralOneResponseDto convertToOneDto(Exhibition exhibition) {
+        return ExhibitionResponseDto.ExhibitionGeneralOneResponseDto.builder()
+                .ExhibitionId(exhibition.getId())
+                .exhibitionTitle(exhibition.getExhibitionTitle())
+                .exhibitionImage(exhibition.getExhibitionImage())
+                .build();
+    }
 
     public ExhibitionResponseDto.ExhibitionSpecificResponseDto convertToSpecificDto(Exhibition exhibition) {
         return ExhibitionResponseDto.ExhibitionSpecificResponseDto.builder()
-                .id(exhibition.getId())
+                .ExhibitionId(exhibition.getId())
                 .exhibitionTitle(exhibition.getExhibitionTitle())
                 .exhibitionImage(exhibition.getExhibitionImage())
                 .exhibitionAddress(exhibition.getExhibitionAddress())
@@ -40,7 +46,9 @@ public class ExhibitionConverter {
                 .exhibitionStartDate(exhibition.getExhibitionStartDate())
                 .exhibitionEndDate(exhibition.getExhibitionEndDate())
                 .isEnded(exhibition.isEnded())
-                .genreCategory(exhibition.getGenreCategory())
+                .genreCategory1(exhibition.getGenreCategory1())
+                .genreCategory2(exhibition.getGenreCategory2())
+                .genreCategory3(exhibition.getGenreCategory3())
                 .build();
     }
 

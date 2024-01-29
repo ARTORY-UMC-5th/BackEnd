@@ -1,6 +1,7 @@
 package com.example.demo.domain.member.entity;
 
 
+import com.example.demo.domain.comment.entity.Comment;
 import com.example.demo.domain.common.BaseEntity;
 import com.example.demo.domain.exhibition.entity.LikeExhibition;
 import com.example.demo.domain.exhibition.entity.ScrapExhibition;
@@ -18,8 +19,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -127,12 +126,22 @@ public class Member extends BaseEntity {
     private String myKeyword;
 
     //mystory에서 사용
+    @Setter
     @Lob
+    @Column(length = 1000000)
     private String memo;
 
+//원재
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<ScrapMember> scrapMemberList;
+    @OneToMany(mappedBy = "fromMember", cascade = CascadeType.ALL)
+    private List<ScrapMember> scrapfromMemberList;
+
+    @OneToMany(mappedBy = "toMember", cascade = CascadeType.ALL)
+    private List<ScrapMember> scraptoMemberList;
+
+//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+//    private List<ScrapMember> scrapMemberList;
+// 여기까지
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Story> storyList;

@@ -14,11 +14,22 @@ public class ExhibitionResponseDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ExhibitionGeneralResponseDto {
-        private Long id;
+        private Long ExhibitionId;
         private String exhibitionTitle;
         private String exhibitionImage;
         private boolean isLiked;
         private boolean isScrapped;
+
+    }
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ExhibitionGeneralOneResponseDto {
+        private Long ExhibitionId;
+        private String exhibitionTitle;
+        private String exhibitionImage;
+
 
     }
 
@@ -27,7 +38,7 @@ public class ExhibitionResponseDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ExhibitionSpecificResponseDto {
-        private Long id;
+        private Long ExhibitionId;
         private String exhibitionTitle; //제목, 크롤링기준: TITLE
         private String exhibitionImage; //이미지 Url, 크롤링기준: MAIN_IMG
         private String exhibitionAddress; //자치구, 크롤링기준: GUNAME
@@ -46,12 +57,14 @@ public class ExhibitionResponseDto {
 
         private String exhibitionStartDate; //시작날짜, 크롤링 기준: STRTDATE
         private String exhibitionEndDate; //종료날짜, 크롤링 기준: END_DATE
-
+        @Builder.Default
         private boolean isEnded = false; //전시회 종료되었는지, 안되었는지
 
 
 
-        private String genreCategory;
+        private String genreCategory1;
+        private String genreCategory2;
+        private String genreCategory3;
 
 
     }

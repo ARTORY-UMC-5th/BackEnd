@@ -1,15 +1,14 @@
 package com.example.demo.domain.story.entity;
 
+import com.example.demo.domain.comment.entity.Comment;
 import com.example.demo.domain.common.BaseEntity;
 import com.example.demo.domain.exhibition.entity.Exhibition;
 import com.example.demo.domain.exhibition.entity.ExhibitionGenre;
 import com.example.demo.domain.member.constant.Genre;
-import com.example.demo.domain.member.entity.Comment;
 import com.example.demo.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -28,6 +27,7 @@ public class Story extends BaseEntity {
 
 
     private String storyTitle;
+    private String storyThumbnailImage;
     private String storySatisfactionLevel;
     private String storyWeather;
     private String storyCompanion;
@@ -35,12 +35,13 @@ public class Story extends BaseEntity {
     private String storyViewingTime; //관람시간 ex) 60분
 
     @Lob
+    @Column(length = 1000000)
     private String storyContext; //글
 
 
+    @Setter
     @OneToMany(mappedBy = "story", cascade = CascadeType.ALL)
-    private List<StoryPicture> storyPictureList = new ArrayList<>(); //사진
-
+    private List<StoryPicture> storyPictureList; //사진
 
     //member가 Story쓸때 장르3개 선택
     @Enumerated(EnumType.STRING)
@@ -55,11 +56,10 @@ public class Story extends BaseEntity {
     @Column(columnDefinition = "VARCHAR(20)")
     private Genre genre3;
 
+    @Builder.Default
+    private Boolean isOpen = true; //공개, 비공개 여부
 
-
-    private boolean isOpen = false; //공개, 비공개 여부
-
-
+    @Builder.Default
     private int storyLikeCount = 0; // 좋아요 수
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -71,31 +71,35 @@ public class Story extends BaseEntity {
     private Exhibition exhibition;
 
     @OneToMany(mappedBy = "story", cascade = CascadeType.ALL)
-    private List<Comment> commentList = new ArrayList<>();
+    private List<Comment> commentList;
 
 
     @OneToMany(mappedBy = "story", cascade = CascadeType.ALL)
-    private List<ScrapStory> scrapStoryList = new ArrayList<>();
+    private List<ScrapStory> scrapStoryList;
 
     @OneToMany(mappedBy = "story", cascade = CascadeType.ALL)
-    private List<LikeStory> likeStoryList = new ArrayList<>();
+    private List<LikeStory> likeStoryList;
 
-    // 연결된 전시회가 있다면 해당 전시회의 ExhibitionGenre를 업데이트
-    @PrePersist
-    public void beforePersist() {
-        if (exhibition != null) {
-            ExhibitionGenre exhibitionGenre = exhibition.getExhibitionGenre();
-            if (exhibitionGenre != null) {
-                updateExhibitionGenre(exhibitionGenre, genre1);
-                updateExhibitionGenre(exhibitionGenre, genre2);
-                updateExhibitionGenre(exhibitionGenre, genre3);
-            }
-        }
+    private int year;
+    private int month;
+    private int day;
+    public void initializeNullFields() {
+        // 기본적으로 null로 초기화되어야 하는 속성들을 여기에 추가
+        this.storyThumbnailImage = null;
+        this.storySatisfactionLevel = null;
+        this.storyWeather = null;
+        this.storyCompanion = null;
+        this.storyKeyword = null;
+        this.storyViewingTime = null;
+        this.storyContext = null;
+        this.genre1 = null;
+        this.genre2 = null;
+        this.genre3 = null;
+        this.isOpen = null;
+
     }
-
-
     // ExhibitionGenre를 업데이트하는 메서드
-    private void updateExhibitionGenre(ExhibitionGenre exhibitionGenre, Genre genre) {
+    public void updateIncreaseExhibitionGenre(ExhibitionGenre exhibitionGenre, Genre genre) {
         if (genre != null) {
             switch (genre) {
                 case MEDIA:
@@ -116,7 +120,7 @@ public class Story extends BaseEntity {
                 case SCULPTURE:
                     exhibitionGenre.increaseSculptureCount();
                     break;
-                case PLANEXHIBITION:
+                case PLAN_EXHIBITION:
                     exhibitionGenre.increasePlanExhibitionCount();
                     break;
                 case INSTALLATION_ART:
@@ -132,4 +136,40 @@ public class Story extends BaseEntity {
         }
     }
 
+    public void updateDecreaseExhibitionGenre(ExhibitionGenre exhibitionGenre, Genre genre) {
+        if (genre != null) {
+            switch (genre) {
+                case MEDIA:
+                    exhibitionGenre.decreaseMediaCount();
+                    break;
+                case CRAFT:
+                    exhibitionGenre.decreaseCraftCount();
+                    break;
+                case DESIGN:
+                    exhibitionGenre.decreaseDesignCount();
+                    break;
+                case PICTURE:
+                    exhibitionGenre.decreasePictureCount();
+                    break;
+                case SPECIAL_EXHIBITION:
+                    exhibitionGenre.decreaseSpecialExhibitionCount();
+                    break;
+                case SCULPTURE:
+                    exhibitionGenre.decreaseSculptureCount();
+                    break;
+                case PLAN_EXHIBITION:
+                    exhibitionGenre.decreasePlanExhibitionCount();
+                    break;
+                case INSTALLATION_ART:
+                    exhibitionGenre.decreaseInstallationArtCount();
+                    break;
+                case PAINTING:
+                    exhibitionGenre.decreasePaintingCount();
+                    break;
+                case ARTIST_EXHIBITION:
+                    exhibitionGenre.decreaseArtistExhibitionCount();
+                    break;
+            }
+        }
+    }
 }

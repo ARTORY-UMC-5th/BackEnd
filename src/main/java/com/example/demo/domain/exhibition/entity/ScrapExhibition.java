@@ -35,6 +35,8 @@ public class ScrapExhibition extends BaseEntity {
     @JoinColumn(name = "exhibition_id")
     private Exhibition exhibition;
 
+
+    @Builder.Default
     @Setter
     private boolean isScrapped=false;
 

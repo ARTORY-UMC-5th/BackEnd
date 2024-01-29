@@ -18,6 +18,18 @@ import java.util.Set;
 public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
 
 
+    //스크랩한거 전체(myStory 위한 것)
+    @Query("SELECT se, " +
+            "le.isLiked, " +
+            "se.isScrapped " +
+            "FROM ScrapExhibition se " +
+            "JOIN se.exhibition e " +
+            "LEFT JOIN LikeExhibition le ON e.id = le.exhibition.id AND le.member.memberId = :memberId " +
+            "WHERE e.isEnded = false " +
+            "AND e.isStarted = true " +
+            "ORDER BY se.updateTime DESC")
+    Page<Object[]> findAllByOrderByUpdateTimeExhibition(@Param("memberId") Long memberId, Pageable pageable);
+
     //최신순
     @Query("SELECT e, " +
             "le.isLiked, " +
@@ -30,8 +42,8 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
             "AND CAST(e.exhibitionStartDate AS LocalDate) <= :currentDate " +
             "ORDER BY ABS(DATEDIFF(CURRENT_DATE, CAST(e.exhibitionStartDate AS LocalDate))), e.exhibitionStartDate ASC")
     Page<Object[]> findAllByOrderByCreateTimeByDesc(@Param("memberId") Long memberId,
-                                         @Param("currentDate") LocalDate currentDate,
-                                         Pageable pageable);
+                                                    @Param("currentDate") LocalDate currentDate,
+                                                    Pageable pageable);
 
 
 
@@ -74,6 +86,13 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
             "AND e.isStarted = true " +"ORDER BY RAND()")
     Page<Object[]> findRandomExhibitions(@Param("memberId") Long memberId, Pageable pageable);
 
+    //랜덤한개(메인용)
+    @Query("SELECT e " +
+            "FROM Exhibition e " +
+            "ORDER BY RAND() " +
+            "LIMIT 1")
+    Exhibition findRandomOneExhibition();
+
 
     //장르에 따른 가중치로 정렬하고, 그 다음에 생성 시간을 기준으로 정렬
     @Query("SELECT e, le.isLiked, se.isScrapped " +
@@ -82,11 +101,11 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
             "LEFT JOIN ScrapExhibition se ON e.id = se.exhibition.id AND se.member.memberId = :memberId " +
             "WHERE e.isEnded = false " +
             "AND e.isStarted = true " +
-            "AND (e.genreCategory = :genre1 OR e.genreCategory = :genre2 OR e.genreCategory = :genre3) " +
+            "AND (e.genreCategory1 = :genre1 OR e.genreCategory2 = :genre2 OR e.genreCategory3 = :genre3) " +
             "ORDER BY CASE " +
-            "  WHEN e.genreCategory = :genre1 THEN 1 " +
-            "  WHEN e.genreCategory = :genre2 THEN 2 " +
-            "  WHEN e.genreCategory = :genre3 THEN 3 " +
+            "  WHEN e.genreCategory1 = :genre1 THEN 1 " +
+            "  WHEN e.genreCategory2 = :genre2 THEN 2 " +
+            "  WHEN e.genreCategory3 = :genre3 THEN 3 " +
             "  ELSE 4 END, e.creatTime DESC")
     Page<Object[]> findRecommendedExhibitions(@Param("memberId") Long memberId,
                                               @Param("genre1") String genre1,
@@ -104,4 +123,3 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
 
 
 }
-

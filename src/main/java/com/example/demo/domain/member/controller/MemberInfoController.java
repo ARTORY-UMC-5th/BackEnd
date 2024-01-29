@@ -68,7 +68,7 @@ public class MemberInfoController {
         Member member = memberInfoService.saveMemberGenre(memberInfoSaveDto, memberInfoDto.getMemberId());
         memberRepository.save(member);
 
-        return ResponseEntity.ok("gender-saved");
+        return ResponseEntity.ok("genre-saved");
     }
 
 }

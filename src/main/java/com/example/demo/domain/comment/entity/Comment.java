@@ -1,6 +1,7 @@
-package com.example.demo.domain.member.entity;
+package com.example.demo.domain.comment.entity;
 
 import com.example.demo.domain.common.BaseEntity;
+import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.story.entity.Story;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,7 +22,7 @@ public class Comment extends BaseEntity {
 
 
     private String commentSatisfactionLevel;
-    @Lob
+    @Column(length = 100000)
     private String commentContext;
 
     //대댓글 일단 보류

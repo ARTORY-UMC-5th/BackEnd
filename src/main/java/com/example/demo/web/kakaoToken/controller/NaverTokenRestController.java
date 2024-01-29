@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 
 import java.io.UnsupportedEncodingException;
@@ -35,9 +36,36 @@ public class NaverTokenRestController {
     private String NaverCallbackUrl;
 
 
+//    @GetMapping("login/oauth2/code/naver")//콜백 주소
+//    public @ResponseBody OauthLoginDto.Response naverCallback(@RequestParam(name = "code", required = true) String code,
+//                                                              @RequestParam(name = "state", required = true) String state) throws UnsupportedEncodingException {
+//
+//        String redirectURI = URLEncoder.encode(NaverCallbackUrl, "UTF-8");
+//        String contentType = "application/x-www-form-urlencoded;charset=utf-8";
+//        NaverTokenDto.Request naverTokenRequestDto = NaverTokenDto.Request.builder()
+//                .client_id(NaverClientId)
+//                .client_secret(NaverClientSecret)
+//                .grant_type("authorization_code")
+//                .code(code)
+//                .state(state)
+////                .redirect_uri(redirectURI)
+//                .build();
+//        System.out.println("CODE : " + code);
+//
+//        NaverTokenDto.Response naverToken = naverTokenClient.requestNaverToken(contentType, naverTokenRequestDto);
+//
+//        System.out.println("getAccess_token : " + naverToken.getAccess_token());
+//
+//        System.out.println(naverToken);
+//
+//        return oauthLoginService.oauthLogin(naverToken.getAccess_token(), MemberType.from("NAVER"));
+//
+//    }
+
     @GetMapping("login/oauth2/code/naver")//콜백 주소
-    public @ResponseBody OauthLoginDto.Response naverCallback(@RequestParam(name = "code", required = true) String code,
-                                                              @RequestParam(name = "state", required = true) String state) throws UnsupportedEncodingException {
+    public RedirectView naverCallback(@RequestParam(name = "code", required = true) String code
+//                                                              , @RequestParam(name = "state", required = true) String state
+    ) throws UnsupportedEncodingException {
 
         String redirectURI = URLEncoder.encode(NaverCallbackUrl, "UTF-8");
         String contentType = "application/x-www-form-urlencoded;charset=utf-8";
@@ -46,8 +74,8 @@ public class NaverTokenRestController {
                 .client_secret(NaverClientSecret)
                 .grant_type("authorization_code")
                 .code(code)
-                .state(state)
-                .redirect_uri(redirectURI)
+                .state("YOUR_RANDOM_STATE")
+//                .redirect_uri(redirectURI)
                 .build();
         System.out.println("CODE : " + code);
 
@@ -57,7 +85,10 @@ public class NaverTokenRestController {
 
         System.out.println(naverToken);
 
-        return oauthLoginService.oauthLogin(naverToken.getAccess_token(), MemberType.from("NAVER"));
+        // 획득한 토큰을 사용하여 새로운 주소로 리다이렉트
+        String redirectUri = "http://localhost:3000/signup/token?access_token=" + naverToken.getAccess_token()+ "&provider=naver";
+
+        return new RedirectView(redirectUri);
 
     }
 

@@ -20,11 +20,17 @@ public class ScrapMember extends BaseEntity {
     private Long id;
 
     // 유저 즐겨찾기 여부를 나타내는 필드 추가
-    @Column(name = "is_favorite")
-    private boolean favorite;
+    @Column(name = "isScrapped")
+    private Boolean isScrapped;
+
+
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "from_member_id")
+    private Member fromMember;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "to_member_id")
+    private Member toMember;
 
 }

@@ -53,22 +53,24 @@ public class Exhibition extends BaseEntity {
     private boolean isStarted = false; //전시회 시작되었는지, 안되었는지
 
     @Setter
+    @Builder.Default
     private int exhibitionLikeCount = 0; // 좋아요 수
 
-    private String genreCategory;
+    private String genreCategory1;
+    private String genreCategory2;
+    private String genreCategory3;
 
 
-    @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL)
-    private List<Story> storyList = new ArrayList<>();
+    @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Story> storyList;
 
-    @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL)
-    private List<ScrapExhibition> scrapExhibitionList = new ArrayList<>();
+    @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ScrapExhibition> scrapExhibitionList;
 
-    @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<LikeExhibition> likeExhibitionList = new ArrayList<>();
+    @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<LikeExhibition> likeExhibitionList;
 
-
-    @OneToOne(mappedBy = "exhibition", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "exhibition", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ExhibitionGenre exhibitionGenre;
 
 
@@ -89,11 +91,20 @@ public class Exhibition extends BaseEntity {
 
         List<String> topGenres = genreCounts.entrySet().stream()
                 .sorted(Comparator.comparing(Map.Entry::getValue, Comparator.reverseOrder()))
+                .filter(entry -> entry.getValue() > 0)
                 .limit(3)
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
 
-        this.genreCategory = String.join(", ", topGenres);
-    }
+        System.out.println("topGenres = " + topGenres);
+        // 1개 이상이면, Genre1 추가
+        this.genreCategory1 = topGenres.size() > 0 ? topGenres.get(0) : null;
 
+        // 2개 이상이면, Genre2 추가
+        this.genreCategory2 = topGenres.size() > 1 ? topGenres.get(1) : null;
+
+        // 3개 이상이면, Genre3 추가
+        this.genreCategory3 = topGenres.size() > 2 ? topGenres.get(2) : null;
+
+    }
 }
