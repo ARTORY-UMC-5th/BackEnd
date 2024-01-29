@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 
-
 /**
  * Comment :
  * 1. 댓글을 삭제하면 아예 안보이게 할 것인지 or "삭제되었습니다" 와 같이 문구를 띄울 것인지
@@ -35,7 +34,8 @@ public class SubComment extends BaseEntity {
     private String commentContext;
 
     // 댓글 삭제 시 해당 댓글을 유지할 것인지
-    private Boolean isDeleted;
+    @Builder.Default
+    private Boolean isDeleted = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_id")
