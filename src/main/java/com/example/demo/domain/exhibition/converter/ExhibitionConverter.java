@@ -20,13 +20,7 @@ public class ExhibitionConverter {
                 .build();
         return dto;
     }
-    public ExhibitionResponseDto.ExhibitionGeneralOneResponseDto convertToOneDto(Exhibition exhibition) {
-        return ExhibitionResponseDto.ExhibitionGeneralOneResponseDto.builder()
-                .ExhibitionId(exhibition.getId())
-                .exhibitionTitle(exhibition.getExhibitionTitle())
-                .exhibitionImage(exhibition.getExhibitionImage())
-                .build();
-    }
+
 
     public ExhibitionResponseDto.ExhibitionSpecificResponseDto convertToSpecificDto(Exhibition exhibition) {
         return ExhibitionResponseDto.ExhibitionSpecificResponseDto.builder()

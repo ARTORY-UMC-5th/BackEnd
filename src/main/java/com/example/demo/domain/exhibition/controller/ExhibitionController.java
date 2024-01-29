@@ -103,25 +103,26 @@ public class ExhibitionController {
         List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> randomExhibitions = exhibitionService.getRandomExhibitions(memberInfoDto, page);
         return ResponseEntity.ok(randomExhibitions);
     }
-    @Operation(summary = "메인페이지 위한 랜덤 전시회 한개 조회")
-    @GetMapping("/main")
-    public ResponseEntity<ExhibitionResponseDto.ExhibitionGeneralOneResponseDto> getRandomOneExhibition() {
-        ExhibitionResponseDto.ExhibitionGeneralOneResponseDto randomExhibition = exhibitionService.getRandomOneExhibition();
-        return ResponseEntity.ok(randomExhibition);
-    }
-    
+
 ////이게 진짜 추천. 프론트때매 밑에걸로 해놓은거, 프론트 개발 다 끝나면 주석해제하고 이걸로 하면됨.
     //유사한 전시는 상황보고 로직을 짜든, 없애든 하자.
+//    @Operation(summary = "추천 전시회 목록 조회", description = "페이징 기능 포함")
+//    @GetMapping("/recommend")
+//    public ResponseEntity<List<ExhibitionResponseDto.ExhibitionGeneralResponseDto>> getRecommendExhibitions(
+//            @MemberInfo MemberInfoDto memberInfoDto,
+//            @RequestParam(defaultValue = "1") int page) {
+//        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> recommendExhibitions = exhibitionService.getRecommendExhibitions(memberInfoDto,page);
+//        return ResponseEntity.ok(recommendExhibitions);
+//    }
+
     @Operation(summary = "추천 전시회 목록 조회", description = "페이징 기능 포함")
     @GetMapping("/recommend")
     public ResponseEntity<List<ExhibitionResponseDto.ExhibitionGeneralResponseDto>> getRecommendExhibitions(
             @MemberInfo MemberInfoDto memberInfoDto,
             @RequestParam(defaultValue = "1") int page) {
-        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> recommendExhibitions = exhibitionService.getRecommendExhibitions(memberInfoDto,page);
+        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> recommendExhibitions = exhibitionService.getRandomExhibitions(memberInfoDto, page);
         return ResponseEntity.ok(recommendExhibitions);
     }
-
-
     @Operation(summary = "유사한 전시회 목록 조회", description = "페이징 기능 포함")
     @GetMapping("/similar")
     public ResponseEntity<List<ExhibitionResponseDto.ExhibitionGeneralResponseDto>> getSimilarExhibitions(
@@ -130,5 +131,7 @@ public class ExhibitionController {
         List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> similarExhibitions = exhibitionService.getRandomExhibitions(memberInfoDto, page);
         return ResponseEntity.ok(similarExhibitions);
     }
-
+//
+//
+//
 }
