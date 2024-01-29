@@ -14,13 +14,11 @@ public class CommentResponseDto {
     // 댓글
     private Long commentId;
     private String satisfactionLevel;
-    private String commentcontext;
+    private String commentContext;
 
     // 멤버
     private Long memberId;
     private String memberProfile;
     private String memberNickname;
 
-    // 스토리
-    private Long storyId;
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Tag(name = "소셜 로그인", description = "서버 콜백 API (서버 내부용)")
 @RestController
@@ -31,8 +32,32 @@ public class  KakaoTokenRestController {
     private String KakaoCallbackUrl;
 
 
+
+//    @GetMapping("/oauth/kakao/callback")
+
+//    public @ResponseBody OauthLoginDto.Response loginCallback(String code) {
+//        String contentType = "application/x-www-form-urlencoded;charset=utf-8";
+//        KakaoTokenDto.Request kakaoTokenRequestDto = KakaoTokenDto.Request.builder()
+//                .client_id(kakaoClientId)
+//                .client_secret(kakaoClientSecret)
+//                .grant_type("authorization_code")
+//                .code(code)
+//                .redirect_uri(KakaoCallbackUrl)
+////                .redirect_uri("http://localhost:8080/home")
+//
+//                .build();
+//        System.out.println("CODE : " + code);
+//
+//        KakaoTokenDto.Response kakaoToken = kakaoTokenClient.requestKakaoToken(contentType, kakaoTokenRequestDto);
+//
+//        System.out.println("getAccess_token : " + kakaoToken.getAccess_token());
+//
+//        System.out.println(kakaoToken);
+////        return "kakao toekn : " + kakaoToken;
+//        return oauthLoginService.oauthLogin(kakaoToken.getAccess_token(), MemberType.from("KAKAO"));
+//    }
     @GetMapping("/oauth/kakao/callback")
-    public @ResponseBody OauthLoginDto.Response loginCallback(String code) {
+    public RedirectView loginCallback(String code) {
         String contentType = "application/x-www-form-urlencoded;charset=utf-8";
         KakaoTokenDto.Request kakaoTokenRequestDto = KakaoTokenDto.Request.builder()
                 .client_id(kakaoClientId)
@@ -40,7 +65,7 @@ public class  KakaoTokenRestController {
                 .grant_type("authorization_code")
                 .code(code)
                 .redirect_uri(KakaoCallbackUrl)
-//                .redirect_uri("http://localhost:8080/home")
+
 
                 .build();
         System.out.println("CODE : " + code);
@@ -50,9 +75,12 @@ public class  KakaoTokenRestController {
         System.out.println("getAccess_token : " + kakaoToken.getAccess_token());
 
         System.out.println(kakaoToken);
-//        return "kakao toekn : " + kakaoToken;
-        return oauthLoginService.oauthLogin(kakaoToken.getAccess_token(), MemberType.from("KAKAO"));
-    }
 
+    //        return "kakao toekn : " + kakaoToken;
+
+        String redirectUri = "http://localhost:3000/signup/token?access_token=" + kakaoToken.getAccess_token() + "&provider=kakao";
+
+        return new RedirectView(redirectUri);
+    }
 
 }

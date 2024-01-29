@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 
 import java.io.UnsupportedEncodingException;
@@ -62,7 +63,7 @@ public class NaverTokenRestController {
 //    }
 
     @GetMapping("login/oauth2/code/naver")//콜백 주소
-    public NaverTokenDto.Response naverCallback(@RequestParam(name = "code", required = true) String code
+    public RedirectView naverCallback(@RequestParam(name = "code", required = true) String code
 //                                                              , @RequestParam(name = "state", required = true) String state
     ) throws UnsupportedEncodingException {
 
@@ -84,7 +85,10 @@ public class NaverTokenRestController {
 
         System.out.println(naverToken);
 
-        return naverToken;
+        // 획득한 토큰을 사용하여 새로운 주소로 리다이렉트
+        String redirectUri = "http://localhost:3000/signup/token?access_token=" + naverToken.getAccess_token()+ "&provider=naver";
+
+        return new RedirectView(redirectUri);
 
     }
 

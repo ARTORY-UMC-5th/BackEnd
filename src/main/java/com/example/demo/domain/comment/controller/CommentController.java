@@ -20,21 +20,21 @@ public class CommentController {
 
 
     @Operation(summary = "댓글 등록")
-    @PostMapping("/{story-id}/save")
+    @PostMapping("/save/{story-id}")
     public ResponseEntity<String> saveComment(@RequestBody CommentRequestDto.CommentSaveRequestDto commentSaveRequestDto, @RequestParam Long storyId, @MemberInfo MemberInfoDto memberInfoDto) {
         commentService.saveComment(commentSaveRequestDto, storyId, memberInfoDto);
         return ResponseEntity.ok("comment saved successfully!");
     }
 
     @Operation(summary = "댓글 삭제")
-    @DeleteMapping("/{story-id}/delete")
+    @DeleteMapping("/delete/{story-id}")
     public ResponseEntity<String> deleteComment(@RequestBody CommentRequestDto.CommentDeleteRequestDto commentDeleteRequestDto, @RequestParam Long storyId, @MemberInfo MemberInfoDto memberInfoDto) {
         commentService.deleteComment(commentDeleteRequestDto, storyId, memberInfoDto);
         return ResponseEntity.ok("comment deleted successfully!");
     }
 
     @Operation(summary = "댓글 수정")
-    @PatchMapping("/{story-id}/update")
+    @PatchMapping("/update/{story-id}")
     public ResponseEntity<String> updateComment(@RequestBody CommentRequestDto.CommentUpdateRequestDto commentUpdateRequestDto, @RequestParam Long storyId, @MemberInfo MemberInfoDto memberInfoDto){
         commentService.updateComment(commentUpdateRequestDto, storyId, memberInfoDto);
         return ResponseEntity.ok("comment updated successfully!");
