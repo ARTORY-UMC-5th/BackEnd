@@ -1,5 +1,6 @@
 package com.example.demo.domain.story.service;
 
+import com.example.demo.domain.comment.dto.CommentResponseDto;
 import com.example.demo.domain.story.dto.StoryRequestDto;
 import com.example.demo.domain.story.dto.StoryResponseDto;
 import com.example.demo.domain.story.entity.Story;
@@ -12,7 +13,8 @@ public interface StoryService {
 
     // 특정 스토리 조회
     StoryResponseDto.StorySpecificResponseDto getStoryById(Long storyId,@MemberInfo MemberInfoDto memberInfoDto);
-
+    //특정 스토리 댓글 조회
+    List<CommentResponseDto> getCommentById(Long storyId, @MemberInfo MemberInfoDto memberInfoDto);
     // 전체 스토리 리스트 조회
     StoryResponseDto.StoryListResponseDto getAllStoryList(int page, @MemberInfo MemberInfoDto memberInfoDto);
 

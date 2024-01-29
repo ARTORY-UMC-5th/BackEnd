@@ -5,6 +5,7 @@ import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 
 public interface CommentService {
 
+
     void saveComment(CommentRequestDto.CommentSaveRequestDto commentSaveRequestDto, Long storyId, MemberInfoDto memberInfoDto);
 
     void deleteComment(CommentRequestDto.CommentDeleteRequestDto commentDeleteRequestDto, Long storyId, MemberInfoDto memberInfoDto);
