@@ -5,8 +5,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
-@Builder
+@Builder(toBuilder =true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentResponseDto {
@@ -21,4 +23,6 @@ public class CommentResponseDto {
     private String memberProfile;
     private String memberNickname;
 
+    // 대댓글
+    private List<SubCommentResponseDto> subCommentResponseDtoList;
 }

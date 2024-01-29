@@ -4,6 +4,7 @@ import com.example.demo.domain.member.constant.Genre;
 import jakarta.persistence.Column;
 import jakarta.persistence.Lob;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class StoryRequestDto {
 
         private Boolean isOpen;
 
-        private List<String> pictures;
+        private List<MultipartFile> pictures;
 
 
     }

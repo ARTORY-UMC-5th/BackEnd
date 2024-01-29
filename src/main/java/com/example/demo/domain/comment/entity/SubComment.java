@@ -2,25 +2,34 @@ package com.example.demo.domain.comment.entity;
 
 import com.example.demo.domain.common.BaseEntity;
 import com.example.demo.domain.member.entity.Member;
-import com.example.demo.domain.story.entity.Story;
 import jakarta.persistence.*;
 import lombok.*;
 
 
 
+/**
+ * Comment :
+ * 1. 댓글을 삭제하면 아예 안보이게 할 것인지 or "삭제되었습니다" 와 같이 문구를 띄울 것인지
+ * 2. 댓글을 삭제했을 시 해당 댓글의 대댓글도 삭제할 것인지
+ *
+ * SubComment :
+ * 1. 대댓글을 삭제하면 아예 안보이게 할 것인지 or "삭제되었습니다" 와 같이 문구를 띄울 것인지
+
+ *
+ * => 일단 아예 안보이도록 하는 방향으로 개발 (추후 논의)
+ */
+
 @Entity
 @Getter
-@Builder(toBuilder =true)
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Comment extends BaseEntity {
+public class SubComment extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
+    @Column(name = "subcomment_id")
     private Long id;
-
-    private String commentSatisfactionLevel;
 
     @Column(length = 100000)
     private String commentContext;
@@ -29,8 +38,8 @@ public class Comment extends BaseEntity {
     private Boolean isDeleted;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "story_id")
-    private Story story;
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
