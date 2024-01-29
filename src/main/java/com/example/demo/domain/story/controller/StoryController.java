@@ -1,6 +1,7 @@
 
 package com.example.demo.domain.story.controller;
 
+import com.example.demo.domain.comment.dto.CommentResponseDto;
 import com.example.demo.domain.story.dto.StoryRequestDto;
 import com.example.demo.domain.story.dto.StoryResponseDto;
 import com.example.demo.domain.story.service.StoryService;
@@ -49,6 +50,12 @@ public class StoryController {
     public ResponseEntity<StoryResponseDto.StorySpecificResponseDto> getStory(@PathVariable Long storyId, @MemberInfo MemberInfoDto memberInfoDto) {
         StoryResponseDto.StorySpecificResponseDto story = storyService.getStoryById(storyId, memberInfoDto);
         return ResponseEntity.ok(story);
+    }
+    @Operation(summary = "특정 스토리 댓글조회")
+    @GetMapping("/comment/{storyId}")
+    public List<CommentResponseDto> getStoryComment(@PathVariable Long storyId, @MemberInfo MemberInfoDto memberInfoDto) {
+        List<CommentResponseDto> commentListResponse = storyService.getCommentById(storyId, memberInfoDto);
+        return commentListResponse;
     }
 
     @Operation(summary = "스토리 검색 조회")

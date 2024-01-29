@@ -13,6 +13,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query("select c " +
             "from Comment c " +
             "where c.story.id = :storyId " +
-            "order by c.creatTimeBy desc ")
+            "order by c.creatTime desc ")
     List<Comment> findByStoryId(Long storyId);
 }

@@ -248,6 +248,28 @@ public class StoryServiceImpl implements StoryService{
         return storyConverter.convertToSpecificResponseDto(story, isMemberScrapped, commentResponseDtoList);
     }
 
+    @Transactional
+    public List<CommentResponseDto> getCommentById(Long storyId, @MemberInfo MemberInfoDto memberInfoDto) {
+
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+
+        List<Comment> commentList = commentRepository.findByStoryId(storyId);
+        for (Comment comment : commentList) {
+            CommentResponseDto commentResponseDto = CommentResponseDto.builder()
+                    .commentId(comment.getId())
+                    .satisfactionLevel(comment.getCommentSatisfactionLevel())
+                    .commentContext(comment.getCommentContext())
+                    .memberId(comment.getMember().getMemberId())
+                    .memberProfile(comment.getMember().getProfile())
+                    .memberNickname(comment.getMember().getNickname())
+                    .build();
+
+            commentResponseDtoList.add(commentResponseDto);
+        }
+
+        return commentResponseDtoList;
+    }
+
 
     @Override
     public StoryResponseDto.StoryListResponseDto getAllStoryList(int page,  @MemberInfo MemberInfoDto memberInfoDto) {
