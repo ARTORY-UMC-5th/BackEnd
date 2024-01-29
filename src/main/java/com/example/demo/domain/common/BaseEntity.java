@@ -13,12 +13,12 @@ import java.time.LocalDateTime;
 @EntityListeners(value = {AuditingEntityListener.class})
 @MappedSuperclass
 @Getter
-public abstract class BaseEntity {
+public abstract class BaseEntity extends BaseTimeEntity{
     @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime creatTime;
+    private LocalDateTime creatTimeBy;
 
     @LastModifiedDate
-    private LocalDateTime updateTime;
+    private LocalDateTime updateTimeBy;
 
 }
