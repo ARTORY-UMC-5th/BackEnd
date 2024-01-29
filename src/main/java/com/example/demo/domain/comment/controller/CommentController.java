@@ -20,7 +20,7 @@ public class CommentController {
 
 
     @Operation(summary = "댓글 등록")
-    @GetMapping("/{story-id}/save")
+    @PostMapping("/{story-id}/save")
     public ResponseEntity<String> saveComment(@RequestBody CommentRequestDto.CommentSaveRequestDto commentSaveRequestDto, @RequestParam Long storyId, @MemberInfo MemberInfoDto memberInfoDto) {
         commentService.saveComment(commentSaveRequestDto, storyId, memberInfoDto);
         return ResponseEntity.ok("comment saved successfully!");
