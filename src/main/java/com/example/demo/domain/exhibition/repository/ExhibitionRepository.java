@@ -86,6 +86,13 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
             "AND e.isStarted = true " +"ORDER BY RAND()")
     Page<Object[]> findRandomExhibitions(@Param("memberId") Long memberId, Pageable pageable);
 
+    //랜덤한개(메인용)
+    @Query("SELECT e " +
+            "FROM Exhibition e " +
+            "ORDER BY RAND() " +
+            "LIMIT 1")
+    Exhibition findRandomOneExhibition();
+
 
     //장르에 따른 가중치로 정렬하고, 그 다음에 생성 시간을 기준으로 정렬
     @Query("SELECT e, le.isLiked, se.isScrapped " +
