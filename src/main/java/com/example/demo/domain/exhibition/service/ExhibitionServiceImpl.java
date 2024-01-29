@@ -54,7 +54,7 @@ public class ExhibitionServiceImpl implements ExhibitionService {
         // 비슷한 전시회 가져오기
         allResponseDto.setRecommendExhibitionDtoList(getRandomExhibitions(memberInfoDto,page));
         // 추천 전시회 가져오기
-        allResponseDto.setSimilarExhibitionDtoList(getRandomExhibitions(memberInfoDto,page));
+        allResponseDto.setSimilarExhibitionDtoList(getRecommendExhibitions(memberInfoDto,page));
 
 
         return allResponseDto;
@@ -198,7 +198,11 @@ public class ExhibitionServiceImpl implements ExhibitionService {
 
         return randomExhibitions;
     }
-
+    @Override
+    public ExhibitionResponseDto.ExhibitionGeneralOneResponseDto getRandomOneExhibition() {
+        Exhibition randomExhibition = exhibitionRepository.findRandomOneExhibition();
+        return exhibitionConverter.convertToOneDto(randomExhibition);
+    }
 
 
     @Override
