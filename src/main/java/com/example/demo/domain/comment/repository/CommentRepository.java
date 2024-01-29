@@ -12,7 +12,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Query("select c " +
             "from Comment c " +
-            "where c.story.id = :storyId " +
+            "where c.story.id = :storyId and c.isDeleted = false " +
             "order by c.creatTime")
     List<Comment> findByStoryId(Long storyId);
 }

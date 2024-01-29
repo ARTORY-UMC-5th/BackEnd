@@ -14,7 +14,7 @@ public interface SubCommentRepository extends JpaRepository<SubComment, Long> {
     @Query("select sc.id, sc.commentContext, m.memberId, m.nickname " +
             "from SubComment sc " +
             "left join Member m on sc.member.memberId = m.memberId " +
-            "where sc.comment.id = :commentId " +
+            "where sc.comment.id = :commentId and sc.isDeleted = false " +
             "order by sc.creatTime")
     List<Object[]> findByCommentId(Long commentId);
 }
