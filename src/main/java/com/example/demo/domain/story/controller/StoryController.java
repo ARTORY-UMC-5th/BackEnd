@@ -51,7 +51,8 @@ public class StoryController {
         StoryResponseDto.StorySpecificResponseDto story = storyService.getStoryById(storyId, memberInfoDto);
         return ResponseEntity.ok(story);
     }
-    @Operation(summary = "특정 스토리 댓글조회")
+
+    @Operation(summary = "특정 스토리 댓글조회 (대댓글 포함)")
     @GetMapping("/comment/{storyId}")
     public List<CommentResponseDto> getStoryComment(@PathVariable Long storyId, @MemberInfo MemberInfoDto memberInfoDto) {
         List<CommentResponseDto> commentListResponse = storyService.getCommentById(storyId, memberInfoDto);
