@@ -88,13 +88,14 @@ public class StoryServiceImpl implements StoryService{
 //        story.initializeNullFields();
 
 
-        List<String> picturesUrl = null;
-        try {
-            picturesUrl = s3Service.saveFileList(storyRequestDto.getPictures());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        List<String> picturesUrl = null;
+//        try {
+//            picturesUrl = s3Service.saveFileList(storyRequestDto.get());
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
+        List<String> picturesUrl = storyRequestDto.getPicturesUrl();
 
         // 스토리의 사진 저장(repository에 저장)
         List<StoryPicture> storyPictureList = new ArrayList<>();
@@ -182,13 +183,15 @@ public class StoryServiceImpl implements StoryService{
                 .build();
 
 
-        List<String> picturesUrl = null;
-        try {
-            picturesUrl = s3Service.saveFileList(storyRequestDto.getPictures());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        List<String> picturesUrl = null;
+//        try {
+//            picturesUrl = s3Service.saveFileList(storyRequestDto.getPictures());
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
+
+        List<String> picturesUrl = storyRequestDto.getPicturesUrl();
 
         List<StoryPicture> storyPictureList = new ArrayList<>();
         for (String pictureUrl : picturesUrl) {
