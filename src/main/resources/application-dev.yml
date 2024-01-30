@@ -1,0 +1,36 @@
+
+spring:
+  config:
+    activate:
+      on-profile: dev # 환경이름설정
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #    url: jdbc:mysql://localhost:3306/artory?serverTimezone=Asia/Seoul
+    url: 
+    username:
+    password: asdfasdfasdfasdfasdfasdf
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+    #    show-sql: true #??? sql ??
+    properties:
+      hibernate:
+        format_sql: true #sql ??? ??
+        default_batch_fetch_size: 500  #?? ? ??? ?? ???
+
+    open-in-view: false # ??? ????? ?? ??? ???? ??? ??
+
+
+kakao:
+  client:
+    id: afaaa3a1b79e589ad64e93e6e8b08ef7
+    secret: L0Kykc6Yaeey9ZWKQUDaSawgnP462jp4
+  callback:
+    url: http://localhost:8080/oauth/kakao/callback
+naver:
+  client:
+    id: 4yrLNCK6RQMeFj95vayh
+    secret: mfAMbtRMFO
+  callback:
+    url: http://localhost:8080/login/oauth2/code/naver
