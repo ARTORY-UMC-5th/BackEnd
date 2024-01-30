@@ -45,7 +45,7 @@ public class StoryRequestDto {
 
         private Boolean isOpen;
 
-        private List<MultipartFile> pictures;
+        private List<String> picturesUrl;
 
 
     }
