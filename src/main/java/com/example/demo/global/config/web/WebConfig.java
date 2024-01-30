@@ -48,6 +48,7 @@ public class WebConfig implements WebMvcConfigurer {
                         ,"/api/naver"
                         ,"/api/health"
                         ,"/api/exhibitions/main"
+                        ,"/api/server/**"
                         ,"/test/**");
 
         registry.addInterceptor(adminAuthorizationInterceptor)
