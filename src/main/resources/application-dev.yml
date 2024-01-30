@@ -7,7 +7,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     #    url: jdbc:mysql://localhost:3306/artory?serverTimezone=Asia/Seoul
     url: 
-    username: asdfasdfasdfasdfasdf
+    username:
     password: asdfasdfasdfasdfasdfasdf
   jpa:
     hibernate:
