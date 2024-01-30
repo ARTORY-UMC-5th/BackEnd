@@ -9,8 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("/test")
+@RestController
+@RequestMapping("/api/server")
 public class FileUploadController {
 
     private final S3Service s3UploadService;
@@ -20,8 +20,7 @@ public class FileUploadController {
         this.s3UploadService = s3UploadService;
     }
 
-    @PostMapping("/server/upload")
-    @ResponseBody
+    @PostMapping("/upload/file")
     public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file) {
         try {
             String fileUrl = s3UploadService.saveFile(file);
@@ -30,7 +29,7 @@ public class FileUploadController {
             return ResponseEntity.status(500).body("Failed to upload the file: " + e.getMessage());
         }
     }
-    @PostMapping("/server/uploads")
+    @PostMapping("/upload/files")
     public ResponseEntity<String> handleFilesUpload(@RequestPart("files") List<MultipartFile> files) {
         try {
             List<String> fileUrls = s3UploadService.saveFileList(files);
