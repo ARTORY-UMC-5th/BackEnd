@@ -8,7 +8,7 @@ spring:
     #    url: jdbc:mysql://localhost:3306/artory?serverTimezone=Asia/Seoul
     url: jdbc:mysql://artory-db.ccjn8ih7e8h5.ap-northeast-2.rds.amazonaws.com:3306/artory?serverTimezone=Asia/Seoul
     username: root
-    password: admin123
+    password: admin123artory
   jpa:
     hibernate:
       ddl-auto: update

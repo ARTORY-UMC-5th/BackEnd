@@ -1,5 +1,6 @@
 package com.example.demo.domain.comment.controller;
 
+import com.example.demo.domain.comment.dto.CommentRequestDto;
 import com.example.demo.domain.comment.dto.SubCommentRequestDto;
 import com.example.demo.domain.comment.service.CommentService;
 import com.example.demo.domain.comment.service.SubCommentService;
@@ -28,15 +29,18 @@ public class SubCommentController {
     }
 
     @Operation(summary = "대댓글 삭제")
-    @DeleteMapping("/delete/{comment-id}")
-    public ResponseEntity<String> deleteSubcomment(@RequestBody SubCommentRequestDto.SubCommentDeleteRequestDto subcommentDeleteRequestDto, @RequestParam Long commentId, @MemberInfo MemberInfoDto memberInfoDto) {
+    @DeleteMapping("/delete/{commentId}")
+    public ResponseEntity<String> deleteSubcomment(@RequestParam Long subCommentId, @PathVariable Long commentId, @MemberInfo MemberInfoDto memberInfoDto) {
+        SubCommentRequestDto.SubCommentDeleteRequestDto subcommentDeleteRequestDto = SubCommentRequestDto.SubCommentDeleteRequestDto.builder()
+                .subCommentId(subCommentId)
+                .build();
         subCommentService.deleteSubcomment(subcommentDeleteRequestDto, commentId, memberInfoDto);
         return ResponseEntity.ok("subcomment deleted successfully!");
     }
 
     @Operation(summary = "대댓글 수정")
-    @PatchMapping("/update/{comment-id}")
-    public ResponseEntity<String> updateSubcomment(@RequestBody SubCommentRequestDto.SubCommentUpdateRequestDto subcommentUpdateRequestDto, @RequestParam Long commentId, @MemberInfo MemberInfoDto memberInfoDto){
+    @PatchMapping("/update/{commentId}")
+    public ResponseEntity<String> updateSubcomment(@RequestBody SubCommentRequestDto.SubCommentUpdateRequestDto subcommentUpdateRequestDto, @PathVariable Long commentId, @MemberInfo MemberInfoDto memberInfoDto){
         subCommentService.updateSubcomment(subcommentUpdateRequestDto, commentId, memberInfoDto);
         return ResponseEntity.ok("subcomment updated successfully!");
     }
