@@ -42,7 +42,7 @@ public class MemberInfoSaveDto {
         private Gender gender;
         private Integer age;
     }
-    @Getter @Setter
+    @Getter @Setter @Builder
     public static class MemberGenre{
 
         @Builder.Default
