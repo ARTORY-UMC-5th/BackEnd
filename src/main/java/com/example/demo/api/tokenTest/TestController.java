@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 class TestController {
     @GetMapping("/upload")
     public String createJwtTokenDto() {
-        return "fileUpload";
+        return "upload";
     }
 
 

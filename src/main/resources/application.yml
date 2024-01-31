@@ -43,8 +43,8 @@ cloud:
     s3:
       bucket: artory-webserver
     credentials:
-      access-key: AKIAWRCJKOKJW4IQCQR7
-      secret-key: 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
+      access-key: AKIAWRCJKOKJ6HE5S7V6
+      secret-key: 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
     region:
       static: ap-northeast-2
       auto: false
