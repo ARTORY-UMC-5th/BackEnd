@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ExhibitionService {
-    ExhibitionResponseDto.ExhibitionListResponseDto getAllExhibitionList(@MemberInfo MemberInfoDto memberInfoDto, LocalDate currentDate,int page, ExhibitionRequestDto requestDto);
+    ExhibitionResponseDto.ExhibitionListResponseDto getAllExhibitionList(@MemberInfo MemberInfoDto memberInfoDto, LocalDate currentDate,int page);
     List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getDistanceRecommendExhibitions(ExhibitionRequestDto requestDto, @MemberInfo MemberInfoDto memberInfoDto, int page);
 
     List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecentExhibitions(@MemberInfo MemberInfoDto memberInfoDto, LocalDate currentDate, int page);
@@ -31,6 +31,13 @@ public interface ExhibitionService {
     List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getSimilarExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page) ;
     List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecommendExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page);
 
+    //각 페이지 눌렀을 때
+    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getDistanceRecommendExhibitions1(ExhibitionRequestDto requestDto, @MemberInfo MemberInfoDto memberInfoDto, int page);
+    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecentExhibitions1(@MemberInfo MemberInfoDto memberInfoDto, LocalDate currentDate, int page);
+    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getPopularityExhibitions1(@MemberInfo MemberInfoDto memberInfoDto, int page);
+    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRandomExhibitions1(@MemberInfo MemberInfoDto memberInfoDto, int page);
+    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getSimilarExhibitions1(@MemberInfo MemberInfoDto memberInfoDto, int page) ;
+    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecommendExhibitions1(@MemberInfo MemberInfoDto memberInfoDto, int page);
 
 
 

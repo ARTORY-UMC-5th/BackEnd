@@ -34,7 +34,7 @@ public class MemberInfoController {
     }
     @Operation(summary = "사용자 정보 전체 수정", description = "일부 수정 불가능한 정보는 빠져있음")
     @PostMapping("/save/all")
-    public ResponseEntity<String> saveMemberInfo(@MemberInfo MemberInfoDto memberInfoDto, MemberInfoSaveDto.MemberInfo memberInfoSaveDto) {
+    public ResponseEntity<String> saveMemberInfo(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody MemberInfoSaveDto.MemberInfo memberInfoSaveDto) {
 
         Member member = memberInfoService.saveMemberInfo( memberInfoSaveDto, memberInfoDto.getMemberId());
         memberRepository.save(member);
@@ -43,9 +43,15 @@ public class MemberInfoController {
     }
     @Operation(summary = "사용자 닉네임과 아토리 프로필 사진 저장", description = "사진은 링크형태로 받음, 이후 개발 수정 가능")
     @PostMapping("/save/nickname")
-    public ResponseEntity<String> saveMemberNickname(@MemberInfo MemberInfoDto memberInfoDto, MemberInfoSaveDto.MemberNickname memberNickname) {
-
-
+    public ResponseEntity<String> saveMemberNickname(
+            @RequestParam String nickname,
+            @RequestParam String image,
+            @MemberInfo MemberInfoDto memberInfoDto)
+    {
+        MemberInfoSaveDto.MemberNickname memberNickname = MemberInfoSaveDto.MemberNickname.builder()
+                .nickname(nickname)
+                .image(image)
+                .build();
         Member member = memberInfoService.saveMemberNickname(memberNickname, memberInfoDto.getMemberId());
         memberRepository.save(member);
 
@@ -53,7 +59,7 @@ public class MemberInfoController {
     }
     @Operation(summary = "사용자 나이, 성별 저장", description = "나이는 int")
     @PostMapping("/save/age-gender")
-    public ResponseEntity<String> saveMemberAgeAndGender(@MemberInfo MemberInfoDto memberInfoDto, MemberInfoSaveDto.MemberAgeAndGender memberInfoSaveDto) {
+    public ResponseEntity<String> saveMemberAgeAndGender(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody MemberInfoSaveDto.MemberAgeAndGender memberInfoSaveDto) {
 
         Member member = memberInfoService.saveMemberAgeAndGender(memberInfoSaveDto, memberInfoDto.getMemberId());
         memberRepository.save(member);
@@ -63,7 +69,7 @@ public class MemberInfoController {
     @Operation(summary = "사용자 장르 수정", description = "장르 MEDIA,CRAFT,DESIGN,PICTURE,SPECIAL_EXHIBITION,SCULPTURE,PLANEXHIBITION,\n" +
             "    INSTALLATION_ART,PAINTING,ARTIST_EXHIBITION")
     @PostMapping("/save/genre")
-    public ResponseEntity<String> saveMemberGenre(@MemberInfo MemberInfoDto memberInfoDto, MemberInfoSaveDto.MemberGenre memberInfoSaveDto) {
+    public ResponseEntity<String> saveMemberGenre(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody MemberInfoSaveDto.MemberGenre memberInfoSaveDto) {
 
         Member member = memberInfoService.saveMemberGenre(memberInfoSaveDto, memberInfoDto.getMemberId());
         memberRepository.save(member);
