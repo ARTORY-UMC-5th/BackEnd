@@ -54,13 +54,19 @@ public class CommentServiceImpl implements CommentService{
     @Transactional
     public void deleteComment(CommentRequestDto.CommentDeleteRequestDto commentDeleteRequestDto, Long storyId, MemberInfoDto memberInfoDto) {
 
-        Comment comment = commentRepository.getById(commentDeleteRequestDto.getCommentId());
-        Long commentMemberId = comment.getMember().getMemberId();
+        Comment tempComment = commentRepository.getById(commentDeleteRequestDto.getCommentId());
+        Long commentMemberId = tempComment.getMember().getMemberId();
 
 
-        //댓글 작성자와 삭제하려는 주체가 같으면 삭제 진행
+        //댓글 작성자와 삭제하려는 주체가 같으면 삭제 진행 <- 취소
+        // 대댓글이 존재하므로 댓글이 삭제될 시 isDeleted가 true가 되는걸로 변경
         if (Objects.equals(commentMemberId, memberInfoDto.getMemberId())) {
-            commentRepository.delete(comment);
+            Comment comment = tempComment.toBuilder()
+                    .isDeleted(true)
+                    .build();
+
+            commentRepository.save(comment);
+//            commentRepository.delete(comment);
         } else {
             throw new CommentException(ErrorCode.NOT_YOUR_COMMENT);
         }

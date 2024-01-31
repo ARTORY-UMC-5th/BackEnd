@@ -43,7 +43,8 @@ public enum ErrorCode {//우리가 사용할 에러코드를 담은 dto
     STORY_PRIVATE(HttpStatus.BAD_REQUEST, "S-009", "해당 스토리는 비공개 처리 되어있습니다."),
 
     // 댓글
-    NOT_YOUR_COMMENT(HttpStatus.BAD_REQUEST, "C-001", "본인의 댓글이 아닙니다.");
+    COMMENT_NOT_EXISTS(HttpStatus.BAD_REQUEST, "C-001", "해당 댓글은 존재하지 않습니다."),
+    NOT_YOUR_COMMENT(HttpStatus.BAD_REQUEST, "C-002", "본인의 댓글이 아닙니다.");
 
     ErrorCode(HttpStatus httpStatus, String errorCode, String message){
         this.httpStatus = httpStatus;

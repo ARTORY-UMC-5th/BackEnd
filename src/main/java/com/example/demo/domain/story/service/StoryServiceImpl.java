@@ -1,8 +1,11 @@
 package com.example.demo.domain.story.service;
 
 import com.example.demo.domain.comment.dto.CommentResponseDto;
+import com.example.demo.domain.comment.dto.SubCommentResponseDto;
 import com.example.demo.domain.comment.entity.Comment;
+import com.example.demo.domain.comment.entity.SubComment;
 import com.example.demo.domain.comment.repository.CommentRepository;
+import com.example.demo.domain.comment.service.SubCommentService;
 import com.example.demo.domain.exhibition.entity.Exhibition;
 import com.example.demo.domain.exhibition.entity.ExhibitionGenre;
 import com.example.demo.domain.exhibition.repository.ExhibitionGenreRepository;
@@ -52,6 +55,7 @@ public class StoryServiceImpl implements StoryService{
     private final ExhibitionGenreRepository exhibitionGenreRepository;
     private final StoryPictureRepository storyPictureRepository;
     private final CommentRepository commentRepository;
+    private final SubCommentService subCommentService;
     private final S3Service s3Service;
 
     @Transactional
@@ -84,13 +88,14 @@ public class StoryServiceImpl implements StoryService{
 //        story.initializeNullFields();
 
 
-        List<String> picturesUrl = null;
-        try {
-            picturesUrl = s3Service.saveFileList(storyRequestDto.getPictures());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        List<String> picturesUrl = null;
+//        try {
+//            picturesUrl = s3Service.saveFileList(storyRequestDto.get());
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
+        List<String> picturesUrl = storyRequestDto.getPicturesUrl();
 
         // 스토리의 사진 저장(repository에 저장)
         List<StoryPicture> storyPictureList = new ArrayList<>();
@@ -178,13 +183,15 @@ public class StoryServiceImpl implements StoryService{
                 .build();
 
 
-        List<String> picturesUrl = null;
-        try {
-            picturesUrl = s3Service.saveFileList(storyRequestDto.getPictures());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        List<String> picturesUrl = null;
+//        try {
+//            picturesUrl = s3Service.saveFileList(storyRequestDto.getPictures());
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
+
+        List<String> picturesUrl = storyRequestDto.getPicturesUrl();
 
         List<StoryPicture> storyPictureList = new ArrayList<>();
         for (String pictureUrl : picturesUrl) {
@@ -233,7 +240,7 @@ public class StoryServiceImpl implements StoryService{
 
         List<Comment> commentList = commentRepository.findByStoryId(storyId);
         for (Comment comment : commentList) {
-            CommentResponseDto commentResponseDto = CommentResponseDto.builder()
+            CommentResponseDto temp = CommentResponseDto.builder()
                     .commentId(comment.getId())
                     .satisfactionLevel(comment.getCommentSatisfactionLevel())
                     .commentContext(comment.getCommentContext())
@@ -242,10 +249,45 @@ public class StoryServiceImpl implements StoryService{
                     .memberNickname(comment.getMember().getNickname())
                     .build();
 
+            // 각 댓글마다 댓글에 대한 대댓글 리스트 추가 로직
+            List<SubCommentResponseDto> subCommentResponseDtoList = subCommentService.findByCommentId(comment.getId());
+            CommentResponseDto commentResponseDto = temp.toBuilder()
+                    .subCommentResponseDtoList(subCommentResponseDtoList)
+                    .build();
+
             commentResponseDtoList.add(commentResponseDto);
         }
 
         return storyConverter.convertToSpecificResponseDto(story, isMemberScrapped, commentResponseDtoList);
+    }
+
+    @Transactional
+    public List<CommentResponseDto> getCommentById(Long storyId, @MemberInfo MemberInfoDto memberInfoDto) {
+
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+
+        List<Comment> commentList = commentRepository.findByStoryId(storyId);
+        for (Comment comment : commentList) {
+            CommentResponseDto temp = CommentResponseDto.builder()
+                    .commentId(comment.getId())
+                    .satisfactionLevel(comment.getCommentSatisfactionLevel())
+                    .commentContext(comment.getCommentContext())
+                    .memberId(comment.getMember().getMemberId())
+                    .memberProfile(comment.getMember().getProfile())
+                    .memberNickname(comment.getMember().getNickname())
+                    .build();
+
+
+            // 각 댓글마다 댓글에 대한 대댓글 리스트 추가 로직
+            List<SubCommentResponseDto> subCommentResponseDtoList = subCommentService.findByCommentId(comment.getId());
+            CommentResponseDto commentResponseDto = temp.toBuilder()
+                    .subCommentResponseDtoList(subCommentResponseDtoList)
+                    .build();
+
+            commentResponseDtoList.add(commentResponseDto);
+        }
+
+        return commentResponseDtoList;
     }
 
 
