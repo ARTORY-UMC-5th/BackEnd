@@ -7,6 +7,7 @@ import com.example.demo.domain.story.entity.Story;
 import com.example.demo.domain.story.repository.ScrapStoryRepository;
 import com.example.demo.domain.story.repository.StoryRepository;
 import com.example.demo.global.error.ErrorCode;
+import com.example.demo.global.error.exception.ScrapException;
 import com.example.demo.global.error.exception.StoryException;
 import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 import com.example.demo.global.resolver.memberInfo.MemberInfo;
@@ -48,7 +49,7 @@ public class ScrapStoryServiceImpl implements ScrapStoryService{
 
             // isScrapped가 true 이면 Exception 발생
         } else {
-            throw new StoryException(ErrorCode.SCRAP_EXISTS);
+            throw new ScrapException(ErrorCode.SCRAP_EXISTS);
         }
     }
 
@@ -62,7 +63,7 @@ public class ScrapStoryServiceImpl implements ScrapStoryService{
         ScrapStory scrapStory = scrapStoryRepository.findByStoryIdAndMemberId(storyId, memberId);
 
         if (scrapStory == null || scrapStory.getIsScrapped() == null || !scrapStory.getIsScrapped()) {
-            throw new StoryException(ErrorCode.UNSCRAP_EXISTS);
+            throw new ScrapException(ErrorCode.UNSCRAP_EXISTS);
         } else {
             scrapStoryRepository.setIsLikedFalse(scrapStory);
         }

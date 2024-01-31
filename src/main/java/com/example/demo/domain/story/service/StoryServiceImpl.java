@@ -3,7 +3,6 @@ package com.example.demo.domain.story.service;
 import com.example.demo.domain.comment.dto.CommentResponseDto;
 import com.example.demo.domain.comment.dto.SubCommentResponseDto;
 import com.example.demo.domain.comment.entity.Comment;
-import com.example.demo.domain.comment.entity.SubComment;
 import com.example.demo.domain.comment.repository.CommentRepository;
 import com.example.demo.domain.comment.service.SubCommentService;
 import com.example.demo.domain.exhibition.entity.Exhibition;
@@ -24,8 +23,10 @@ import com.example.demo.domain.story.repository.StoryPictureRepository;
 import com.example.demo.domain.story.repository.StoryRepository;
 import com.example.demo.exteranal.s3Bucket.service.S3Service;
 import com.example.demo.global.error.ErrorCode;
+import com.example.demo.global.error.exception.BusinessException;
 import com.example.demo.global.error.exception.EntityNotFoundException;
 
+import com.example.demo.global.error.exception.ExhibitionException;
 import com.example.demo.global.error.exception.StoryException;
 import com.example.demo.global.resolver.memberInfo.MemberInfo;
 import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
@@ -36,7 +37,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -56,7 +56,6 @@ public class StoryServiceImpl implements StoryService{
     private final StoryPictureRepository storyPictureRepository;
     private final CommentRepository commentRepository;
     private final SubCommentService subCommentService;
-    private final S3Service s3Service;
 
     @Transactional
     public void saveStory(StoryRequestDto.StoryRequestGeneralDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
@@ -68,15 +67,17 @@ public class StoryServiceImpl implements StoryService{
         // 후 스토리 저장
 
         Long memberId = memberInfoDto.getMemberId();
-        Member member = memberRepository.getById(memberId);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_EXISTS));
         Long exhibitionId = storyRequestDto.getExhibitionId();
-        Exhibition exhibition = exhibitionRepository.getById(exhibitionId);
+        Exhibition exhibition = exhibitionRepository.findById(exhibitionId)
+                .orElseThrow(() -> new ExhibitionException(ErrorCode.EXHIBITION_NOT_EXISTS));
         Boolean isExisted = exhibitionGenreRepository.existsByExhibitionId(exhibitionId);
 
         // 테이블이 존재하면, 패스
         if (isExisted == null) {
             ExhibitionGenre exhibitionGenre = ExhibitionGenre.builder()
-                    .exhibition(exhibitionRepository.getById(exhibitionId))
+                    .exhibition(exhibition)
                     .build();
 
             exhibitionGenreRepository.save(exhibitionGenre);
@@ -141,14 +142,9 @@ public class StoryServiceImpl implements StoryService{
     public void updateStory(StoryRequestDto.StoryRequestGeneralDto storyRequestDto, Long storyId, MemberInfoDto memberInfoDto) {
         Long memberId = memberInfoDto.getMemberId();
 
-        Optional<Story> optionalStory = storyRepository.findById(storyId);
+        Story story = storyRepository.findById(storyId)
+                .orElseThrow(() -> new StoryException(ErrorCode.STORY_NOT_EXISTS));
 
-        if (optionalStory.isEmpty()) {
-            throw new StoryException(ErrorCode.STORY_NOT_EXISTS);
-        }
-
-
-        Story story = optionalStory.get();
 
         // 장르 수정을 위해 설정되어있는 장르를 -1 업데이트
         story.updateDecreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(storyRequestDto.getExhibitionId()), story.getGenre1());
@@ -223,14 +219,13 @@ public class StoryServiceImpl implements StoryService{
     // 해당 스토리 id, 열람하는 memberId
     @Transactional
     public StoryResponseDto.StorySpecificResponseDto getStoryById(Long storyId, @MemberInfo MemberInfoDto memberInfoDto) {
-        Optional<Story> optionalStory = storyRepository.findById(storyId);
+        Story story = storyRepository.findById(storyId)
+                .orElseThrow(() -> new StoryException(ErrorCode.STORY_NOT_EXISTS));
         Long memberId = memberInfoDto.getMemberId();
 
-        if (optionalStory.isEmpty()) {
-            throw new EntityNotFoundException(ErrorCode.STORY_NOT_EXISTS);
-        }
+        // 비공개면 throw
+        if (!story.getIsOpen()) throw new StoryException(ErrorCode.STORY_PRIVATE);
 
-        Story story = optionalStory.get();
 
         ScrapStory scrapStory = scrapStoryRepository.findByStoryIdAndMemberId(storyId, memberId);
         Boolean isMemberScrapped = (scrapStory != null && scrapStory.getIsScrapped() != null) ? scrapStory.getIsScrapped() : false;
@@ -263,6 +258,9 @@ public class StoryServiceImpl implements StoryService{
 
     @Transactional
     public List<CommentResponseDto> getCommentById(Long storyId, @MemberInfo MemberInfoDto memberInfoDto) {
+
+        // Story가 없으면 throw
+        if (!storyRepository.existsById(storyId)) throw new StoryException(ErrorCode.STORY_NOT_EXISTS);
 
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 

@@ -9,6 +9,7 @@ import com.example.demo.domain.comment.repository.SubCommentRepository;
 import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.member.repository.MemberRepository;
 import com.example.demo.global.error.ErrorCode;
+import com.example.demo.global.error.exception.BusinessException;
 import com.example.demo.global.error.exception.CommentException;
 import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +30,10 @@ public class SubCommentServiceImpl implements SubCommentService{
 
     @Transactional
     public void saveSubcomment(SubCommentRequestDto.SubCommentSaveRequestDto subcommentSaveRequestDto, Long commentId, MemberInfoDto memberInfoDto) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new CommentException(ErrorCode.COMMENT_NOT_EXISTS));
-        Member member = memberRepository.getById(memberInfoDto.getMemberId());
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new CommentException(ErrorCode.COMMENT_NOT_EXISTS));
+        Member member = memberRepository.findById(memberInfoDto.getMemberId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.STORY_NOT_EXISTS));
 
         SubComment subComment = SubComment.builder()
                 .commentContext(subcommentSaveRequestDto.getCommentContext())
@@ -38,6 +41,8 @@ public class SubCommentServiceImpl implements SubCommentService{
                 .comment(comment)
                 .member(member)
                 .build();
+
+        // 필수 값 안넣었을 시 예외는 추후 작성
 
         subCommentRepository.save(subComment);
     }
@@ -69,6 +74,8 @@ public class SubCommentServiceImpl implements SubCommentService{
                 .id(subComment.getId())
                 .commentContext(subcommentUpdateRequestDto.getCommentContext())
                 .build();
+
+        // 필수 값 안넣었을 시 예외는 추후 작성
 
         subCommentRepository.save(subComment);
     }

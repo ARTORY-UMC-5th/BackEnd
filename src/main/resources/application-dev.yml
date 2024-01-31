@@ -34,3 +34,9 @@ naver:
     secret: mfAMbtRMFO
   callback:
     url: http://localhost:8080/login/oauth2/code/naver
+
+
+geocoding:
+  client:
+    id: mquaj3omju
+    secret: AqigWKZjNKFTzmuW43gvDvWpZK07ntygnujvmkQ2

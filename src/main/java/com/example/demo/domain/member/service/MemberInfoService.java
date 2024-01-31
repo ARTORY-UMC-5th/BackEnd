@@ -50,6 +50,7 @@ public class MemberInfoService {
     }
     public Member saveMemberGenre(MemberInfoSaveDto.MemberGenre memberGenre, Long memberId){
         Member member = memberService.findMemberByMemberId(memberId);
+
         return member.toBuilder()
                 .genre1(memberGenre.getGenre1())
                 .genre2(memberGenre.getGenre2())
