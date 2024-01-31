@@ -89,7 +89,7 @@ public class Member extends BaseEntity {
 //    private String memberUserInfo;
 
     @Setter
-    @Column(nullable = true, length = 10)
+    @Column(nullable = true, length = 200)
     private String nickname;
 
     @Setter

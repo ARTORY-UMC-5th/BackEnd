@@ -32,7 +32,7 @@ public class MemberInfoSaveDto {
         private Genre genre2;
         private Genre genre3;
     }
-    @Getter @Setter
+    @Getter @Setter @Builder
     public static class MemberNickname{
         private String nickname;
         private String image;

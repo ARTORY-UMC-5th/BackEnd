@@ -30,15 +30,20 @@ public class CommentController {
     }
 
     @Operation(summary = "댓글 삭제")
-    @DeleteMapping("/delete/{story-id}")
-    public ResponseEntity<String> deleteComment(@RequestBody CommentRequestDto.CommentDeleteRequestDto commentDeleteRequestDto, @RequestParam Long storyId, @MemberInfo MemberInfoDto memberInfoDto) {
+    @DeleteMapping("/delete/{storyId}")
+//    public ResponseEntity<String> deleteComment(@RequestBody CommentRequestDto.CommentDeleteRequestDto commentDeleteRequestDto, @RequestParam Long storyId, @MemberInfo MemberInfoDto memberInfoDto) {
+    public ResponseEntity<String> deleteComment(@PathVariable Long storyId,@RequestParam Long commentId, @MemberInfo MemberInfoDto memberInfoDto) {
+        CommentRequestDto.CommentDeleteRequestDto commentDeleteRequestDto = CommentRequestDto.CommentDeleteRequestDto.builder()
+                .commentId(commentId)
+                .build();
+
         commentService.deleteComment(commentDeleteRequestDto, storyId, memberInfoDto);
         return ResponseEntity.ok("comment deleted successfully!");
     }
 
     @Operation(summary = "댓글 수정")
-    @PatchMapping("/update/{story-id}")
-    public ResponseEntity<String> updateComment(@RequestBody CommentRequestDto.CommentUpdateRequestDto commentUpdateRequestDto, @RequestParam Long storyId, @MemberInfo MemberInfoDto memberInfoDto){
+    @PatchMapping("/update/{storyId}")
+    public ResponseEntity<String> updateComment(@RequestBody CommentRequestDto.CommentUpdateRequestDto commentUpdateRequestDto, @PathVariable Long storyId, @MemberInfo MemberInfoDto memberInfoDto){
         commentService.updateComment(commentUpdateRequestDto, storyId, memberInfoDto);
         return ResponseEntity.ok("comment updated successfully!");
     }
