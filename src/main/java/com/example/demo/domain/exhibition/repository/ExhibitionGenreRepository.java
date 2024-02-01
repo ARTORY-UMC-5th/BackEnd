@@ -61,7 +61,7 @@ public interface ExhibitionGenreRepository extends JpaRepository<ExhibitionGenre
             "FROM Exhibition e " +
             "LEFT JOIN LikeExhibition le ON e.id = le.exhibition.id AND le.member.memberId = :memberId " +
             "LEFT JOIN ScrapExhibition se ON e.id = se.exhibition.id AND se.member.memberId = :memberId " +
-            "WHERE e.genreCategory1 = 'specialExhibition' or e.genreCategory2 = 'specialExhibition' or e.genreCategory3 = 'specialExhibition' " +
+            "WHERE e.genreCategory1 = 'special_Exhibition' or e.genreCategory2 = 'special_Exhibition' or e.genreCategory3 = 'special_Exhibition' " +
             " ORDER BY e.exhibitionDuration DESC")
     Page<Object[]> findSpecialExhibitionExhibitions(@Param("memberId") Long memberId, Pageable pageable);
 
@@ -81,7 +81,7 @@ public interface ExhibitionGenreRepository extends JpaRepository<ExhibitionGenre
             "FROM Exhibition e " +
             "LEFT JOIN LikeExhibition le ON e.id = le.exhibition.id AND le.member.memberId = :memberId " +
             "LEFT JOIN ScrapExhibition se ON e.id = se.exhibition.id AND se.member.memberId = :memberId " +
-            "WHERE e.genreCategory1 = 'planExhibition' or e.genreCategory2 = 'planExhibition' or e.genreCategory3 = 'planExhibition' " +
+            "WHERE e.genreCategory1 = 'plan_Exhibition' or e.genreCategory2 = 'plan_Exhibition' or e.genreCategory3 = 'plan_Exhibition' " +
             " ORDER BY e.exhibitionDuration DESC")
     Page<Object[]> findPlanExhibitionExhibitions(@Param("memberId") Long memberId, Pageable pageable);
 
@@ -91,7 +91,7 @@ public interface ExhibitionGenreRepository extends JpaRepository<ExhibitionGenre
             "FROM Exhibition e " +
             "LEFT JOIN LikeExhibition le ON e.id = le.exhibition.id AND le.member.memberId = :memberId " +
             "LEFT JOIN ScrapExhibition se ON e.id = se.exhibition.id AND se.member.memberId = :memberId " +
-            "WHERE e.genreCategory1 = 'installationArt' or e.genreCategory2 = 'installationArt' or e.genreCategory3 = 'installationArt' " +
+            "WHERE e.genreCategory1 = 'installation_Art' or e.genreCategory2 = 'installation_Art' or e.genreCategory3 = 'installation_Art' " +
             " ORDER BY e.exhibitionDuration DESC")
     Page<Object[]> findInstallationArtExhibitions(@Param("memberId") Long memberId, Pageable pageable);
 
@@ -111,7 +111,7 @@ public interface ExhibitionGenreRepository extends JpaRepository<ExhibitionGenre
             "FROM Exhibition e " +
             "LEFT JOIN LikeExhibition le ON e.id = le.exhibition.id AND le.member.memberId = :memberId " +
             "LEFT JOIN ScrapExhibition se ON e.id = se.exhibition.id AND se.member.memberId = :memberId " +
-            "WHERE e.genreCategory1 = 'artistExhibition' or e.genreCategory2 = 'artistExhibition' or e.genreCategory3 = 'artistExhibition' " +
+            "WHERE e.genreCategory1 = 'artist_Exhibition' or e.genreCategory2 = 'artist_Exhibition' or e.genreCategory3 = 'artist_Exhibition' " +
             " ORDER BY e.exhibitionDuration DESC")
     Page<Object[]> findArtistExhibitionExhibitions(@Param("memberId") Long memberId, Pageable pageable);
 

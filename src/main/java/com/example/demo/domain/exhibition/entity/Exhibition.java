@@ -77,17 +77,18 @@ public class Exhibition extends BaseEntity {
     //가장 높은 3개의 값을 가지는 장르 선택
     public void updateCategory() {
         Map<String, Integer> genreCounts = Map.of(
-                "media", exhibitionGenre.getMedia(),
-                "craft", exhibitionGenre.getCraft(),
-                "design", exhibitionGenre.getDesign(),
-                "picture", exhibitionGenre.getPicture(),
-                "specialExhibition", exhibitionGenre.getSpecialExhibition(),
-                "sculpture", exhibitionGenre.getSculpture(),
-                "planExhibition", exhibitionGenre.getPlanExhibition(),
-                "installationArt", exhibitionGenre.getInstallationArt(),
-                "painting", exhibitionGenre.getPainting(),
-                "artistExhibition", exhibitionGenre.getArtistExhibition()
+                "MEDIA", exhibitionGenre.getMedia(),
+                "CRAFT", exhibitionGenre.getCraft(),
+                "DESIGN", exhibitionGenre.getDesign(),
+                "PICTURE", exhibitionGenre.getPicture(),
+                "SPECIAL_EXHIBITION", exhibitionGenre.getSpecialExhibition(),
+                "SCULPTURE", exhibitionGenre.getSculpture(),
+                "PLAN_EXHIBITION", exhibitionGenre.getPlanExhibition(),
+                "INSTALLATION_ART", exhibitionGenre.getInstallationArt(),
+                "PAINTING", exhibitionGenre.getPainting(),
+                "ARTIST_EXHIBITION", exhibitionGenre.getArtistExhibition()
         );
+
 
         List<String> topGenres = genreCounts.entrySet().stream()
                 .sorted(Comparator.comparing(Map.Entry::getValue, Comparator.reverseOrder()))
