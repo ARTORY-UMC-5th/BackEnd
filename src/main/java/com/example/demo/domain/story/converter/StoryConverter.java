@@ -4,6 +4,7 @@ package com.example.demo.domain.story.converter;
 import com.example.demo.domain.comment.dto.CommentResponseDto;
 import com.example.demo.domain.exhibition.entity.Exhibition;
 import com.example.demo.domain.member.entity.Member;
+import com.example.demo.domain.story.constant.State;
 import com.example.demo.domain.story.dto.StoryRequestDto;
 import com.example.demo.domain.story.dto.StoryResponseDto;
 import com.example.demo.domain.story.entity.Story;
@@ -42,6 +43,7 @@ public class StoryConverter {
                 .year(storyRequestDto.getYear())
                 .month(storyRequestDto.getMonth())
                 .day(storyRequestDto.getDay())
+                .storyState(State.NOT_STARTED)
                 .build();
     }
 

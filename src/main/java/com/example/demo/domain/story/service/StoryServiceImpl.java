@@ -493,11 +493,10 @@ public class StoryServiceImpl implements StoryService{
             exhibitionGenreRepository.save(exhibitionGenre);
         }
 
-
+        // converter에 해당 스토리가 날짜, 전시회만 설정하고 작성 전임을 나타내기 위해 NOT STARTED 상태 추가
         Story story = storyConverter.convertToDateEntity(storyRequestDto, member, exhibition);
 
         story.initializeNullFields();
-
         storyRepository.save(story);
     }
 

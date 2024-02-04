@@ -22,7 +22,7 @@ public interface StoryRepository extends JpaRepository<Story, Long> {
     //스토리작성한거 전체(myPage 위한 것)
     @Query("SELECT s " +
             "FROM Story s " +
-            "WHERE s.isOpen = true " +
+            "WHERE s.isOpen = true AND s.storyState = com.example.demo.domain.story.constant.State.DONE " +
             "ORDER BY s.updateTime DESC")
     Page<Story> findAllByOrderByUpdateTimeExhibition(@Param("memberId") Long memberId, Pageable pageable);
 
@@ -39,7 +39,7 @@ public interface StoryRepository extends JpaRepository<Story, Long> {
             "FROM Story s " +
             "LEFT JOIN LikeStory ls ON s.id = ls.story.id AND ls.member.memberId = :memberId " +
             "LEFT JOIN ScrapStory ss ON s.id = ss.story.id AND ss.member.memberId = :memberId " +
-            "WHERE s.isOpen = true " +
+            "WHERE s.isOpen = true AND s.storyState = com.example.demo.domain.story.constant.State.DONE " +
             "ORDER BY s.storyLikeCount desc , s.creatTime DESC")
     Page<Object[]> findAllByOrderByStoryLikeCountDesc(Pageable pageable, @Param("memberId") Long memberId);
 
@@ -50,7 +50,7 @@ public interface StoryRepository extends JpaRepository<Story, Long> {
             "from Story s " +
             "left join LikeStory ls on s.id = ls.story.id and ls.member.memberId = :memberId " +
             "left join ScrapStory ss on s.id = ss.story.id and ss.member.memberId = :memberId " +
-            "where s.isOpen = true " +
+            "where s.isOpen = true and s.storyState = com.example.demo.domain.story.constant.State.DONE " +
             "order by s.updateTime desc")
     Page<Object[]> findAllByOrderByCreateTimeDesc(Pageable pageable, Long memberId);
 
@@ -61,7 +61,7 @@ public interface StoryRepository extends JpaRepository<Story, Long> {
             "left join LikeStory ls on s.id = ls.story.id and ls.member.memberId = :memberId " +
             "left join ScrapStory ss on s.id = ss.story.id and ss.member.memberId = :memberId " +
             "left join Member m on m.memberId = :memberId " +
-            "where s.isOpen = true and (s.genre1 = m.genre1 or s.genre1 = m.genre2 or s.genre1 = m.genre3 or s.genre2 = m.genre1 or s.genre2 = m.genre2 or s.genre2 = m.genre3 or s.genre3 = m.genre1 or s.genre3 = m.genre2 or s.genre3 = m.genre3) " +
+            "where s.isOpen = true and s.storyState = com.example.demo.domain.story.constant.State.DONE and (s.genre1 = m.genre1 or s.genre1 = m.genre2 or s.genre1 = m.genre3 or s.genre2 = m.genre1 or s.genre2 = m.genre2 or s.genre2 = m.genre3 or s.genre3 = m.genre1 or s.genre3 = m.genre2 or s.genre3 = m.genre3) " +
             "order by s.storyLikeCount desc, s.creatTime desc ")
     Page<Object[]> findAllByRecommend(Pageable pageable, Long memberId);
 
@@ -72,7 +72,7 @@ public interface StoryRepository extends JpaRepository<Story, Long> {
             "from Story s " +
             "left join LikeStory ls on s.id = ls.story.id and ls.member.memberId = :memberId " +
             "left join ScrapStory ss on s.id = ss.story.id and ss.member.memberId = :memberId " +
-            "where s.storyTitle like %:title% " +
+            "where s.storyTitle like %:title% and s.storyState = com.example.demo.domain.story.constant.State.DONE " +
             "order by s.storyLikeCount desc")
     Page<Object[]> findByStoryTitleContaining(@Param("title") String title, Pageable pageable, Long memberId);
 }
