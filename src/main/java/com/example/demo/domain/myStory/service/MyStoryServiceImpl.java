@@ -67,11 +67,11 @@ public class MyStoryServiceImpl implements MyStoryService{
         List<MyStoryResponseDto.ExhibitionGeneralResponseDto> exhibitions = scrapExhibitionsPage.getContent()
                 .stream()
                 .map(array -> {
-                    ScrapExhibition scrapExhibition = (ScrapExhibition) array[0];
+                    Exhibition exhibition = (Exhibition) array[0];
                     Boolean isLiked = (Boolean) array[1];
                     Boolean isScrapped = (Boolean) array[2];
 
-                    return myStoryConverter.convertToExhibitionDto(scrapExhibition.getExhibition(), isLiked, isScrapped);
+                    return myStoryConverter.convertToExhibitionDto(exhibition, isLiked, isScrapped);
                 })
                 .collect(Collectors.toList());
 

@@ -19,15 +19,13 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
 
 
     //스크랩한거 전체(myStory 위한 것)
-    @Query("SELECT se, " +
+    @Query("SELECT e, " +
             "le.isLiked, " +
             "se.isScrapped " +
             "FROM ScrapExhibition se " +
-            "JOIN se.exhibition e " +
+            "LEFT JOIN Exhibition e ON e.id = se.exhibition.id " +
             "LEFT JOIN LikeExhibition le ON e.id = le.exhibition.id AND le.member.memberId = :memberId " +
-            "WHERE e.isEnded = false " +
-            "AND e.isStarted = true " +
-            "AND se.isScrapped = true " +
+            "WHERE se.isScrapped = true AND se.member.memberId = :memberId AND e.isEnded = false AND e.isStarted = true " +
             "ORDER BY se.updateTime DESC")
     Page<Object[]> findAllByOrderByUpdateTimeExhibition(@Param("memberId") Long memberId, Pageable pageable);
 
