@@ -37,6 +37,19 @@ public class MyStoryController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save the story.");
         }
     }
+
+    @Operation(summary = "스토리 임시 저장")
+    @PostMapping("/draft-save")
+    public ResponseEntity<String> draftSaveStory() {
+        try {
+//            storyService.draftSaveStory();
+            return ResponseEntity.ok("Story draft-saved successfully!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to draft-save the story.");
+        }
+
+    }
+
     @Operation(summary = "마이스토리에 내정보 및 스크랩한 전시회 목록 조회", description = "마이스토리 창 들어갈때 호출되는 url, exhibitions에는 스크랩한 전시회 중 날짜가 유효(시작했고 끝나지 않은)한것만 나옴")
     @GetMapping("/all")
     public ResponseEntity<MyStoryResponseDto.MemberGeneralResponseDto> getAllMyStoryInfo(

@@ -19,7 +19,7 @@ public class ExhibitionGenre extends BaseEntity {
     @Column(name = "exhibitionGenre_id")
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "exhibition_id")
     private Exhibition exhibition;
 

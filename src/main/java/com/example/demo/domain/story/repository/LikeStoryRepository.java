@@ -41,4 +41,6 @@ public interface LikeStoryRepository extends JpaRepository<LikeStory, Long> {
             "from LikeStory ls " +
             "where ls.member.memberId = :memberId and ls.story.id = :storyId ")
     LikeStory findByMemberIdAndStoryId(Long memberId, Long storyId);
+
+    void deleteByStoryId(Long storyId);
 }

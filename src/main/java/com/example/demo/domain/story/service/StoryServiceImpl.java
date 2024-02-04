@@ -18,6 +18,7 @@ import com.example.demo.domain.story.dto.StoryResponseDto;
 import com.example.demo.domain.story.entity.ScrapStory;
 import com.example.demo.domain.story.entity.Story;
 import com.example.demo.domain.story.entity.StoryPicture;
+import com.example.demo.domain.story.repository.LikeStoryRepository;
 import com.example.demo.domain.story.repository.ScrapStoryRepository;
 import com.example.demo.domain.story.repository.StoryPictureRepository;
 import com.example.demo.domain.story.repository.StoryRepository;
@@ -51,6 +52,7 @@ public class StoryServiceImpl implements StoryService{
     private final ExhibitionRepository exhibitionRepository;
     private final StoryRepository storyRepository;
     private final ScrapStoryRepository scrapStoryRepository;
+    private final LikeStoryRepository likeStoryRepository;
     private final StoryConverter storyConverter;
     private final ExhibitionGenreRepository exhibitionGenreRepository;
     private final StoryPictureRepository storyPictureRepository;
@@ -72,16 +74,18 @@ public class StoryServiceImpl implements StoryService{
         Long exhibitionId = storyRequestDto.getExhibitionId();
         Exhibition exhibition = exhibitionRepository.findById(exhibitionId)
                 .orElseThrow(() -> new ExhibitionException(ErrorCode.EXHIBITION_NOT_EXISTS));
-        Boolean isExisted = exhibitionGenreRepository.existsByExhibitionId(exhibitionId);
 
-        // 테이블이 존재하면, 패스
-        if (isExisted == null) {
-            ExhibitionGenre exhibitionGenre = ExhibitionGenre.builder()
-                    .exhibition(exhibition)
-                    .build();
 
-            exhibitionGenreRepository.save(exhibitionGenre);
-        }
+        // Transactional 끼고 save된 객체를 사용하기 힘들어서 직접 ExhibitionGenre에 추가
+//        Boolean isExisted = exhibitionGenreRepository.existsByExhibitionId(exhibitionId);
+//        // 테이블이 존재하면, 패스
+//        if (!isExisted) {
+//            ExhibitionGenre tempExhibitionGenre = ExhibitionGenre.builder()
+//                .exhibition(exhibition)
+//                .build();
+//
+//            exhibitionGenreRepository.save(tempExhibitionGenre);
+//        }
 
 
         // 스토리로 변환, 이때 List<StoryPicture>는 null값
@@ -500,4 +504,47 @@ public class StoryServiceImpl implements StoryService{
         storyRepository.save(story);
     }
 
+    @Transactional
+    public void deleteStory(Long storyId, MemberInfoDto memberInfoDto){
+        //자기 스토리 인지 확인 -> 아니면 삭제 권한 없음
+        //자기가 쓴 스토리면 삭제
+        Optional<Story> optionalStory = storyRepository.findById(storyId);
+        if(optionalStory.isPresent()) {
+            Story story = optionalStory.get();
+            Long memberId = memberInfoDto.getMemberId();
+            if (!memberId.equals(story.getMember().getMemberId())) {
+                throw new StoryException(ErrorCode.NOT_YOUR_STORY);
+            }
+            Exhibition exhibition = exhibitionRepository.getById(story.getExhibition().getId());
+
+            // 장르 업데이트 (가중치 감소)
+            story.updateDecreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(story.getExhibition().getId()), story.getGenre1());
+            story.updateDecreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(story.getExhibition().getId()), story.getGenre2());
+            story.updateDecreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(story.getExhibition().getId()), story.getGenre3());
+            // exhibition 장르 다시 계산
+            exhibition.updateCategory();
+
+            // 스토리의 사진 삭제
+            storyPictureRepository.deleteByStoryId(storyId);
+
+
+            // 스토리 좋아요 삭제
+            likeStoryRepository.deleteByStoryId(storyId);
+
+            // 스크랩 스토리, 댓글, 대댓글 삭제 -> 엔티티에서 처리 (스크랩 스토리 삭제되나 확인 필요)
+            // 스토리 삭제 -> 댓글과 대댓글 모두 삭제 처리
+//            scrapStoryRepository.deleteByMemberIdAndStoryId(memberId, storyId);
+            storyRepository.deleteById(storyId);
+            
+        }else{
+            throw new StoryException(ErrorCode.STORY_NOT_EXISTS);
+        }
+    }
+    
+    // 임시 저장
+    @Transactional
+    public void draftSaveStory(StoryRequestDto.StoryRequestGeneralDto draftStoryRequestDto, MemberInfoDto memberInfoDto) {
+
+
+    }
 }

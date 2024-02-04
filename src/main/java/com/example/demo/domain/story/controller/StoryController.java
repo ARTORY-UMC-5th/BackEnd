@@ -29,12 +29,9 @@ public class StoryController {
     @Operation(summary = "스토리 저장")
     @PostMapping("/save")
     public ResponseEntity<String> saveStory(@RequestBody StoryRequestDto.StoryRequestGeneralDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
-        try {
-            storyService.saveStory(storyRequestDto,memberInfoDto);
-            return ResponseEntity.ok("Story saved successfully!");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save the story.");
-        }
+        storyService.saveStory(storyRequestDto,memberInfoDto);
+        return ResponseEntity.ok("Story saved successfully!");
+
     }
 
     @Operation(summary = "스토리 수정")
@@ -119,5 +116,13 @@ public class StoryController {
         StoryResponseDto.StoryListResponseDto storyList = storyService.getAllStoryList(page, memberInfoDto);
         return ResponseEntity.ok(storyList);
     }
+
+    @Operation(summary = "스토리 삭제")
+    @DeleteMapping("/delete/{story-id}")
+    public ResponseEntity<String> deleteStory(@RequestParam Long storyId, @MemberInfo MemberInfoDto memberInfoDto){
+        storyService.deleteStory(storyId, memberInfoDto);
+        return ResponseEntity.ok("story deleted successfully!");
+    }
+
 
 }

@@ -31,6 +31,7 @@ public class StoryConverter {
                 .genre2(storyRequestDto.getGenre2())
                 .genre3(storyRequestDto.getGenre3())
                 .isOpen(storyRequestDto.getIsOpen())
+                .storyState(State.DONE)
                 .member(member)
                 .exhibition(exhibition)
                 .build();
