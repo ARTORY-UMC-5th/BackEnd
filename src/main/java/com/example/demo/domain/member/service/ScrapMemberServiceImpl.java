@@ -4,11 +4,15 @@ import com.example.demo.domain.member.entity.ScrapMember;
 import com.example.demo.domain.member.repository.MemberRepository;
 import com.example.demo.domain.member.repository.ScrapMemberRepository;
 import com.example.demo.global.error.ErrorCode;
+import com.example.demo.global.error.exception.BusinessException;
+import com.example.demo.global.error.exception.ScrapException;
 import com.example.demo.global.error.exception.StoryException;
 import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.script.ScriptException;
 
 
 @Service
@@ -35,10 +39,14 @@ public class ScrapMemberServiceImpl implements ScrapMemberService{
                     .build();
 
             scrapMemberRepository.save(scrapMember);
+
+            // 스크랩을 안했을 때 -> true 변경
         } else if (temp.getIsScrapped() == null || temp.getIsScrapped() == false) {
             scrapMemberRepository.setIsScrappedTrue(temp);
         } else {
-            throw new StoryException(ErrorCode.SCRAP_EXISTS);
+
+            //이미 스크랩했는데 스크랩하려할 때 -> throw
+            throw new ScrapException(ErrorCode.SCRAP_EXISTS);
         }
     }
 
@@ -50,7 +58,7 @@ public class ScrapMemberServiceImpl implements ScrapMemberService{
         ScrapMember scrapMember = scrapMemberRepository.findByfromMemberIdAndtoMemberId(fromMemberId, toMemberId);
 
         if (scrapMember == null || scrapMember.getIsScrapped() == null || !scrapMember.getIsScrapped()) {
-            throw new StoryException(ErrorCode.UNSCRAP_EXISTS);
+            throw new ScrapException(ErrorCode.UNSCRAP_EXISTS);
         } else {
             scrapMemberRepository.setIsScrappedFalse(scrapMember);
         }

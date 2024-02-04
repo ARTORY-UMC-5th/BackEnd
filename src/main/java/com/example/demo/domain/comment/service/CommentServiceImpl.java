@@ -8,6 +8,7 @@ import com.example.demo.domain.member.repository.MemberRepository;
 import com.example.demo.domain.story.entity.Story;
 import com.example.demo.domain.story.repository.StoryRepository;
 import com.example.demo.global.error.ErrorCode;
+import com.example.demo.global.error.exception.BusinessException;
 import com.example.demo.global.error.exception.CommentException;
 import com.example.demo.global.error.exception.StoryException;
 import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
@@ -30,14 +31,11 @@ public class CommentServiceImpl implements CommentService{
 
     @Transactional
     public void saveComment(CommentRequestDto.CommentSaveRequestDto commentSaveRequestDto, Long storyId, MemberInfoDto memberInfoDto) {
-        Member member = memberRepository.getById(memberInfoDto.getMemberId());
-        Optional<Story> optionalStory = storyRepository.findById(storyId);
+        Member member = memberRepository.findById(memberInfoDto.getMemberId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_EXISTS));
 
-        if (optionalStory.isEmpty()) {
-            throw new StoryException(ErrorCode.STORY_NOT_EXISTS);
-        }
-
-        Story story = optionalStory.get();
+        Story story = storyRepository.findById(storyId)
+                .orElseThrow(() -> new StoryException(ErrorCode.STORY_NOT_EXISTS));
 
         // 댓글 생성
         Comment comment = Comment.builder()
@@ -47,6 +45,7 @@ public class CommentServiceImpl implements CommentService{
                 .commentSatisfactionLevel(commentSaveRequestDto.getCommentSatisfactionLevel())
                 .build();
 
+        // 필수 값 안넣었을 시 예외는 추후 작성
         commentRepository.save(comment);
     }
 
@@ -54,7 +53,8 @@ public class CommentServiceImpl implements CommentService{
     @Transactional
     public void deleteComment(CommentRequestDto.CommentDeleteRequestDto commentDeleteRequestDto, Long storyId, MemberInfoDto memberInfoDto) {
 
-        Comment tempComment = commentRepository.getById(commentDeleteRequestDto.getCommentId());
+        Comment tempComment = commentRepository.findById(commentDeleteRequestDto.getCommentId())
+                .orElseThrow(() -> new CommentException(ErrorCode.COMMENT_NOT_EXISTS));
         Long commentMemberId = tempComment.getMember().getMemberId();
 
 
@@ -75,21 +75,20 @@ public class CommentServiceImpl implements CommentService{
 
     @Transactional
     public void updateComment(CommentRequestDto.CommentUpdateRequestDto commentUpdateRequestDto, Long storyId, MemberInfoDto memberInfoDto) {
-        Member member = memberRepository.getById(memberInfoDto.getMemberId());
-        Optional<Story> optionalStory = storyRepository.findById(storyId);
+        Member member = memberRepository.findById(memberInfoDto.getMemberId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_EXISTS));
+
+        Story story = storyRepository.findById(storyId)
+                .orElseThrow(() -> new StoryException(ErrorCode.STORY_NOT_EXISTS));
         Long commentId = commentUpdateRequestDto.getCommentId();
-        Comment comment = commentRepository.getById(commentId);
 
 
-        if (optionalStory.isEmpty()) {
-            throw new StoryException(ErrorCode.STORY_NOT_EXISTS);
-        }
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new CommentException(ErrorCode.COMMENT_NOT_EXISTS));
 
         if (!Objects.equals(member.getMemberId(), comment.getMember().getMemberId())) {
             throw new CommentException(ErrorCode.NOT_YOUR_COMMENT);
         }
-
-        Story story = optionalStory.get();
 
         comment = Comment.builder()
                 .id(commentId)
@@ -99,7 +98,8 @@ public class CommentServiceImpl implements CommentService{
                 .commentSatisfactionLevel(commentUpdateRequestDto.getCommentSatisfactionLevel())
                 .build();
 
-        commentRepository.save(comment);
+        // 필수 값 안넣었을 시 예외는 추후 작성
 
+        commentRepository.save(comment);
     }
 }
