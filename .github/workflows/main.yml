@@ -12,9 +12,9 @@ jobs:
         uses: actions/setup-java@v1
         with: 
           java-version: '17'
-      - run: touch ./src/main/resources/application-secret.properties
-      - run: echo "${{ secrets.JASYPT }}" > ./src/main/resources/application-secret.properties
-      - run: cat ./src/main/resources/application-secret.properties
+      - run: touch ./src/main/resources/jasypt.properties
+      - run: echo "${{ secrets.JASYPT }}" > ./src/main/resources/jasyptproperties
+      - run: cat ./src/main/resources/jasypt.properties
       # gradlew에 권한 부여
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
