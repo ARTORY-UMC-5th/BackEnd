@@ -15,7 +15,7 @@ import java.util.List;
 
 @Component
 public class StoryConverter {
-    public Story convertToEntity(StoryRequestDto.StoryRequestDraftDto storyRequestDto, Member member, Exhibition exhibition) {
+    public Story convertToEntity(StoryRequestDto.StoryRequestGeneralDto storyRequestDto, Member member, Exhibition exhibition) {
         return Story.builder()
                 .storyTitle(storyRequestDto.getStoryTitle())
                 .storySatisfactionLevel(storyRequestDto.getStorySatisfactionLevel())
@@ -127,7 +127,7 @@ public class StoryConverter {
     }
 
     // 임시 저장 데이터를 스토리로 변경 (storyId가 없을 때)
-    public Story convertFromDraftToEntity(StoryRequestDto.StoryRequestDraftDto draftStoryRequestDto, Member member, Exhibition exhibition) {
+    public Story convertFromDraftToEntity(StoryRequestDto.StoryRequestGeneralDto draftStoryRequestDto, Member member, Exhibition exhibition) {
 
         Story story = Story.builder()
                 .exhibition(exhibition)
@@ -153,12 +153,12 @@ public class StoryConverter {
     }
 
     // 임시 저장 데이터를 스토리로 변경 (storyId가 있을 때)
-    public Story convertFromDraftToEntityWithStoryId(StoryRequestDto.StoryRequestDraftDto draftStoryRequestDto, Member member, Exhibition exhibition, Story existingStory) {
+    public Story convertFromDraftToEntityWithStoryId(StoryRequestDto.StoryRequestGeneralDto draftStoryRequestDto, Member member, Exhibition exhibition, Story existingStory, Long storyId) {
 
         Story story = existingStory.builder()
                 .exhibition(exhibition)
                 .member(member)
-                .id(draftStoryRequestDto.getStoryId())
+                .id(storyId)
                 .storyTitle(draftStoryRequestDto.getStoryTitle())
                 .storySatisfactionLevel(draftStoryRequestDto.getStorySatisfactionLevel())
                 .storyWeather(draftStoryRequestDto.getStoryWeather())
@@ -179,12 +179,12 @@ public class StoryConverter {
         return story;
     }
 
-    public Story convertToEntityWithStoryId(StoryRequestDto.StoryRequestDraftDto storyRequestDto, Member member, Exhibition exhibition, Story existingStory) {
+    public Story convertToEntityWithStoryId(StoryRequestDto.StoryRequestGeneralDto storyRequestDto, Member member, Exhibition exhibition, Story existingStory, Long storyId) {
 
         Story story = existingStory.builder()
                 .exhibition(exhibition)
                 .member(member)
-                .id(storyRequestDto.getStoryId())
+                .id(storyId)
                 .storyTitle(storyRequestDto.getStoryTitle())
                 .storySatisfactionLevel(storyRequestDto.getStorySatisfactionLevel())
                 .storyWeather(storyRequestDto.getStoryWeather())

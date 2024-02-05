@@ -31,24 +31,27 @@ public class MyStoryController {
     @Operation(summary = "스토리 저장 (작성 전)")
     @PostMapping("/not-started-save")
     public ResponseEntity<String> saveStory(@RequestBody StoryRequestDto.StoryRequestDateDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
-        try {
-            storyService.saveStoryNotDate(storyRequestDto,memberInfoDto);
-            return ResponseEntity.ok("Story saved successfully!");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save the story.");
-        }
+//        try {
+//            storyService.saveStoryNotDate(storyRequestDto,memberInfoDto);
+//            return ResponseEntity.ok("Story saved successfully!");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save the story.");
+//        }
+        storyService.saveStoryNotDate(storyRequestDto,memberInfoDto);
+        return ResponseEntity.ok("Story saved successfully!");
+
     }
 
     @Operation(summary = "스토리 임시 저장")
     @PostMapping("/draft-save")
-    public ResponseEntity<String> draftSaveStory(@RequestBody StoryRequestDto.StoryRequestDraftDto storyRequestDraftDto, @MemberInfo MemberInfoDto memberInfoDto) {
+    public ResponseEntity<String> draftSaveStory(@RequestBody StoryRequestDto.StoryRequestGeneralDto storyRequestDraftDto, @MemberInfo MemberInfoDto memberInfoDto, @RequestParam(required = false) Long storyId) {
 //        try {
 //            storyService.draftSaveStory(storyRequestDraftDto, memberInfoDto);
 //            return ResponseEntity.ok("Story draft-saved successfully!");
 //        } catch (Exception e) {
 //            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to draft-save the story.");
 //        }
-        storyService.draftSaveStory(storyRequestDraftDto, memberInfoDto);
+        storyService.draftSaveStory(storyRequestDraftDto, memberInfoDto, storyId);
         return ResponseEntity.ok("Story draft-saved successfully!");
 
     }

@@ -28,8 +28,8 @@ public class StoryController {
 
     @Operation(summary = "스토리 저장")
     @PostMapping("/save")
-    public ResponseEntity<String> saveStory(@RequestBody StoryRequestDto.StoryRequestGeneralDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
-        storyService.saveStory(storyRequestDto,memberInfoDto);
+    public ResponseEntity<String> saveStory(@RequestBody StoryRequestDto.StoryRequestGeneralDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto, @RequestParam(required = false) Long storyId) {
+        storyService.saveStory(storyRequestDto,memberInfoDto, storyId);
         return ResponseEntity.ok("Story saved successfully!");
 
     }

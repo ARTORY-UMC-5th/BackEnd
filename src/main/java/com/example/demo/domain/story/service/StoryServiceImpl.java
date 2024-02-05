@@ -22,10 +22,8 @@ import com.example.demo.domain.story.repository.LikeStoryRepository;
 import com.example.demo.domain.story.repository.ScrapStoryRepository;
 import com.example.demo.domain.story.repository.StoryPictureRepository;
 import com.example.demo.domain.story.repository.StoryRepository;
-import com.example.demo.exteranal.s3Bucket.service.S3Service;
 import com.example.demo.global.error.ErrorCode;
 import com.example.demo.global.error.exception.BusinessException;
-import com.example.demo.global.error.exception.EntityNotFoundException;
 
 import com.example.demo.global.error.exception.ExhibitionException;
 import com.example.demo.global.error.exception.StoryException;
@@ -60,7 +58,7 @@ public class StoryServiceImpl implements StoryService{
     private final SubCommentService subCommentService;
 
     @Transactional
-    public void saveStory(StoryRequestDto.StoryRequestDraftDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
+    public void saveStory(StoryRequestDto.StoryRequestGeneralDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto, Long storyId) {
 
         Long memberId = memberInfoDto.getMemberId();
         Member member = memberRepository.findById(memberId)
@@ -81,14 +79,17 @@ public class StoryServiceImpl implements StoryService{
 //            exhibitionGenreRepository.save(tempExhibitionGenre);
 //        }
         Story story;
-        if (storyRequestDto.getStoryId() == null) {
+        if (storyId == null) {
             // 새로 story 생성
             story = storyConverter.convertToEntity(storyRequestDto, member, exhibition);
         } else {
             // 기존의 story 가져와 덮어쓰기
-            Story existingStory = storyRepository.findById(storyRequestDto.getStoryId())
+            Story existingStory = storyRepository.findById(storyId)
                     .orElseThrow(() -> new StoryException(ErrorCode.STORY_NOT_EXISTS));
-            story = storyConverter.convertToEntityWithStoryId(storyRequestDto, member, exhibition, existingStory);
+            story = storyConverter.convertToEntityWithStoryId(storyRequestDto, member, exhibition, existingStory, storyId);
+
+            // 임시저장에서 저장한 storyPicture 삭제 -> 후에 다시 저장 예정
+            storyPictureRepository.deleteByStoryId(story.getId());
         }
 
         //        story.initializeNullFields();
@@ -488,7 +489,7 @@ public class StoryServiceImpl implements StoryService{
     }
 
     @Transactional
-    public void deleteStory(Long storyId, MemberInfoDto memberInfoDto){
+    public void deleteStory(Long storyId, @MemberInfo MemberInfoDto memberInfoDto){
         //자기 스토리 인지 확인 -> 아니면 삭제 권한 없음
         //자기가 쓴 스토리면 삭제
         Optional<Story> optionalStory = storyRepository.findById(storyId);
@@ -525,21 +526,23 @@ public class StoryServiceImpl implements StoryService{
     }
 
     @Transactional
-    public void draftSaveStory(StoryRequestDto.StoryRequestDraftDto draftStoryRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
+    public void draftSaveStory(StoryRequestDto.StoryRequestGeneralDto draftStoryRequestDto, @MemberInfo MemberInfoDto memberInfoDto, Long storyId) {
         Exhibition exhibition = exhibitionRepository.findById(draftStoryRequestDto.getExhibitionId())
                 .orElseThrow(() -> new ExhibitionException(ErrorCode.EXHIBITION_NOT_EXISTS));
         Member member = memberRepository.findById(memberInfoDto.getMemberId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_EXISTS));
 
         Story story;
-        if (draftStoryRequestDto.getStoryId() == null) {
+        if (storyId == null) {
             // 새로 story 생성
             story = storyConverter.convertFromDraftToEntity(draftStoryRequestDto, member, exhibition);
         } else {
             // 기존의 story 가져와 덮어쓰기
-            Story existingStory = storyRepository.findById(draftStoryRequestDto.getStoryId())
+            Story existingStory = storyRepository.findById(storyId)
                     .orElseThrow(() -> new StoryException(ErrorCode.STORY_NOT_EXISTS));
-            story = storyConverter.convertFromDraftToEntityWithStoryId(draftStoryRequestDto, member, exhibition, existingStory);
+            story = storyConverter.convertFromDraftToEntityWithStoryId(draftStoryRequestDto, member, exhibition, existingStory, storyId);
+
+            storyPictureRepository.deleteByStoryId(story.getId());
         }
 
         List<String> picturesUrl = draftStoryRequestDto.getPicturesUrl();
