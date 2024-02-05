@@ -50,9 +50,11 @@ public class MyStoryResponseDto {
     public static class StorySpecificResponseDto {
 
         private Long StoryId;
-        private String exhibitionTitle;
         private State storyState;
 
+        private Long exhibitionId;
+        private String exhibitionImage;
+        private String exhibitionTitle;
 
     }
 

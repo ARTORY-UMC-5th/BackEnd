@@ -100,8 +100,10 @@ public class MyStoryConverter {
     public MyStoryResponseDto.StorySpecificResponseDto convertToSpecificStoryDto(Story story){
         MyStoryResponseDto.StorySpecificResponseDto dto = MyStoryResponseDto.StorySpecificResponseDto.builder()
                 .StoryId(story.getId())
-                .exhibitionTitle(story.getExhibition().getExhibitionTitle())
                 .storyState(story.getStoryState())
+                .exhibitionId(story.getExhibition().getId())
+                .exhibitionImage(story.getExhibition().getExhibitionImage())
+                .exhibitionTitle(story.getExhibition().getExhibitionTitle())
                 .build();
         return dto;
     }
