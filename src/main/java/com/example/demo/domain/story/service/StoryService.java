@@ -32,7 +32,7 @@ public interface StoryService {
     List<StoryResponseDto.MemberThumbnailResponseDto> getRecommendMembers(int page,@MemberInfo MemberInfoDto memberInfoDto);
 
     // 스토리 저장
-    void saveStory(StoryRequestDto.StoryRequestGeneralDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto);
+    void saveStory(StoryRequestDto.StoryRequestDraftDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto);
 
     // 스토리 검색
     List<StoryResponseDto.StoryThumbnailResponseDto> getSearchStoriesByTitle(int page, String title, @MemberInfo MemberInfoDto memberInfoDto);

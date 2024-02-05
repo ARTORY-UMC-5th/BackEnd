@@ -42,12 +42,14 @@ public class MyStoryController {
     @Operation(summary = "스토리 임시 저장")
     @PostMapping("/draft-save")
     public ResponseEntity<String> draftSaveStory(@RequestBody StoryRequestDto.StoryRequestDraftDto storyRequestDraftDto, @MemberInfo MemberInfoDto memberInfoDto) {
-        try {
-            storyService.draftSaveStory(storyRequestDraftDto, memberInfoDto);
-            return ResponseEntity.ok("Story draft-saved successfully!");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to draft-save the story.");
-        }
+//        try {
+//            storyService.draftSaveStory(storyRequestDraftDto, memberInfoDto);
+//            return ResponseEntity.ok("Story draft-saved successfully!");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to draft-save the story.");
+//        }
+        storyService.draftSaveStory(storyRequestDraftDto, memberInfoDto);
+        return ResponseEntity.ok("Story draft-saved successfully!");
 
     }
 

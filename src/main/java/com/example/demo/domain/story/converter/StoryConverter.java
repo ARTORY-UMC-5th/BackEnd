@@ -15,7 +15,7 @@ import java.util.List;
 
 @Component
 public class StoryConverter {
-    public Story convertToEntity(StoryRequestDto.StoryRequestGeneralDto storyRequestDto, Member member, Exhibition exhibition) {
+    public Story convertToEntity(StoryRequestDto.StoryRequestDraftDto storyRequestDto, Member member, Exhibition exhibition) {
         return Story.builder()
                 .storyTitle(storyRequestDto.getStoryTitle())
                 .storySatisfactionLevel(storyRequestDto.getStorySatisfactionLevel())
@@ -127,10 +127,11 @@ public class StoryConverter {
     }
 
     // 임시 저장 데이터를 스토리로 변경 (storyId가 없을 때)
-    public Story convertFromDraftToEntity(StoryRequestDto.StoryRequestDraftDto draftStoryRequestDto, Exhibition exhibition) {
+    public Story convertFromDraftToEntity(StoryRequestDto.StoryRequestDraftDto draftStoryRequestDto, Member member, Exhibition exhibition) {
 
         Story story = Story.builder()
                 .exhibition(exhibition)
+                .member(member)
                 .storyTitle(draftStoryRequestDto.getStoryTitle())
                 .storySatisfactionLevel(draftStoryRequestDto.getStorySatisfactionLevel())
                 .storyWeather(draftStoryRequestDto.getStoryWeather())
@@ -152,10 +153,11 @@ public class StoryConverter {
     }
 
     // 임시 저장 데이터를 스토리로 변경 (storyId가 있을 때)
-    public Story convertFromDraftToEntityWithStoryId(StoryRequestDto.StoryRequestDraftDto draftStoryRequestDto, Exhibition exhibition, Story existingStory) {
+    public Story convertFromDraftToEntityWithStoryId(StoryRequestDto.StoryRequestDraftDto draftStoryRequestDto, Member member, Exhibition exhibition, Story existingStory) {
 
         Story story = existingStory.builder()
                 .exhibition(exhibition)
+                .member(member)
                 .id(draftStoryRequestDto.getStoryId())
                 .storyTitle(draftStoryRequestDto.getStoryTitle())
                 .storySatisfactionLevel(draftStoryRequestDto.getStorySatisfactionLevel())
@@ -175,5 +177,33 @@ public class StoryConverter {
                 .build();
 
         return story;
+    }
+
+    public Story convertToEntityWithStoryId(StoryRequestDto.StoryRequestDraftDto storyRequestDto, Member member, Exhibition exhibition, Story existingStory) {
+
+        Story story = existingStory.builder()
+                .exhibition(exhibition)
+                .member(member)
+                .id(storyRequestDto.getStoryId())
+                .storyTitle(storyRequestDto.getStoryTitle())
+                .storySatisfactionLevel(storyRequestDto.getStorySatisfactionLevel())
+                .storyWeather(storyRequestDto.getStoryWeather())
+                .storyCompanion(storyRequestDto.getStoryCompanion())
+                .storyKeyword(storyRequestDto.getStoryKeyword())
+                .storyViewingTime(storyRequestDto.getStoryViewingTime())
+                .year(storyRequestDto.getYear())
+                .month(storyRequestDto.getMonth())
+                .day(storyRequestDto.getDay())
+                .storyContext(storyRequestDto.getStoryContext())
+                .genre1(storyRequestDto.getGenre1())
+                .genre2(storyRequestDto.getGenre2())
+                .genre3(storyRequestDto.getGenre3())
+                .isOpen(storyRequestDto.getIsOpen())
+                .storyState(State.DONE)
+                .build();
+
+        return story;
+
+
     }
 }

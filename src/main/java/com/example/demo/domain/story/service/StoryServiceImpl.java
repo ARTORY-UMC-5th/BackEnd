@@ -60,13 +60,7 @@ public class StoryServiceImpl implements StoryService{
     private final SubCommentService subCommentService;
 
     @Transactional
-    public void saveStory(StoryRequestDto.StoryRequestGeneralDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
-
-
-        // 스토리 저장 전에 스토리-전시회에 해당하는 ExhibitionGenre 있는지 확인
-        // ExhibitionGenre가 있으면 pass, 없으면 만들어서 전시회와 매핑
-        // 스토리의 category1, 2, 3을 해당 전시회 ExhibitionGenre에 1 증가시키고 -> 전시회 category 업데이트
-        // 후 스토리 저장
+    public void saveStory(StoryRequestDto.StoryRequestDraftDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
 
         Long memberId = memberInfoDto.getMemberId();
         Member member = memberRepository.findById(memberId)
@@ -86,19 +80,18 @@ public class StoryServiceImpl implements StoryService{
 //
 //            exhibitionGenreRepository.save(tempExhibitionGenre);
 //        }
+        Story story;
+        if (storyRequestDto.getStoryId() == null) {
+            // 새로 story 생성
+            story = storyConverter.convertToEntity(storyRequestDto, member, exhibition);
+        } else {
+            // 기존의 story 가져와 덮어쓰기
+            Story existingStory = storyRepository.findById(storyRequestDto.getStoryId())
+                    .orElseThrow(() -> new StoryException(ErrorCode.STORY_NOT_EXISTS));
+            story = storyConverter.convertToEntityWithStoryId(storyRequestDto, member, exhibition, existingStory);
+        }
 
-
-        // 스토리로 변환, 이때 List<StoryPicture>는 null값
-        Story story = storyConverter.convertToEntity(storyRequestDto, member, exhibition);
-//        story.initializeNullFields();
-
-
-//        List<String> picturesUrl = null;
-//        try {
-//            picturesUrl = s3Service.saveFileList(storyRequestDto.get());
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+        //        story.initializeNullFields();
 
         List<String> picturesUrl = storyRequestDto.getPicturesUrl();
 
@@ -118,22 +111,12 @@ public class StoryServiceImpl implements StoryService{
         // 스토리 썸네일 set
         story.setStoryThumbnailImage(picturesUrl.get(0));
 
-        /**
-         * 스토리에서 선택한 장르가 3개가 아닐수도 있음
-         * story -> 해당 exhibitionGenre를 1 증가 (updateExhibitionGenre) 장르가 null이면, pass
-         */
         story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), storyRequestDto.getGenre1());
         story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), storyRequestDto.getGenre2());
         story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), storyRequestDto.getGenre3());
 
-        /*
-          updateCategory : 해당 전시회의 상위 3개 Genre 선택해서 업데이트
-         */
         exhibition.updateCategory();
 
-        /*
-         * Story, 해당 Story의 사진 모음 저장
-         */
         storyRepository.save(story);
         storyPictureRepository.saveAll(storyPictureList);
     }
@@ -545,16 +528,18 @@ public class StoryServiceImpl implements StoryService{
     public void draftSaveStory(StoryRequestDto.StoryRequestDraftDto draftStoryRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
         Exhibition exhibition = exhibitionRepository.findById(draftStoryRequestDto.getExhibitionId())
                 .orElseThrow(() -> new ExhibitionException(ErrorCode.EXHIBITION_NOT_EXISTS));
+        Member member = memberRepository.findById(memberInfoDto.getMemberId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_EXISTS));
 
         Story story;
         if (draftStoryRequestDto.getStoryId() == null) {
             // 새로 story 생성
-            story = storyConverter.convertFromDraftToEntity(draftStoryRequestDto, exhibition);
+            story = storyConverter.convertFromDraftToEntity(draftStoryRequestDto, member, exhibition);
         } else {
             // 기존의 story 가져와 덮어쓰기
             Story existingStory = storyRepository.findById(draftStoryRequestDto.getStoryId())
                     .orElseThrow(() -> new StoryException(ErrorCode.STORY_NOT_EXISTS));
-            story = storyConverter.convertFromDraftToEntityWithStoryId(draftStoryRequestDto, exhibition, existingStory);
+            story = storyConverter.convertFromDraftToEntityWithStoryId(draftStoryRequestDto, member, exhibition, existingStory);
         }
 
         List<String> picturesUrl = draftStoryRequestDto.getPicturesUrl();
