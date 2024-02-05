@@ -540,11 +540,35 @@ public class StoryServiceImpl implements StoryService{
             throw new StoryException(ErrorCode.STORY_NOT_EXISTS);
         }
     }
-    
-    // 임시 저장
+
     @Transactional
-    public void draftSaveStory(StoryRequestDto.StoryRequestGeneralDto draftStoryRequestDto, MemberInfoDto memberInfoDto) {
+    public void draftSaveStory(StoryRequestDto.StoryRequestDraftDto draftStoryRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
+        Exhibition exhibition = exhibitionRepository.findById(draftStoryRequestDto.getExhibitionId())
+                .orElseThrow(() -> new ExhibitionException(ErrorCode.EXHIBITION_NOT_EXISTS));
 
+        Story story;
+        if (draftStoryRequestDto.getStoryId() == null) {
+            // 새로 story 생성
+            story = storyConverter.convertFromDraftToEntity(draftStoryRequestDto, exhibition);
+        } else {
+            // 기존의 story 가져와 덮어쓰기
+            Story existingStory = storyRepository.findById(draftStoryRequestDto.getStoryId())
+                    .orElseThrow(() -> new StoryException(ErrorCode.STORY_NOT_EXISTS));
+            story = storyConverter.convertFromDraftToEntityWithStoryId(draftStoryRequestDto, exhibition, existingStory);
+        }
 
+        List<String> picturesUrl = draftStoryRequestDto.getPicturesUrl();
+        List<StoryPicture> storyPictureList = new ArrayList<>();
+        for (String pictureUrl : picturesUrl) {
+            StoryPicture storyPicture = StoryPicture.builder()
+                    .story(story)
+                    .pictureUrl(pictureUrl)
+                    .build();
+            storyPictureList.add(storyPicture);
+        }
+
+        story.setStoryPictureList(storyPictureList);
+        storyRepository.save(story);
     }
+
 }

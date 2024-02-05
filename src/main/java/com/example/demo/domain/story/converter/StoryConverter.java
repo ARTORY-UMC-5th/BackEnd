@@ -125,4 +125,55 @@ public class StoryConverter {
 
         return storyRepositoryResponseDto;
     }
+
+    // 임시 저장 데이터를 스토리로 변경 (storyId가 없을 때)
+    public Story convertFromDraftToEntity(StoryRequestDto.StoryRequestDraftDto draftStoryRequestDto, Exhibition exhibition) {
+
+        Story story = Story.builder()
+                .exhibition(exhibition)
+                .storyTitle(draftStoryRequestDto.getStoryTitle())
+                .storySatisfactionLevel(draftStoryRequestDto.getStorySatisfactionLevel())
+                .storyWeather(draftStoryRequestDto.getStoryWeather())
+                .storyCompanion(draftStoryRequestDto.getStoryCompanion())
+                .storyKeyword(draftStoryRequestDto.getStoryKeyword())
+                .storyViewingTime(draftStoryRequestDto.getStoryViewingTime())
+                .year(draftStoryRequestDto.getYear())
+                .month(draftStoryRequestDto.getMonth())
+                .day(draftStoryRequestDto.getDay())
+                .storyContext(draftStoryRequestDto.getStoryContext())
+                .genre1(draftStoryRequestDto.getGenre1())
+                .genre2(draftStoryRequestDto.getGenre2())
+                .genre3(draftStoryRequestDto.getGenre3())
+                .isOpen(draftStoryRequestDto.getIsOpen())
+                .storyState(State.IN_PROGRESS)
+                .build();
+
+        return story;
+    }
+
+    // 임시 저장 데이터를 스토리로 변경 (storyId가 있을 때)
+    public Story convertFromDraftToEntityWithStoryId(StoryRequestDto.StoryRequestDraftDto draftStoryRequestDto, Exhibition exhibition, Story existingStory) {
+
+        Story story = existingStory.builder()
+                .exhibition(exhibition)
+                .id(draftStoryRequestDto.getStoryId())
+                .storyTitle(draftStoryRequestDto.getStoryTitle())
+                .storySatisfactionLevel(draftStoryRequestDto.getStorySatisfactionLevel())
+                .storyWeather(draftStoryRequestDto.getStoryWeather())
+                .storyCompanion(draftStoryRequestDto.getStoryCompanion())
+                .storyKeyword(draftStoryRequestDto.getStoryKeyword())
+                .storyViewingTime(draftStoryRequestDto.getStoryViewingTime())
+                .year(draftStoryRequestDto.getYear())
+                .month(draftStoryRequestDto.getMonth())
+                .day(draftStoryRequestDto.getDay())
+                .storyContext(draftStoryRequestDto.getStoryContext())
+                .genre1(draftStoryRequestDto.getGenre1())
+                .genre2(draftStoryRequestDto.getGenre2())
+                .genre3(draftStoryRequestDto.getGenre3())
+                .isOpen(draftStoryRequestDto.getIsOpen())
+                .storyState(State.IN_PROGRESS)
+                .build();
+
+        return story;
+    }
 }
