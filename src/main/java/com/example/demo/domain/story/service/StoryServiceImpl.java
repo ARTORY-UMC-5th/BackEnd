@@ -18,13 +18,12 @@ import com.example.demo.domain.story.dto.StoryResponseDto;
 import com.example.demo.domain.story.entity.ScrapStory;
 import com.example.demo.domain.story.entity.Story;
 import com.example.demo.domain.story.entity.StoryPicture;
+import com.example.demo.domain.story.repository.LikeStoryRepository;
 import com.example.demo.domain.story.repository.ScrapStoryRepository;
 import com.example.demo.domain.story.repository.StoryPictureRepository;
 import com.example.demo.domain.story.repository.StoryRepository;
-import com.example.demo.exteranal.s3Bucket.service.S3Service;
 import com.example.demo.global.error.ErrorCode;
 import com.example.demo.global.error.exception.BusinessException;
-import com.example.demo.global.error.exception.EntityNotFoundException;
 
 import com.example.demo.global.error.exception.ExhibitionException;
 import com.example.demo.global.error.exception.StoryException;
@@ -51,6 +50,7 @@ public class StoryServiceImpl implements StoryService{
     private final ExhibitionRepository exhibitionRepository;
     private final StoryRepository storyRepository;
     private final ScrapStoryRepository scrapStoryRepository;
+    private final LikeStoryRepository likeStoryRepository;
     private final StoryConverter storyConverter;
     private final ExhibitionGenreRepository exhibitionGenreRepository;
     private final StoryPictureRepository storyPictureRepository;
@@ -58,13 +58,7 @@ public class StoryServiceImpl implements StoryService{
     private final SubCommentService subCommentService;
 
     @Transactional
-    public void saveStory(StoryRequestDto.StoryRequestGeneralDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
-
-
-        // 스토리 저장 전에 스토리-전시회에 해당하는 ExhibitionGenre 있는지 확인
-        // ExhibitionGenre가 있으면 pass, 없으면 만들어서 전시회와 매핑
-        // 스토리의 category1, 2, 3을 해당 전시회 ExhibitionGenre에 1 증가시키고 -> 전시회 category 업데이트
-        // 후 스토리 저장
+    public void saveStory(StoryRequestDto.StoryRequestGeneralDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto, Long storyId) {
 
         Long memberId = memberInfoDto.getMemberId();
         Member member = memberRepository.findById(memberId)
@@ -72,29 +66,33 @@ public class StoryServiceImpl implements StoryService{
         Long exhibitionId = storyRequestDto.getExhibitionId();
         Exhibition exhibition = exhibitionRepository.findById(exhibitionId)
                 .orElseThrow(() -> new ExhibitionException(ErrorCode.EXHIBITION_NOT_EXISTS));
-        Boolean isExisted = exhibitionGenreRepository.existsByExhibitionId(exhibitionId);
 
-        // 테이블이 존재하면, 패스
-        if (isExisted == null) {
-            ExhibitionGenre exhibitionGenre = ExhibitionGenre.builder()
-                    .exhibition(exhibition)
-                    .build();
 
-            exhibitionGenreRepository.save(exhibitionGenre);
+        // Transactional 끼고 save된 객체를 사용하기 힘들어서 직접 ExhibitionGenre에 추가
+//        Boolean isExisted = exhibitionGenreRepository.existsByExhibitionId(exhibitionId);
+//        // 테이블이 존재하면, 패스
+//        if (!isExisted) {
+//            ExhibitionGenre tempExhibitionGenre = ExhibitionGenre.builder()
+//                .exhibition(exhibition)
+//                .build();
+//
+//            exhibitionGenreRepository.save(tempExhibitionGenre);
+//        }
+        Story story;
+        if (storyId == null) {
+            // 새로 story 생성
+            story = storyConverter.convertToEntity(storyRequestDto, member, exhibition);
+        } else {
+            // 기존의 story 가져와 덮어쓰기
+            Story existingStory = storyRepository.findById(storyId)
+                    .orElseThrow(() -> new StoryException(ErrorCode.STORY_NOT_EXISTS));
+            story = storyConverter.convertToEntityWithStoryId(storyRequestDto, member, exhibition, existingStory, storyId);
+
+            // 임시저장에서 저장한 storyPicture 삭제 -> 후에 다시 저장 예정
+            storyPictureRepository.deleteByStoryId(story.getId());
         }
 
-
-        // 스토리로 변환, 이때 List<StoryPicture>는 null값
-        Story story = storyConverter.convertToEntity(storyRequestDto, member, exhibition);
-//        story.initializeNullFields();
-
-
-//        List<String> picturesUrl = null;
-//        try {
-//            picturesUrl = s3Service.saveFileList(storyRequestDto.get());
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+        //        story.initializeNullFields();
 
         List<String> picturesUrl = storyRequestDto.getPicturesUrl();
 
@@ -114,22 +112,12 @@ public class StoryServiceImpl implements StoryService{
         // 스토리 썸네일 set
         story.setStoryThumbnailImage(picturesUrl.get(0));
 
-        /**
-         * 스토리에서 선택한 장르가 3개가 아닐수도 있음
-         * story -> 해당 exhibitionGenre를 1 증가 (updateExhibitionGenre) 장르가 null이면, pass
-         */
         story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), storyRequestDto.getGenre1());
         story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), storyRequestDto.getGenre2());
         story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), storyRequestDto.getGenre3());
 
-        /*
-          updateCategory : 해당 전시회의 상위 3개 Genre 선택해서 업데이트
-         */
         exhibition.updateCategory();
 
-        /*
-         * Story, 해당 Story의 사진 모음 저장
-         */
         storyRepository.save(story);
         storyPictureRepository.saveAll(storyPictureList);
     }
@@ -497,6 +485,77 @@ public class StoryServiceImpl implements StoryService{
         Story story = storyConverter.convertToDateEntity(storyRequestDto, member, exhibition);
 
         story.initializeNullFields();
+        storyRepository.save(story);
+    }
+
+    @Transactional
+    public void deleteStory(Long storyId, @MemberInfo MemberInfoDto memberInfoDto){
+        //자기 스토리 인지 확인 -> 아니면 삭제 권한 없음
+        //자기가 쓴 스토리면 삭제
+        Optional<Story> optionalStory = storyRepository.findById(storyId);
+        if(optionalStory.isPresent()) {
+            Story story = optionalStory.get();
+            Long memberId = memberInfoDto.getMemberId();
+            if (!memberId.equals(story.getMember().getMemberId())) {
+                throw new StoryException(ErrorCode.NOT_YOUR_STORY);
+            }
+            Exhibition exhibition = exhibitionRepository.getById(story.getExhibition().getId());
+
+            // 장르 업데이트 (가중치 감소)
+            story.updateDecreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(story.getExhibition().getId()), story.getGenre1());
+            story.updateDecreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(story.getExhibition().getId()), story.getGenre2());
+            story.updateDecreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(story.getExhibition().getId()), story.getGenre3());
+            // exhibition 장르 다시 계산
+            exhibition.updateCategory();
+
+            // 스토리의 사진 삭제
+            storyPictureRepository.deleteByStoryId(storyId);
+
+
+            // 스토리 좋아요 삭제
+            likeStoryRepository.deleteByStoryId(storyId);
+
+            // 스크랩 스토리, 댓글, 대댓글 삭제 -> 엔티티에서 처리 (스크랩 스토리 삭제되나 확인 필요)
+            // 스토리 삭제 -> 댓글과 대댓글 모두 삭제 처리
+//            scrapStoryRepository.deleteByMemberIdAndStoryId(memberId, storyId);
+            storyRepository.deleteById(storyId);
+            
+        }else{
+            throw new StoryException(ErrorCode.STORY_NOT_EXISTS);
+        }
+    }
+
+    @Transactional
+    public void draftSaveStory(StoryRequestDto.StoryRequestGeneralDto draftStoryRequestDto, @MemberInfo MemberInfoDto memberInfoDto, Long storyId) {
+        Exhibition exhibition = exhibitionRepository.findById(draftStoryRequestDto.getExhibitionId())
+                .orElseThrow(() -> new ExhibitionException(ErrorCode.EXHIBITION_NOT_EXISTS));
+        Member member = memberRepository.findById(memberInfoDto.getMemberId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_EXISTS));
+
+        Story story;
+        if (storyId == null) {
+            // 새로 story 생성
+            story = storyConverter.convertFromDraftToEntity(draftStoryRequestDto, member, exhibition);
+        } else {
+            // 기존의 story 가져와 덮어쓰기
+            Story existingStory = storyRepository.findById(storyId)
+                    .orElseThrow(() -> new StoryException(ErrorCode.STORY_NOT_EXISTS));
+            story = storyConverter.convertFromDraftToEntityWithStoryId(draftStoryRequestDto, member, exhibition, existingStory, storyId);
+
+            storyPictureRepository.deleteByStoryId(story.getId());
+        }
+
+        List<String> picturesUrl = draftStoryRequestDto.getPicturesUrl();
+        List<StoryPicture> storyPictureList = new ArrayList<>();
+        for (String pictureUrl : picturesUrl) {
+            StoryPicture storyPicture = StoryPicture.builder()
+                    .story(story)
+                    .pictureUrl(pictureUrl)
+                    .build();
+            storyPictureList.add(storyPicture);
+        }
+
+        story.setStoryPictureList(storyPictureList);
         storyRepository.save(story);
     }
 
