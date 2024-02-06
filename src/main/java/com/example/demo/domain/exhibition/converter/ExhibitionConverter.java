@@ -20,6 +20,14 @@ public class ExhibitionConverter {
                 .build();
         return dto;
     }
+
+    public ExhibitionResponseDto.GenreCategoryResponseDto convertToGenreCategoryDto(Exhibition exhibition) {
+        return ExhibitionResponseDto.GenreCategoryResponseDto.builder()
+                .exhibitionId(exhibition.getId())
+                .exhibitionImage(exhibition.getExhibitionImage())
+                .build();
+    }
+
     public ExhibitionResponseDto.ExhibitionGeneralOneResponseDto convertToOneDto(Exhibition exhibition) {
         return ExhibitionResponseDto.ExhibitionGeneralOneResponseDto.builder()
                 .ExhibitionId(exhibition.getId())
