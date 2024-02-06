@@ -65,8 +65,6 @@ public class  KakaoTokenRestController {
                 .grant_type("authorization_code")
                 .code(code)
                 .redirect_uri(KakaoCallbackUrl)
-
-
                 .build();
         System.out.println("CODE : " + code);
 
