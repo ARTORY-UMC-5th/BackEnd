@@ -4,7 +4,6 @@ server:
     context-path: /
 
 spring:
-
   servlet:
     multipart:
       enabled: true # 멀티파트 업로드 지원여부 (default: true)
@@ -44,8 +43,8 @@ cloud:
     s3:
       bucket: artory-webserver
     credentials:
-      access-key: AKIAWRCJKOKJW4IQCQR7
-      secret-key: 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
+      access-key: ${s3-access-key}
+      secret-key: ${s3-secret-key}
     region:
       static: ap-northeast-2
       auto: false
@@ -53,6 +52,6 @@ cloud:
       auto: false
 
 token:
-  secret: ENC(9c9uJh1XDJMe72tcz8o94Z1pqQxRrUddasasdjkhlasfhasdjkasdKaxFAlScPFuIGZtp57tFR3Q==) # ??? ???
+  secret: ${token_key} # ??? ???
   access-token-expiration-time: 90000000  # 15? 1000(ms) x 60(s) x 15(m)
   refresh-token-expiration-time: 1209600000 # 2? 1000(ms) x 60 (s) x 60(m) x 24(h) x 14(d)
