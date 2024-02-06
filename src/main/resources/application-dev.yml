@@ -7,8 +7,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     #    url: jdbc:mysql://localhost:3306/artory?serverTimezone=Asia/Seoul
     url: jdbc:mysql://artory-db.ccjn8ih7e8h5.ap-northeast-2.rds.amazonaws.com:3306/artory?serverTimezone=Asia/Seoul
-    username: root
-    password: admin123artory
+    username: ${dev-username}
+    password: ${dev-password}
   jpa:
     hibernate:
       ddl-auto: update
