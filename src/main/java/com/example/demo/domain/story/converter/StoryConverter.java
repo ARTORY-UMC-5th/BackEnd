@@ -1,9 +1,8 @@
 package com.example.demo.domain.story.converter;
-
-
 import com.example.demo.domain.comment.dto.CommentResponseDto;
 import com.example.demo.domain.exhibition.entity.Exhibition;
 import com.example.demo.domain.member.entity.Member;
+import com.example.demo.domain.story.constant.State;
 import com.example.demo.domain.story.dto.StoryRequestDto;
 import com.example.demo.domain.story.dto.StoryResponseDto;
 import com.example.demo.domain.story.entity.Story;
@@ -30,6 +29,7 @@ public class StoryConverter {
                 .genre2(storyRequestDto.getGenre2())
                 .genre3(storyRequestDto.getGenre3())
                 .isOpen(storyRequestDto.getIsOpen())
+                .storyState(State.DONE)
                 .member(member)
                 .exhibition(exhibition)
                 .build();
@@ -42,6 +42,7 @@ public class StoryConverter {
                 .year(storyRequestDto.getYear())
                 .month(storyRequestDto.getMonth())
                 .day(storyRequestDto.getDay())
+                .storyState(State.NOT_STARTED)
                 .build();
     }
 
@@ -122,4 +123,85 @@ public class StoryConverter {
 
         return storyRepositoryResponseDto;
     }
+    // 임시 저장 데이터를 스토리로 변경 (storyId가 없을 때)
+    public Story convertFromDraftToEntity(StoryRequestDto.StoryRequestGeneralDto draftStoryRequestDto, Member member, Exhibition exhibition) {
+
+        Story story = Story.builder()
+                .exhibition(exhibition)
+                .member(member)
+                .storyTitle(draftStoryRequestDto.getStoryTitle())
+                .storySatisfactionLevel(draftStoryRequestDto.getStorySatisfactionLevel())
+                .storyWeather(draftStoryRequestDto.getStoryWeather())
+                .storyCompanion(draftStoryRequestDto.getStoryCompanion())
+                .storyKeyword(draftStoryRequestDto.getStoryKeyword())
+                .storyViewingTime(draftStoryRequestDto.getStoryViewingTime())
+                .year(draftStoryRequestDto.getYear())
+                .month(draftStoryRequestDto.getMonth())
+                .day(draftStoryRequestDto.getDay())
+                .storyContext(draftStoryRequestDto.getStoryContext())
+                .genre1(draftStoryRequestDto.getGenre1())
+                .genre2(draftStoryRequestDto.getGenre2())
+                .genre3(draftStoryRequestDto.getGenre3())
+                .isOpen(draftStoryRequestDto.getIsOpen())
+                .storyState(State.IN_PROGRESS)
+                .build();
+
+        return story;
+    }
+
+    // 임시 저장 데이터를 스토리로 변경 (storyId가 있을 때)
+    public Story convertFromDraftToEntityWithStoryId(StoryRequestDto.StoryRequestGeneralDto draftStoryRequestDto, Member member, Exhibition exhibition, Story existingStory, Long storyId) {
+
+        Story story = existingStory.builder()
+                .exhibition(exhibition)
+                .member(member)
+                .id(storyId)
+                .storyTitle(draftStoryRequestDto.getStoryTitle())
+                .storySatisfactionLevel(draftStoryRequestDto.getStorySatisfactionLevel())
+                .storyWeather(draftStoryRequestDto.getStoryWeather())
+                .storyCompanion(draftStoryRequestDto.getStoryCompanion())
+                .storyKeyword(draftStoryRequestDto.getStoryKeyword())
+                .storyViewingTime(draftStoryRequestDto.getStoryViewingTime())
+                .year(draftStoryRequestDto.getYear())
+                .month(draftStoryRequestDto.getMonth())
+                .day(draftStoryRequestDto.getDay())
+                .storyContext(draftStoryRequestDto.getStoryContext())
+                .genre1(draftStoryRequestDto.getGenre1())
+                .genre2(draftStoryRequestDto.getGenre2())
+                .genre3(draftStoryRequestDto.getGenre3())
+                .isOpen(draftStoryRequestDto.getIsOpen())
+                .storyState(State.IN_PROGRESS)
+                .build();
+
+        return story;
+    }
+
+    public Story convertToEntityWithStoryId(StoryRequestDto.StoryRequestGeneralDto storyRequestDto, Member member, Exhibition exhibition, Story existingStory, Long storyId) {
+
+        Story story = existingStory.builder()
+                .exhibition(exhibition)
+                .member(member)
+                .id(storyId)
+                .storyTitle(storyRequestDto.getStoryTitle())
+                .storySatisfactionLevel(storyRequestDto.getStorySatisfactionLevel())
+                .storyWeather(storyRequestDto.getStoryWeather())
+                .storyCompanion(storyRequestDto.getStoryCompanion())
+                .storyKeyword(storyRequestDto.getStoryKeyword())
+                .storyViewingTime(storyRequestDto.getStoryViewingTime())
+                .year(storyRequestDto.getYear())
+                .month(storyRequestDto.getMonth())
+                .day(storyRequestDto.getDay())
+                .storyContext(storyRequestDto.getStoryContext())
+                .genre1(storyRequestDto.getGenre1())
+                .genre2(storyRequestDto.getGenre2())
+                .genre3(storyRequestDto.getGenre3())
+                .isOpen(storyRequestDto.getIsOpen())
+                .storyState(State.DONE)
+                .build();
+
+        return story;
+
+
+    }
+
 }

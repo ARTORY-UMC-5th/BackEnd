@@ -7,6 +7,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     #    url: jdbc:mysql://localhost:3306/artory?serverTimezone=Asia/Seoul
     url: jdbc:mysql://artory-db.ccjn8ih7e8h5.ap-northeast-2.rds.amazonaws.com:3306/artory?serverTimezone=Asia/Seoul
+#<<<<<<< HEAD
     username: ENC(gbeoPOAw6gIr7jUx7c8Rjw==)
     password: ENC(sJV0A60WMDZO6EkaQqzoRDWBT4Rh98hM)
   jpa:
@@ -17,6 +18,13 @@ spring:
 jasypt:
   encryptor:
     key: keytouseforencryption
+#=======
+#    username: root
+#    password: admin123artory
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#>>>>>>> origin/wonjae/5
 
     #    show-sql: true #??? sql ??
     properties:
@@ -39,3 +47,12 @@ naver:
     secret: mfAMbtRMFO
   callback:
     url: http://localhost:8080/login/oauth2/code/naver
+#<<<<<<< HEAD
+#=======
+#
+#
+#geocoding:
+#  client:
+#    id: mquaj3omju
+#    secret: AqigWKZjNKFTzmuW43gvDvWpZK07ntygnujvmkQ2
+#>>>>>>> origin/wonjae/5

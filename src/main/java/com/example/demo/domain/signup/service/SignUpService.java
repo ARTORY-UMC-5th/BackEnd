@@ -41,7 +41,6 @@ public class SignUpService {
 
         // 마케팅 정보 수신 동의 (선택)
         Boolean isMarketingAgreed = Optional.ofNullable(signUpRequestDto.getMarketingAgreed()).orElse(false);
-
         Member member = new Member();
         member.setEmail(signUpRequestDto.getEmail());
         member.setPassword(signUpRequestDto.getPassword());
@@ -49,7 +48,6 @@ public class SignUpService {
         member.setMemberName(signUpRequestDto.getMemberName());
         member.setPhoneNum(signUpRequestDto.getPhoneNum());
         member.setBirth(signUpRequestDto.getBirth());
-
 
     }
     //이메일 유효성 검사

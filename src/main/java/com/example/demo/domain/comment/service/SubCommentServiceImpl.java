@@ -1,5 +1,4 @@
 package com.example.demo.domain.comment.service;
-
 import com.example.demo.domain.comment.dto.SubCommentRequestDto;
 import com.example.demo.domain.comment.dto.SubCommentResponseDto;
 import com.example.demo.domain.comment.entity.Comment;
@@ -9,6 +8,7 @@ import com.example.demo.domain.comment.repository.SubCommentRepository;
 import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.member.repository.MemberRepository;
 import com.example.demo.global.error.ErrorCode;
+import com.example.demo.global.error.exception.BusinessException;
 import com.example.demo.global.error.exception.CommentException;
 import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 import lombok.RequiredArgsConstructor;
@@ -29,16 +29,17 @@ public class SubCommentServiceImpl implements SubCommentService{
 
     @Transactional
     public void saveSubcomment(SubCommentRequestDto.SubCommentSaveRequestDto subcommentSaveRequestDto, Long commentId, MemberInfoDto memberInfoDto) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new CommentException(ErrorCode.COMMENT_NOT_EXISTS));
-        Member member = memberRepository.getById(memberInfoDto.getMemberId());
-
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new CommentException(ErrorCode.COMMENT_NOT_EXISTS));
+        Member member = memberRepository.findById(memberInfoDto.getMemberId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.STORY_NOT_EXISTS));
         SubComment subComment = SubComment.builder()
                 .commentContext(subcommentSaveRequestDto.getCommentContext())
                 .isDeleted(false)
                 .comment(comment)
                 .member(member)
                 .build();
-
+        // 필수 값 안넣었을 시 예외는 추후 작성
         subCommentRepository.save(subComment);
     }
 
@@ -47,7 +48,6 @@ public class SubCommentServiceImpl implements SubCommentService{
         SubComment subComment = subCommentRepository.findById(subcommentDeleteRequestDto.getSubCommentId())
                 .orElseThrow(() -> new CommentException(ErrorCode.COMMENT_NOT_EXISTS));
         Long memberId = memberInfoDto.getMemberId();
-
         if (Objects.equals(subComment.getMember().getMemberId(), memberId)) {
             subCommentRepository.delete(subComment);
         } else {
@@ -60,19 +60,22 @@ public class SubCommentServiceImpl implements SubCommentService{
         Member member = memberRepository.getById(memberInfoDto.getMemberId());
         SubComment subComment = subCommentRepository.findById(subcommentUpdateRequestDto.getSubCommentId())
                 .orElseThrow(() -> new CommentException(ErrorCode.COMMENT_NOT_EXISTS));
-
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new CommentException(ErrorCode.COMMENT_NOT_EXISTS));
         if (!Objects.equals(subComment.getMember().getMemberId(), member.getMemberId())) {
             throw new CommentException(ErrorCode.NOT_YOUR_COMMENT);
         }
-
         subComment = SubComment.builder()
-                .id(subComment.getId())
+                .commentContext(subcommentUpdateRequestDto.getCommentContext())
+                .id(subcommentUpdateRequestDto.getSubCommentId())
+                .member(member)
+                .comment(comment)
                 .commentContext(subcommentUpdateRequestDto.getCommentContext())
                 .build();
+        // 필수 값 안넣었을 시 예외는 추후 작성
 
         subCommentRepository.save(subComment);
     }
-
     @Override
     public List<SubCommentResponseDto> findByCommentId(Long commentId) {
         List<Object[]> objects = subCommentRepository.findByCommentId(commentId);

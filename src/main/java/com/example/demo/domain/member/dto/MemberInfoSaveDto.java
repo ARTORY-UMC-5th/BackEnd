@@ -14,8 +14,9 @@ import lombok.Setter;
 @Setter
 public class MemberInfoSaveDto {
 
-    @Getter @Setter
-    public static class MemberInfo{
+    @Getter
+    @Setter
+    public static class MemberInfo {
         @Schema(description = "본명", defaultValue = "이름 없음", allowableValues = {"홍길동"})
         private String memberName;
         @Schema(description = "소셜 서비스 프로필 사진")
@@ -32,26 +33,35 @@ public class MemberInfoSaveDto {
         private Genre genre2;
         private Genre genre3;
     }
-    @Getter @Setter @Builder
-    public static class MemberNickname{
+
+    @Getter
+    @Setter
+    @Builder
+    public static class MemberNickname {
         private String nickname;
         private String image;
     }
-    @Getter @Setter
-    public static class MemberAgeAndGender{
+
+    @Getter
+    @Setter
+    public static class MemberAgeAndGender {
         private Gender gender;
         private Integer age;
     }
-    @Getter @Setter
-    public static class MemberGenre{
 
-        private Genre genre1;
-        private Genre genre2;
-        private Genre genre3;
+    @Getter
+    @Setter
+    @Builder
+    public static class MemberGenre {
+
+        @Builder.Default
+        private Genre genre1 = null;
+
+        @Builder.Default
+        private Genre genre2 = null;
+
+        @Builder.Default
+        private Genre genre3 = null;
     }
-
-
-
-
 
 }

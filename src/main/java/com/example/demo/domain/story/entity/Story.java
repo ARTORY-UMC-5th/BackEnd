@@ -1,11 +1,11 @@
 package com.example.demo.domain.story.entity;
-
 import com.example.demo.domain.comment.entity.Comment;
 import com.example.demo.domain.common.BaseEntity;
 import com.example.demo.domain.exhibition.entity.Exhibition;
 import com.example.demo.domain.exhibition.entity.ExhibitionGenre;
 import com.example.demo.domain.member.constant.Genre;
 import com.example.demo.domain.member.entity.Member;
+import com.example.demo.domain.story.constant.State;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Entity
 @Getter
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 
@@ -81,6 +81,10 @@ public class Story extends BaseEntity {
     @OneToMany(mappedBy = "story", cascade = CascadeType.ALL)
     private List<LikeStory> likeStoryList;
 
+
+    // 추가 : 해당 스토리의 상태 작성 전인지, 임시저장인지, 저장 완료인지 구분 (기본값 : 저장 완료(Done))
+    @Builder.Default
+    private State storyState = State.DONE;
     private int year;
     private int month;
     private int day;

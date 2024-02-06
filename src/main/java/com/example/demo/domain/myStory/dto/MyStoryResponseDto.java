@@ -1,5 +1,5 @@
 package com.example.demo.domain.myStory.dto;
-
+import com.example.demo.domain.story.constant.State;
 import jakarta.persistence.Column;
 import jakarta.persistence.Lob;
 import lombok.*;
@@ -38,7 +38,7 @@ public class MyStoryResponseDto {
         private int day;
         private Long StoryId;
         private String exhibitionTitle;
-
+        private State storyState;
 
     }
     @Builder
@@ -48,9 +48,10 @@ public class MyStoryResponseDto {
     public static class StorySpecificResponseDto {
 
         private Long StoryId;
+        private State storyState;
+        private Long exhibitionId;
+        private String exhibitionImage;
         private String exhibitionTitle;
-
-
     }
 
     @Builder

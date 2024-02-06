@@ -5,7 +5,7 @@ import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.story.entity.Story;
 import jakarta.persistence.*;
 import lombok.*;
-
+import java.util.List;
 
 @Entity
 @Getter
@@ -35,4 +35,8 @@ public class Comment extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
+    private List<SubComment> subCommentList;
+
 }

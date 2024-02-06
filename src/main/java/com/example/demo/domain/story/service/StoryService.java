@@ -32,11 +32,19 @@ public interface StoryService {
     List<StoryResponseDto.MemberThumbnailResponseDto> getRecommendMembers(int page,@MemberInfo MemberInfoDto memberInfoDto);
 
     // 스토리 저장
-    void saveStory(StoryRequestDto.StoryRequestGeneralDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto);
-
+    void saveStory(StoryRequestDto.StoryRequestGeneralDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto, Long storyId);
     // 스토리 검색
     List<StoryResponseDto.StoryThumbnailResponseDto> getSearchStoriesByTitle(int page, String title, @MemberInfo MemberInfoDto memberInfoDto);
 
     void updateStory(StoryRequestDto.StoryRequestGeneralDto storyRequestDto, Long storyId, MemberInfoDto memberInfoDto);
+    
+    // 스토리 작성 전 (날짜, 전시회 정보만 저장)
+    void saveStoryNotDate(StoryRequestDto.StoryRequestDateDto storyRequestDto, MemberInfoDto memberInfoDto);
+    
+    // 스토리 삭제
+    void deleteStory(Long storyId, MemberInfoDto memberInfoDto);
+
+    // 스토리 임시 저장
+    void draftSaveStory(StoryRequestDto.StoryRequestGeneralDto draftStoryRequestDto, @MemberInfo MemberInfoDto memberInfoDto, Long storyId);
 
 }

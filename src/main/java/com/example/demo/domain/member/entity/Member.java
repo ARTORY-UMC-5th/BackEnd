@@ -1,6 +1,4 @@
 package com.example.demo.domain.member.entity;
-
-
 import com.example.demo.domain.comment.entity.Comment;
 import com.example.demo.domain.common.BaseEntity;
 import com.example.demo.domain.exhibition.entity.LikeExhibition;
@@ -20,7 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
+import lombok.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -64,6 +62,8 @@ public class Member extends BaseEntity {
 
     private LocalDateTime tokenExpirationTime;
 
+
+    @Builder
     public Member(MemberType memberType, String email, String password, String memberName,
                   String profile, Role role) {
         this.memberType = memberType;
@@ -74,13 +74,14 @@ public class Member extends BaseEntity {
         this.role = role;
     }
 
+    @Builder
     public Member(MemberInfoSaveDto memberInfosaveDto) {
         super();
     }
-
     public static MemberBuilder builder() {
         return new MemberBuilder();
     }
+
 
     public void updateRefreshToken(JwtTokenDto jwtTokenDto) {
         this.refreshToken = jwtTokenDto.getRefreshToken();
@@ -137,6 +138,7 @@ public class Member extends BaseEntity {
     @Column(length = 1000000)
     private String memo;
 
+
     //form login에서 사용
     @Setter
     @Column(nullable = false)
@@ -181,7 +183,6 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<LikeStory> likeStoryList;
-
     public MemberBuilder toBuilder() {
         return new MemberBuilder().memberId(this.memberId).memberType(this.memberType).email(this.email).password(this.password).memberName(this.memberName).profile(this.profile).role(this.role).refreshToken(this.refreshToken).tokenExpirationTime(this.tokenExpirationTime).nickname(this.nickname).image(this.image).gender(this.gender).age(this.age).genre1(this.genre1).genre2(this.genre2).genre3(this.genre3).introduction(this.introduction).myKeyword(this.myKeyword).memo(this.memo).confirmPassword(this.confirmPassword).phoneNum(this.phoneNum).birth(this.birth).termsAgreed(this.termsAgreed).privacyPolicyAgreed(this.privacyPolicyAgreed).marketingAgreed(this.marketingAgreed).scrapfromMemberList(this.scrapfromMemberList).scraptoMemberList(this.scraptoMemberList).storyList(this.storyList).scrapStoryList(this.scrapStoryList).commentList(this.commentList).scrapExhibitionList(this.scrapExhibitionList).likeExhibitionList(this.likeExhibitionList).likeStoryList(this.likeStoryList);
     }

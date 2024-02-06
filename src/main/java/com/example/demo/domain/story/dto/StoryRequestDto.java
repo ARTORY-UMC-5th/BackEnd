@@ -66,4 +66,44 @@ public class StoryRequestDto {
 
 
     }
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class StoryRequestDraftDto {
+
+
+        // exhibition 정보
+        private Long exhibitionId;
+
+        private Long storyId;
+        private String storyTitle;
+        private String storySatisfactionLevel;
+        private String storyWeather;
+        private String storyCompanion;
+        private String storyKeyword;
+        private String storyViewingTime;
+        private int year;
+        private int month;
+        private int day;
+        @Lob
+        @Column(length = 1000000)
+        private String storyContext;
+
+        @Builder.Default
+        private Genre genre1 = null;
+
+        @Builder.Default
+        private Genre genre2 = null;
+
+        @Builder.Default
+        private Genre genre3 = null;
+
+
+        private Boolean isOpen;
+
+        private List<String> picturesUrl;
+
+
+    }
 }
