@@ -6,14 +6,14 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     #    url: jdbc:mysql://localhost:3306/artory?serverTimezone=Asia/Seoul
-    url: ENC(0KwyJqsjTKo43hcb1Kmi5hZLE5aIbENSxKUUGP/06V82f64c/Z7VpVWZknqfbU0/7uobsrOeTuq7u73GGGOXv/dMA952GEV6elwakLZecPZRnL/AKhs4McGHa2dQl/EJVc+8iAg+VjQYT99HqCw+9Y7/ai5GDaQc)
+    url: jdbc:mysql://artory-db.ccjn8ih7e8h5.ap-northeast-2.rds.amazonaws.com:3306/artory?serverTimezone=Asia/Seoul
     username: ENC(gbeoPOAw6gIr7jUx7c8Rjw==)
     password: ENC(sJV0A60WMDZO6EkaQqzoRDWBT4Rh98hM)
-
   jpa:
-    hibernate:
-      dialect: org.hibernate.dialect.MySQLDialect
-      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        ddl-auto: update
 jasypt:
   encryptor:
     key: keytouseforencryption
