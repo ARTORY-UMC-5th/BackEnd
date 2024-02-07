@@ -1,4 +1,4 @@
-name: Build and Test -seungwoo
+name: Build CI -seungwoo
 
 on:
   pull_request:
