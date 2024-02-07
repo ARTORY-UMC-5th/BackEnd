@@ -6,12 +6,12 @@ on:
 
 jobs:
   build:
-    name: Build and Deploy
+    name: 1. Build and Deploy
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'prod'
 
     steps:
-      - name: Checkout
+      - name: 2. Checkout
         uses: actions/checkout@v2
 
       - name: Set up JDK 17
