@@ -2,8 +2,10 @@ package com.example.demo.domain.exhibition.controller;
 
 
 
+import com.example.demo.domain.exhibition.converter.ExhibitionConverter;
 import com.example.demo.domain.exhibition.dto.ExhibitionRequestDto;
 import com.example.demo.domain.exhibition.dto.ExhibitionResponseDto;
+import com.example.demo.domain.exhibition.entity.Exhibition;
 import com.example.demo.domain.exhibition.service.ExhibitionService;
 import com.example.demo.global.resolver.memberInfo.MemberInfo;
 import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
@@ -26,8 +28,6 @@ import java.util.List;
 public class ExhibitionController {
     private final ExhibitionService exhibitionService;
 
-
-
     @Operation(summary = "모든 전시회 목록 조회(전시회메인용)", description = "페이징 및 검색 기능 포함")
     @PostMapping("/all")
     public ResponseEntity<ExhibitionResponseDto.ExhibitionListResponseDto> getAllExhibitionList(
@@ -39,6 +39,13 @@ public class ExhibitionController {
 
         ExhibitionResponseDto.ExhibitionListResponseDto allExhibitionList = exhibitionService.getAllExhibitionList(memberInfoDto,currentDate,page);
         return ResponseEntity.ok(allExhibitionList);
+    }
+    @Operation(summary = "카테고리별 전시회 이미지 조회", description = "이미지 한개씩")
+    @PostMapping("/allCategory")
+    public ResponseEntity<ExhibitionResponseDto.ExhibitionGenreListResponseDto> getAllExhibitionList(){
+
+        ExhibitionResponseDto.ExhibitionGenreListResponseDto allGenreList = exhibitionService.getGenreList();
+        return ResponseEntity.ok(allGenreList);
     }
     @Operation(summary = "사용자에게 거리 기반 전시회 추천(전시회메인용)", description = "페이지와 검색 기능 포함")
     @PostMapping("/distanceRecommend")

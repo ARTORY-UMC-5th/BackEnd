@@ -19,10 +19,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -34,30 +33,45 @@ public class ExhibitionServiceImpl implements ExhibitionService {
     private final MemberService memberService;
 
 
-
     @Override
-    public ExhibitionResponseDto.ExhibitionListResponseDto getAllExhibitionList(@MemberInfo MemberInfoDto memberInfoDto, LocalDate currentDate,int page) {
-        Long memberId = memberInfoDto.getMemberId();
+    public ExhibitionResponseDto.ExhibitionListResponseDto getAllExhibitionList(@MemberInfo MemberInfoDto memberInfoDto, LocalDate currentDate, int page) {
+//        Long memberId = memberInfoDto.getMemberId();
 
         ExhibitionResponseDto.ExhibitionListResponseDto allResponseDto = new ExhibitionResponseDto.ExhibitionListResponseDto();
         // 최근 전시회 가져오기
-        allResponseDto.setRecentExhibitionDtoList(getRecentExhibitions(memberInfoDto,currentDate,page));
+        allResponseDto.setRecentExhibitionDtoList(getRecentExhibitions(memberInfoDto, currentDate, page));
         // 인기 있는 전시회 가져오기
-        allResponseDto.setPopluarExhibitionDtoList(getPopularityExhibitions(memberInfoDto,page));
+        allResponseDto.setPopluarExhibitionDtoList(getPopularityExhibitions(memberInfoDto, page));
         // 랜덤 전시회 가져오기
         allResponseDto.setRandomExhibitionDtoList(getRandomExhibitions(memberInfoDto, page));
         // 비슷한 전시회 가져오기
-        allResponseDto.setRecommendExhibitionDtoList(getRandomExhibitions(memberInfoDto,page));
+        allResponseDto.setRecommendExhibitionDtoList(getRandomExhibitions(memberInfoDto, page));
         // 추천 전시회 가져오기
-        allResponseDto.setSimilarExhibitionDtoList(getRecommendExhibitions(memberInfoDto,page));
+        allResponseDto.setSimilarExhibitionDtoList(getRecommendExhibitions(memberInfoDto, page));
 
+        return allResponseDto;
+    }
 
+    @Override
+    public ExhibitionResponseDto.ExhibitionGenreListResponseDto getGenreList() {
+        ExhibitionResponseDto.ExhibitionGenreListResponseDto allResponseDto = new ExhibitionResponseDto.ExhibitionGenreListResponseDto();
+        //카테고리 정보
+        allResponseDto.setMediaCategoryResponseDto(findMediaExhibition());
+        allResponseDto.setCraftCategoryResponseDto(findCraftExhibition());
+        allResponseDto.setDesignCategoryResponseDto(findDesignExhibition());
+        allResponseDto.setPictureCategoryResponseDto(findPictureExhibition());
+        allResponseDto.setSpecialExhibitionCategoryResponseDto(findSpecialExhibitionExhibition());
+        allResponseDto.setSculptureCategoryResponseDto(findSculptureExhibition());
+        allResponseDto.setPlanExhibitionCategoryResponseDto(findPlanExhibitionExhibition());
+        allResponseDto.setInstallationArtCategoryResponseDto(findInstallationArtExhibition());
+        allResponseDto.setPaintingCategoryResponseDto(findPaintingExhibition());
+        allResponseDto.setArtistExhibitionCategoryResponseDto(findArtistExhibitionExhibition());
         return allResponseDto;
     }
 
 
     @Override
-    public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getDistanceRecommendExhibitions(ExhibitionRequestDto requestDto,@MemberInfo MemberInfoDto memberInfoDto, int page) {
+    public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getDistanceRecommendExhibitions(ExhibitionRequestDto requestDto, @MemberInfo MemberInfoDto memberInfoDto, int page) {
         Long memberId = memberInfoDto.getMemberId();
 
         int pageSize = 10;
@@ -71,14 +85,13 @@ public class ExhibitionServiceImpl implements ExhibitionService {
         List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> result = closestExhibitions.stream()
                 .map(exhibition -> {
                     Boolean isLiked = exhibitionRepository.findLikeStatusByMemberIdAndExhibitionId(memberId, exhibition.getId());
-                    Boolean isScrapped =  exhibitionRepository.findScrapStatusByMemberIdAndExhibitionId(memberId, exhibition.getId());
-                    return exhibitionConverter.convertToGeneralDto(exhibition, isLiked,isScrapped);
+                    Boolean isScrapped = exhibitionRepository.findScrapStatusByMemberIdAndExhibitionId(memberId, exhibition.getId());
+                    return exhibitionConverter.convertToGeneralDto(exhibition, isLiked, isScrapped);
                 })
                 .collect(Collectors.toList());
 
         return result;
     }
-
 
 
     @Override
@@ -88,7 +101,7 @@ public class ExhibitionServiceImpl implements ExhibitionService {
         int pageSize = 10;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
 
-        Page<Object[]> recentExhibitionsPage = exhibitionRepository.findAllByOrderByCreateTimeByDesc(memberId,currentDate,pageable);
+        Page<Object[]> recentExhibitionsPage = exhibitionRepository.findAllByOrderByCreateTimeByDesc(memberId, currentDate, pageable);
 
 
         List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> recentExhibitions = recentExhibitionsPage.getContent()
@@ -96,8 +109,8 @@ public class ExhibitionServiceImpl implements ExhibitionService {
                 .map(array -> {
                     Exhibition exhibition = (Exhibition) array[0];
                     Boolean isLiked = (Boolean) array[1];
-                    Boolean isScrapped =  (Boolean) array[2];
-                    return exhibitionConverter.convertToGeneralDto(exhibition, isLiked,isScrapped);
+                    Boolean isScrapped = (Boolean) array[2];
+                    return exhibitionConverter.convertToGeneralDto(exhibition, isLiked, isScrapped);
                 })
                 .collect(Collectors.toList());
 
@@ -119,15 +132,14 @@ public class ExhibitionServiceImpl implements ExhibitionService {
                 .map(array -> {
                     Exhibition exhibition = (Exhibition) array[0];
                     Boolean isLiked = (Boolean) array[1];
-                    Boolean isScrapped =  (Boolean) array[2];
-                    return exhibitionConverter.convertToGeneralDto(exhibition,isLiked,isScrapped);
+                    Boolean isScrapped = (Boolean) array[2];
+                    return exhibitionConverter.convertToGeneralDto(exhibition, isLiked, isScrapped);
                 })
                 .collect(Collectors.toList());
 
 
         return likeExhibitions;
     }
-
 
 
     @Override
@@ -144,17 +156,13 @@ public class ExhibitionServiceImpl implements ExhibitionService {
                 .map(array -> {
                     Exhibition exhibition = (Exhibition) array[0];
                     Boolean isLiked = (Boolean) array[1];
-                    Boolean isScrapped =  (Boolean) array[2];
-                    return exhibitionConverter.convertToGeneralDto(exhibition,isLiked,isScrapped);
+                    Boolean isScrapped = (Boolean) array[2];
+                    return exhibitionConverter.convertToGeneralDto(exhibition, isLiked, isScrapped);
                 })
                 .collect(Collectors.toList());
 
         return searchResults;
     }
-
-
-
-
 
 
     @Override
@@ -185,14 +193,15 @@ public class ExhibitionServiceImpl implements ExhibitionService {
                 .map(array -> {
                     Exhibition exhibition = (Exhibition) array[0];
                     Boolean isLiked = (Boolean) array[1];
-                    Boolean isScrapped =  (Boolean) array[2];
-                    return exhibitionConverter.convertToGeneralDto(exhibition,isLiked,isScrapped);
+                    Boolean isScrapped = (Boolean) array[2];
+                    return exhibitionConverter.convertToGeneralDto(exhibition, isLiked, isScrapped);
                 })
                 .collect(Collectors.toList());
 
 
         return randomExhibitions;
     }
+
     @Override
     public ExhibitionResponseDto.ExhibitionGeneralOneResponseDto getRandomOneExhibition() {
         Exhibition randomExhibition = exhibitionRepository.findRandomOneExhibition();
@@ -216,7 +225,6 @@ public class ExhibitionServiceImpl implements ExhibitionService {
         String genre1String = genre1.name();
         String genre2String = genre2.name();
         String genre3String = genre3.name();
-
 
 
         Page<Object[]> recommendExhibitionsPage = exhibitionRepository.findRecommendedExhibitions(memberId, genre1String, genre2String, genre3String, pageable);
@@ -246,8 +254,8 @@ public class ExhibitionServiceImpl implements ExhibitionService {
                 .map(array -> {
                     Exhibition exhibition = (Exhibition) array[0];
                     Boolean isLiked = (Boolean) array[1];
-                    Boolean isScrapped =  (Boolean) array[2];
-                    return exhibitionConverter.convertToGeneralDto(exhibition,isLiked,isScrapped);
+                    Boolean isScrapped = (Boolean) array[2];
+                    return exhibitionConverter.convertToGeneralDto(exhibition, isLiked, isScrapped);
                 })
                 .collect(Collectors.toList());
 
@@ -255,10 +263,9 @@ public class ExhibitionServiceImpl implements ExhibitionService {
     }
 
 
-
     //각 페이지 눌렀을때
     @Override
-    public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getDistanceRecommendExhibitions1(ExhibitionRequestDto requestDto,@MemberInfo MemberInfoDto memberInfoDto, int page) {
+    public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getDistanceRecommendExhibitions1(ExhibitionRequestDto requestDto, @MemberInfo MemberInfoDto memberInfoDto, int page) {
         Long memberId = memberInfoDto.getMemberId();
 
         int pageSize = 40;
@@ -272,14 +279,13 @@ public class ExhibitionServiceImpl implements ExhibitionService {
         List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> result = closestExhibitions.stream()
                 .map(exhibition -> {
                     Boolean isLiked = exhibitionRepository.findLikeStatusByMemberIdAndExhibitionId(memberId, exhibition.getId());
-                    Boolean isScrapped =  exhibitionRepository.findScrapStatusByMemberIdAndExhibitionId(memberId, exhibition.getId());
-                    return exhibitionConverter.convertToGeneralDto(exhibition, isLiked,isScrapped);
+                    Boolean isScrapped = exhibitionRepository.findScrapStatusByMemberIdAndExhibitionId(memberId, exhibition.getId());
+                    return exhibitionConverter.convertToGeneralDto(exhibition, isLiked, isScrapped);
                 })
                 .collect(Collectors.toList());
 
         return result;
     }
-
 
 
     @Override
@@ -289,7 +295,7 @@ public class ExhibitionServiceImpl implements ExhibitionService {
         int pageSize = 40;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
 
-        Page<Object[]> recentExhibitionsPage = exhibitionRepository.findAllByOrderByCreateTimeByDesc(memberId,currentDate,pageable);
+        Page<Object[]> recentExhibitionsPage = exhibitionRepository.findAllByOrderByCreateTimeByDesc(memberId, currentDate, pageable);
 
 
         List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> recentExhibitions = recentExhibitionsPage.getContent()
@@ -297,8 +303,8 @@ public class ExhibitionServiceImpl implements ExhibitionService {
                 .map(array -> {
                     Exhibition exhibition = (Exhibition) array[0];
                     Boolean isLiked = (Boolean) array[1];
-                    Boolean isScrapped =  (Boolean) array[2];
-                    return exhibitionConverter.convertToGeneralDto(exhibition, isLiked,isScrapped);
+                    Boolean isScrapped = (Boolean) array[2];
+                    return exhibitionConverter.convertToGeneralDto(exhibition, isLiked, isScrapped);
                 })
                 .collect(Collectors.toList());
 
@@ -320,16 +326,14 @@ public class ExhibitionServiceImpl implements ExhibitionService {
                 .map(array -> {
                     Exhibition exhibition = (Exhibition) array[0];
                     Boolean isLiked = (Boolean) array[1];
-                    Boolean isScrapped =  (Boolean) array[2];
-                    return exhibitionConverter.convertToGeneralDto(exhibition,isLiked,isScrapped);
+                    Boolean isScrapped = (Boolean) array[2];
+                    return exhibitionConverter.convertToGeneralDto(exhibition, isLiked, isScrapped);
                 })
                 .collect(Collectors.toList());
 
 
         return likeExhibitions;
     }
-
-
 
 
     @Override
@@ -345,8 +349,8 @@ public class ExhibitionServiceImpl implements ExhibitionService {
                 .map(array -> {
                     Exhibition exhibition = (Exhibition) array[0];
                     Boolean isLiked = (Boolean) array[1];
-                    Boolean isScrapped =  (Boolean) array[2];
-                    return exhibitionConverter.convertToGeneralDto(exhibition,isLiked,isScrapped);
+                    Boolean isScrapped = (Boolean) array[2];
+                    return exhibitionConverter.convertToGeneralDto(exhibition, isLiked, isScrapped);
                 })
                 .collect(Collectors.toList());
 
@@ -370,7 +374,6 @@ public class ExhibitionServiceImpl implements ExhibitionService {
         String genre1String = genre1.name();
         String genre2String = genre2.name();
         String genre3String = genre3.name();
-
 
 
         Page<Object[]> recommendExhibitionsPage = exhibitionRepository.findRecommendedExhibitions(memberId, genre1String, genre2String, genre3String, pageable);
@@ -400,12 +403,71 @@ public class ExhibitionServiceImpl implements ExhibitionService {
                 .map(array -> {
                     Exhibition exhibition = (Exhibition) array[0];
                     Boolean isLiked = (Boolean) array[1];
-                    Boolean isScrapped =  (Boolean) array[2];
-                    return exhibitionConverter.convertToGeneralDto(exhibition,isLiked,isScrapped);
+                    Boolean isScrapped = (Boolean) array[2];
+                    return exhibitionConverter.convertToGeneralDto(exhibition, isLiked, isScrapped);
                 })
                 .collect(Collectors.toList());
 
         return similarExhibitions;
     }
 
+
+    @Override
+    public  ExhibitionResponseDto.GenreCategoryResponseDto findMediaExhibition(){
+        Exhibition mediaExhibition = exhibitionRepository.findMediaExhibition();
+        return exhibitionConverter.convertToGenreCategoryDto(mediaExhibition);
+    }
+    @Override
+    public ExhibitionResponseDto.GenreCategoryResponseDto findCraftExhibition() {
+        Exhibition craftExhibition = exhibitionRepository.findCraftExhibition();
+        return exhibitionConverter.convertToGenreCategoryDto(craftExhibition);
+    }
+
+    @Override
+    public ExhibitionResponseDto.GenreCategoryResponseDto findDesignExhibition(){
+        Exhibition designExhibition = exhibitionRepository.findDesignExhibition();
+        return exhibitionConverter.convertToGenreCategoryDto(designExhibition);
+    }
+    @Override
+    public ExhibitionResponseDto.GenreCategoryResponseDto findPictureExhibition() {
+        Exhibition pictureExhibition = exhibitionRepository.findPictureExhibition();
+        return exhibitionConverter.convertToGenreCategoryDto(pictureExhibition);
+    }
+
+    @Override
+    public ExhibitionResponseDto.GenreCategoryResponseDto findSpecialExhibitionExhibition() {
+        Exhibition specialExhibitionExhibition = exhibitionRepository.findSpecialExhibitionExhibition();
+        return exhibitionConverter.convertToGenreCategoryDto(specialExhibitionExhibition);
+    }
+    @Override
+    public ExhibitionResponseDto.GenreCategoryResponseDto findSculptureExhibition() {
+        Exhibition sculptureExhibition = exhibitionRepository.findSculptureExhibition();
+        return exhibitionConverter.convertToGenreCategoryDto(sculptureExhibition);
+    }
+    @Override
+    public ExhibitionResponseDto.GenreCategoryResponseDto findPlanExhibitionExhibition() {
+        Exhibition planExhibitionExhibition = exhibitionRepository.findPlanExhibitionExhibition();
+        return exhibitionConverter.convertToGenreCategoryDto(planExhibitionExhibition);
+    }
+
+    @Override
+    public ExhibitionResponseDto.GenreCategoryResponseDto findInstallationArtExhibition() {
+        Exhibition installationArtExhibition = exhibitionRepository.findInstallationArtExhibition();
+        return exhibitionConverter.convertToGenreCategoryDto(installationArtExhibition);
+    }
+
+    @Override
+    public ExhibitionResponseDto.GenreCategoryResponseDto findPaintingExhibition() {
+        Exhibition paintingExhibition = exhibitionRepository.findPaintingExhibition();
+        return exhibitionConverter.convertToGenreCategoryDto(paintingExhibition);
+    }
+
+    @Override
+    public ExhibitionResponseDto.GenreCategoryResponseDto findArtistExhibitionExhibition() {
+        Exhibition artistExhibitionExhibition = exhibitionRepository.findArtistExhibitionExhibition();
+        return exhibitionConverter.convertToGenreCategoryDto(artistExhibitionExhibition);
+    }
+
+
 }
+
