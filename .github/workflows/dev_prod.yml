@@ -1,11 +1,12 @@
 name: Build and Test
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types: [closed]
+  workflow_dispatch: # (2).수동 실행도 가능하도록
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'prod'
     steps:
       - uses: actions/checkout@v3
       - name: Setup JDK
