@@ -121,4 +121,49 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
 
 
 
+    @Query("SELECT e FROM Exhibition e WHERE e.genreCategory1 = 'media' ORDER BY ABS(FUNCTION('DATEDIFF', CAST(e.exhibitionStartDate AS java.time.LocalDate), CURRENT_DATE())) ASC LIMIT 1")
+    Exhibition findMediaExhibition();
+
+
+
+    @Query("SELECT e FROM Exhibition e WHERE e.genreCategory1 = 'craft' ORDER BY ABS(FUNCTION('DATEDIFF', CAST(e.exhibitionStartDate AS java.time.LocalDate), CURRENT_DATE())) ASC LIMIT 1")
+
+    Exhibition findCraftExhibition();
+
+
+    @Query("SELECT e FROM Exhibition e WHERE e.genreCategory1 = 'design'ORDER BY ABS(FUNCTION('DATEDIFF', CAST(e.exhibitionStartDate AS java.time.LocalDate), CURRENT_DATE())) ASC LIMIT 1")
+
+    Exhibition findDesignExhibition();
+
+
+@Query("SELECT e FROM Exhibition e WHERE e.genreCategory1 = 'picture' ORDER BY ABS(FUNCTION('DATEDIFF', CAST(e.exhibitionStartDate AS java.time.LocalDate), CURRENT_DATE())) ASC LIMIT 1")
+    Exhibition findPictureExhibition();
+
+
+    @Query("SELECT e FROM Exhibition e WHERE e.genreCategory1 = 'special_exhibition' ORDER BY ABS(FUNCTION('DATEDIFF', CAST(e.exhibitionStartDate AS java.time.LocalDate), CURRENT_DATE())) ASC LIMIT 1")
+    Exhibition findSpecialExhibitionExhibition();
+
+
+
+    @Query("SELECT e FROM Exhibition e WHERE e.genreCategory1 = 'sculpture' ORDER BY ABS(FUNCTION('DATEDIFF', CAST(e.exhibitionStartDate AS java.time.LocalDate), CURRENT_DATE())) ASC LIMIT 1")
+    Exhibition findSculptureExhibition();
+
+
+    @Query("SELECT e FROM Exhibition e WHERE e.genreCategory1 = 'plan_exhibition' ORDER BY ABS(FUNCTION('DATEDIFF', CAST(e.exhibitionStartDate AS java.time.LocalDate), CURRENT_DATE())) ASC LIMIT 1")
+    Exhibition findPlanExhibitionExhibition();
+
+
+
+    @Query("SELECT e FROM Exhibition e WHERE e.genreCategory1 = 'installation_art' ORDER BY ABS(FUNCTION('DATEDIFF', CAST(e.exhibitionStartDate AS java.time.LocalDate), CURRENT_DATE())) ASC LIMIT 1")
+    Exhibition findInstallationArtExhibition();
+
+
+    @Query("SELECT e FROM Exhibition e WHERE e.genreCategory1 = 'painting' ORDER BY ABS(FUNCTION('DATEDIFF', CAST(e.exhibitionStartDate AS java.time.LocalDate), CURRENT_DATE())) ASC LIMIT 1")
+    Exhibition findPaintingExhibition();
+
+    @Query("SELECT e FROM Exhibition e WHERE e.genreCategory1 = 'artist_Exhibition' ORDER BY ABS(FUNCTION('DATEDIFF', CAST(e.exhibitionStartDate AS java.time.LocalDate), CURRENT_DATE())) ASC LIMIT 1")
+
+    Exhibition findArtistExhibitionExhibition();
+
+
 }

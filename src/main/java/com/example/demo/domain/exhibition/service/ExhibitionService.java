@@ -12,10 +12,13 @@ import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public interface ExhibitionService {
     ExhibitionResponseDto.ExhibitionListResponseDto getAllExhibitionList(@MemberInfo MemberInfoDto memberInfoDto, LocalDate currentDate,int page);
-    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getDistanceRecommendExhibitions(ExhibitionRequestDto requestDto, @MemberInfo MemberInfoDto memberInfoDto, int page);
+    ExhibitionResponseDto.ExhibitionGenreListResponseDto getGenreList();
+
+        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getDistanceRecommendExhibitions(ExhibitionRequestDto requestDto, @MemberInfo MemberInfoDto memberInfoDto, int page);
 
     List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecentExhibitions(@MemberInfo MemberInfoDto memberInfoDto, LocalDate currentDate, int page);
 
@@ -40,8 +43,25 @@ public interface ExhibitionService {
     List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecommendExhibitions1(@MemberInfo MemberInfoDto memberInfoDto, int page);
 
 
+//    String getLatestCategoryFirstImageByGenre(String genreCategory, LocalDate currentDate);
 
 
+    ExhibitionResponseDto.GenreCategoryResponseDto findMediaExhibition();
+
+    ExhibitionResponseDto.GenreCategoryResponseDto findCraftExhibition();
+
+    ExhibitionResponseDto.GenreCategoryResponseDto findDesignExhibition();
+
+    ExhibitionResponseDto.GenreCategoryResponseDto findPictureExhibition();
+    ExhibitionResponseDto.GenreCategoryResponseDto findSpecialExhibitionExhibition();
+
+    ExhibitionResponseDto.GenreCategoryResponseDto findSculptureExhibition();
+    ExhibitionResponseDto.GenreCategoryResponseDto findPlanExhibitionExhibition();
+
+    ExhibitionResponseDto.GenreCategoryResponseDto findInstallationArtExhibition();
+    ExhibitionResponseDto.GenreCategoryResponseDto findPaintingExhibition();
+
+    ExhibitionResponseDto.GenreCategoryResponseDto findArtistExhibitionExhibition();
 
 
 }
