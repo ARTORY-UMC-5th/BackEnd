@@ -21,6 +21,8 @@ public class  KakaoTokenRestController {
 
     private final KakaoTokenClient kakaoTokenClient;
     private final OauthLoginService oauthLoginService;
+    @Value("${client-ip}")
+    private String clientIp;
 
     @Value("${kakao.client.id}")
     private String kakaoClientId;
@@ -76,7 +78,7 @@ public class  KakaoTokenRestController {
 
     //        return "kakao toekn : " + kakaoToken;
 
-        String redirectUri = "http://localhost:3000/signup/token?access_token=" + kakaoToken.getAccess_token() + "&provider=kakao";
+        String redirectUri = clientIp + "/signup/token?access_token=" + kakaoToken.getAccess_token() + "&provider=kakao";
 
         return new RedirectView(redirectUri);
     }
