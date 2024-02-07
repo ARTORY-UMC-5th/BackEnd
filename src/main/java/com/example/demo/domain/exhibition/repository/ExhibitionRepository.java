@@ -131,18 +131,16 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
     Exhibition findCraftExhibition();
 
 
-    @Query("SELECT e FROM Exhibition e WHERE e.genreCategory1 = 'design' or e.genreCategory2='design' ORDER BY ABS(FUNCTION('DATEDIFF', CAST(e.exhibitionStartDate AS java.time.LocalDate), CURRENT_DATE())) ASC LIMIT 1")
+    @Query("SELECT e FROM Exhibition e WHERE e.genreCategory1 = 'design'ORDER BY ABS(FUNCTION('DATEDIFF', CAST(e.exhibitionStartDate AS java.time.LocalDate), CURRENT_DATE())) ASC LIMIT 1")
 
     Exhibition findDesignExhibition();
 
 
 @Query("SELECT e FROM Exhibition e WHERE e.genreCategory1 = 'picture' ORDER BY ABS(FUNCTION('DATEDIFF', CAST(e.exhibitionStartDate AS java.time.LocalDate), CURRENT_DATE())) ASC LIMIT 1")
-
     Exhibition findPictureExhibition();
 
 
-    @Query("SELECT e FROM Exhibition e WHERE e.genreCategory1 = 'special_exhibition' or   e.genreCategory2 = 'special_exhibition' ORDER BY e.updateTime DESC LIMIT 1")
-
+    @Query("SELECT e FROM Exhibition e WHERE e.genreCategory1 = 'special_exhibition' ORDER BY ABS(FUNCTION('DATEDIFF', CAST(e.exhibitionStartDate AS java.time.LocalDate), CURRENT_DATE())) ASC LIMIT 1")
     Exhibition findSpecialExhibitionExhibition();
 
 
@@ -163,7 +161,7 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
     @Query("SELECT e FROM Exhibition e WHERE e.genreCategory1 = 'painting' ORDER BY ABS(FUNCTION('DATEDIFF', CAST(e.exhibitionStartDate AS java.time.LocalDate), CURRENT_DATE())) ASC LIMIT 1")
     Exhibition findPaintingExhibition();
 
-    @Query("SELECT e FROM Exhibition e WHERE e.genreCategory1 = 'artist_Exhibition' or e.genreCategory2 = 'artist_exhibition' ORDER BY ABS(FUNCTION('DATEDIFF', CAST(e.exhibitionStartDate AS java.time.LocalDate), CURRENT_DATE())) ASC LIMIT 1")
+    @Query("SELECT e FROM Exhibition e WHERE e.genreCategory1 = 'artist_Exhibition' ORDER BY ABS(FUNCTION('DATEDIFF', CAST(e.exhibitionStartDate AS java.time.LocalDate), CURRENT_DATE())) ASC LIMIT 1")
 
     Exhibition findArtistExhibitionExhibition();
 

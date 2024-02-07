@@ -57,7 +57,6 @@ public class ExhibitionServiceImpl implements ExhibitionService {
         ExhibitionResponseDto.ExhibitionGenreListResponseDto allResponseDto = new ExhibitionResponseDto.ExhibitionGenreListResponseDto();
         //카테고리 정보
         allResponseDto.setMediaCategoryResponseDto(findMediaExhibition());
-
         allResponseDto.setCraftCategoryResponseDto(findCraftExhibition());
         allResponseDto.setDesignCategoryResponseDto(findDesignExhibition());
         allResponseDto.setPictureCategoryResponseDto(findPictureExhibition());

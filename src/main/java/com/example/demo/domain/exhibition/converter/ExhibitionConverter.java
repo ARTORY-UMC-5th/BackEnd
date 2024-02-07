@@ -25,6 +25,7 @@ public class ExhibitionConverter {
         return ExhibitionResponseDto.GenreCategoryResponseDto.builder()
                 .exhibitionId(exhibition.getId())
                 .exhibitionImage(exhibition.getExhibitionImage())
+                .genre(exhibition.getGenreCategory1())
                 .build();
     }
 

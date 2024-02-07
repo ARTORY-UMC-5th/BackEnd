@@ -110,6 +110,7 @@ public class ExhibitionResponseDto {
     public static class GenreCategoryResponseDto {
         private Long exhibitionId;
         private String exhibitionImage;
+        private String genre;
 
 
     }
