@@ -26,6 +26,9 @@ public class NaverTokenRestController {
     private final NaverTokenClient naverTokenClient;
     private final OauthLoginService oauthLoginService;
 
+    @Value("${client-ip}")
+    private String clientIp;
+
     @Value("${naver.client.id}")
     private String NaverClientId;
 
@@ -86,7 +89,7 @@ public class NaverTokenRestController {
         System.out.println(naverToken);
 
         // 획득한 토큰을 사용하여 새로운 주소로 리다이렉트
-        String redirectUri = "http://localhost:3000/signup/token?access_token=" + naverToken.getAccess_token()+ "&provider=naver";
+        String redirectUri = clientIp+"/signup/token?access_token=" + naverToken.getAccess_token()+ "&provider=naver";
 
         return new RedirectView(redirectUri);
 
