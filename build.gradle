@@ -58,7 +58,7 @@ dependencyManagement {
     }
 }
 jar{
-    enabled  = = false
+    enabled = false
 }
 
 //tasks.named('test') {
