@@ -7,8 +7,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     #    url: jdbc:mysql://localhost:3306/artory?serverTimezone=Asia/Seoul
     url: jdbc:mysql://artory-db.ccjn8ih7e8h5.ap-northeast-2.rds.amazonaws.com:3306/artory?serverTimezone=Asia/Seoul
-    username: ${dev-username}
-    password: ${dev-password}
+    username: ${dev_username}
+    password: ${dev_password}
   jpa:
     hibernate:
       ddl-auto: update
@@ -24,12 +24,12 @@ spring:
 kakao:
   client:
     id: ee35f9bdbb7d489738218a16bc693718
-    secret: ${prod-kakao}
+    secret: ${prod_kakao}
   callback:
     url: http://3.39.39.6:8080/oauth/kakao/callback
 naver:
   client:
     id: 27AEJS87AXoGop3MoHhW
-    secret: ${prod-naver}
+    secret: ${prod_naver}
   callback:
     url: http://3.39.39.6:8080/login/oauth2/code/naver
