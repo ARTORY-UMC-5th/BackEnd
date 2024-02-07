@@ -1,16 +1,16 @@
-name: Build and Test
+name: Build and Test -seungwoo
+
 on:
   pull_request:
-    branches: [ prod ]
-#    types: [closed]
+    types: [closed]
 
-#  workflow_dispatch: # (2).수동 실행도 가능하도록
+  workflow_dispatch: # (2).수동 실행도 가능하도록
 
 jobs:
   build:
     name: 1. Build and Deploy
     runs-on: ubuntu-latest
-#    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'prod'
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'prod'
 
     steps:
       - name: 2. Checkout
