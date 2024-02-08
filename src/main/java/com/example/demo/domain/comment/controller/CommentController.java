@@ -1,7 +1,6 @@
 package com.example.demo.domain.comment.controller;
 
 import com.example.demo.domain.comment.dto.CommentRequestDto;
-import com.example.demo.domain.comment.dto.CommentResponseDto;
 import com.example.demo.domain.comment.service.CommentService;
 import com.example.demo.global.resolver.memberInfo.MemberInfo;
 import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
