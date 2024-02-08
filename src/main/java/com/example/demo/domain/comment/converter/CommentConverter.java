@@ -8,14 +8,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommentConverter {
 
-    public CommentResponseDto convertToResponseDto (Comment comment, Member member) {
+    public CommentResponseDto convertToResponseDto (Comment comment) {
         CommentResponseDto commentResponseDto = CommentResponseDto.builder()
                 .commentId(comment.getId())
                 .satisfactionLevel(comment.getCommentSatisfactionLevel())
                 .commentContext(comment.getCommentContext())
-                .memberId(member.getMemberId())
-                .memberNickname(member.getNickname())
-                .memberProfile(member.getImage())
+                .memberId(comment.getMember().getMemberId())
+                .memberNickname(comment.getMember().getNickname())
+                .memberProfile(comment.getMember().getImage())
                 .build();
 
         return commentResponseDto;
