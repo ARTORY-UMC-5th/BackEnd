@@ -45,6 +45,9 @@ public interface StoryService {
     // 스토리 삭제
     void deleteStory(Long storyId, MemberInfoDto memberInfoDto);
 
-    // 스토리 임시 저장
-    void draftSaveStory(StoryRequestDto.StoryRequestGeneralDto draftStoryRequestDto, @MemberInfo MemberInfoDto memberInfoDto, Long storyId);
+    // 스토리 임시 저장 (storyId 존재)
+    void draftSaveStoryWithStoryId(StoryRequestDto.StoryRequestGeneralDto draftStoryRequestDto, @MemberInfo MemberInfoDto memberInfoDto, Long storyId);
+
+    // 스토리 임시 저장 (storyId 존재 x)
+    void draftSaveStory(StoryRequestDto.StoryRequestGeneralDto draftStoryRequestDto, @MemberInfo MemberInfoDto memberInfoDto);
 }

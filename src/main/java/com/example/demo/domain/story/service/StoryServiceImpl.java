@@ -520,24 +520,17 @@ public class StoryServiceImpl implements StoryService{
     }
 
     @Transactional
-    public void draftSaveStory(StoryRequestDto.StoryRequestGeneralDto draftStoryRequestDto, @MemberInfo MemberInfoDto memberInfoDto, Long storyId) {
+    public void draftSaveStoryWithStoryId(StoryRequestDto.StoryRequestGeneralDto draftStoryRequestDto, @MemberInfo MemberInfoDto memberInfoDto, Long storyId) {
         Exhibition exhibition = exhibitionRepository.findById(draftStoryRequestDto.getExhibitionId())
                 .orElseThrow(() -> new ExhibitionException(ErrorCode.EXHIBITION_NOT_EXISTS));
         Member member = memberRepository.findById(memberInfoDto.getMemberId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_EXISTS));
 
-        Story story;
-        if (storyId == null) {
-            // 새로 story 생성
-            story = storyConverter.convertFromDraftToEntity(draftStoryRequestDto, member, exhibition);
-        } else {
-            // 기존의 story 가져와 덮어쓰기
-            Story existingStory = storyRepository.findById(storyId)
-                    .orElseThrow(() -> new StoryException(ErrorCode.STORY_NOT_EXISTS));
-            story = storyConverter.convertFromDraftToEntityWithStoryId(draftStoryRequestDto, member, exhibition, existingStory, storyId);
+        Story existingStory = storyRepository.findById(storyId)
+                .orElseThrow(() -> new StoryException(ErrorCode.STORY_NOT_EXISTS));
+        Story story = storyConverter.convertFromDraftToEntityWithStoryId(draftStoryRequestDto, member, exhibition, existingStory, storyId);
 
-            storyPictureRepository.deleteByStoryId(story.getId());
-        }
+        storyPictureRepository.deleteByStoryId(story.getId());
 
         List<String> picturesUrl = draftStoryRequestDto.getPicturesUrl();
         List<StoryPicture> storyPictureList = new ArrayList<>();
@@ -553,4 +546,27 @@ public class StoryServiceImpl implements StoryService{
         storyRepository.save(story);
     }
 
+
+    @Transactional
+    public void draftSaveStory(StoryRequestDto.StoryRequestGeneralDto draftStoryRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
+        Exhibition exhibition = exhibitionRepository.findById(draftStoryRequestDto.getExhibitionId())
+                .orElseThrow(() -> new ExhibitionException(ErrorCode.EXHIBITION_NOT_EXISTS));
+        Member member = memberRepository.findById(memberInfoDto.getMemberId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_EXISTS));
+
+        Story story = storyConverter.convertFromDraftToEntity(draftStoryRequestDto, member, exhibition);
+
+        List<String> picturesUrl = draftStoryRequestDto.getPicturesUrl();
+        List<StoryPicture> storyPictureList = new ArrayList<>();
+        for (String pictureUrl : picturesUrl) {
+            StoryPicture storyPicture = StoryPicture.builder()
+                    .story(story)
+                    .pictureUrl(pictureUrl)
+                    .build();
+            storyPictureList.add(storyPicture);
+        }
+
+        story.setStoryPictureList(storyPictureList);
+        storyRepository.save(story);
+    }
 }
