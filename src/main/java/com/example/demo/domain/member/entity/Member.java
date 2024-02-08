@@ -36,22 +36,28 @@ public class Member extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
+    @Setter
     private MemberType memberType;
 
     @Column(unique = true, length = 50, nullable = false)
+    @Setter
     private String email;
 
     @Column(length = 200)
+    @Setter
     private String password;
 
     @Column(nullable = false, length = 20)
+    @Setter
     private String memberName;
 
     @Column(length = 200)
+    @Setter
     private String profile;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
+    @Setter
     private Role role;
 
     @Column(length = 250)
