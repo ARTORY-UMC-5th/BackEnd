@@ -1,9 +1,12 @@
 server:
   port: 8080
   servlet:
-    context-path: /
+    context-path:
+
 
 spring:
+  profiles:
+    active: ${profile}
   servlet:
     multipart:
       enabled: true # 멀티파트 업로드 지원여부 (default: true)
@@ -28,23 +31,13 @@ feign:
         readTimeout: 5000
 
 
-#kakao:
-#  client:
-#    id: ee35f9bdbb7d489738218a16bc693718
-#    secret: WlH1pCtFLtTBJIACJW2aIh7azY3ZK47R
-#naver:
-#  client:
-#    id: 4yrLNCK6RQMeFj95vayh
-#    secret: mfAMbtRMFO
-#  callback:
-#    url: http://3.39.39.6:8080/login/oauth2/code/naver
 cloud:
   aws:
     s3:
       bucket: artory-webserver
     credentials:
-      access-key: ${s3-access-key}
-      secret-key: ${s3-secret-key}
+      access-key: ${s3_access_key}
+      secret-key: ${s3_secret_key}
     region:
       static: ap-northeast-2
       auto: false

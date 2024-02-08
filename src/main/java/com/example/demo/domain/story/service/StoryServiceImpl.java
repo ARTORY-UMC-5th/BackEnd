@@ -1,5 +1,6 @@
 package com.example.demo.domain.story.service;
 
+import com.example.demo.domain.comment.converter.CommentConverter;
 import com.example.demo.domain.comment.dto.CommentResponseDto;
 import com.example.demo.domain.comment.dto.SubCommentResponseDto;
 import com.example.demo.domain.comment.entity.Comment;
@@ -56,6 +57,7 @@ public class StoryServiceImpl implements StoryService{
     private final StoryPictureRepository storyPictureRepository;
     private final CommentRepository commentRepository;
     private final SubCommentService subCommentService;
+    private final CommentConverter commentConverter;
 
     @Transactional
     public void saveStory(StoryRequestDto.StoryRequestGeneralDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto, Long storyId) {
@@ -258,26 +260,18 @@ public class StoryServiceImpl implements StoryService{
         // Story가 없으면 throw
         if (!storyRepository.existsById(storyId)) throw new StoryException(ErrorCode.STORY_NOT_EXISTS);
 
+        Member member = memberRepository.getById(memberInfoDto.getMemberId());
+
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
         List<Comment> commentList = commentRepository.findByStoryId(storyId);
         for (Comment comment : commentList) {
-            CommentResponseDto temp = CommentResponseDto.builder()
-                    .commentId(comment.getId())
-                    .satisfactionLevel(comment.getCommentSatisfactionLevel())
-                    .commentContext(comment.getCommentContext())
-                    .memberId(comment.getMember().getMemberId())
-                    .memberProfile(comment.getMember().getProfile())
-                    .memberNickname(comment.getMember().getNickname())
-                    .build();
+            CommentResponseDto commentResponseDto = commentConverter.convertToResponseDto(comment, member);
 
 
             // 각 댓글마다 댓글에 대한 대댓글 리스트 추가 로직
             List<SubCommentResponseDto> subCommentResponseDtoList = subCommentService.findByCommentId(comment.getId());
-            CommentResponseDto commentResponseDto = temp.toBuilder()
-                    .subCommentResponseDtoList(subCommentResponseDtoList)
-                    .build();
-
+            commentResponseDto.setSubCommentResponseDtoList(subCommentResponseDtoList);
             commentResponseDtoList.add(commentResponseDto);
         }
 
@@ -527,31 +521,24 @@ public class StoryServiceImpl implements StoryService{
             // 스토리 삭제 -> 댓글과 대댓글 모두 삭제 처리
 //            scrapStoryRepository.deleteByMemberIdAndStoryId(memberId, storyId);
             storyRepository.deleteById(storyId);
-            
+
         }else{
             throw new StoryException(ErrorCode.STORY_NOT_EXISTS);
         }
     }
 
     @Transactional
-    public void draftSaveStory(StoryRequestDto.StoryRequestGeneralDto draftStoryRequestDto, @MemberInfo MemberInfoDto memberInfoDto, Long storyId) {
+    public void draftSaveStoryWithStoryId(StoryRequestDto.StoryRequestGeneralDto draftStoryRequestDto, @MemberInfo MemberInfoDto memberInfoDto, Long storyId) {
         Exhibition exhibition = exhibitionRepository.findById(draftStoryRequestDto.getExhibitionId())
                 .orElseThrow(() -> new ExhibitionException(ErrorCode.EXHIBITION_NOT_EXISTS));
         Member member = memberRepository.findById(memberInfoDto.getMemberId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_EXISTS));
 
-        Story story;
-        if (storyId == null) {
-            // 새로 story 생성
-            story = storyConverter.convertFromDraftToEntity(draftStoryRequestDto, member, exhibition);
-        } else {
-            // 기존의 story 가져와 덮어쓰기
-            Story existingStory = storyRepository.findById(storyId)
-                    .orElseThrow(() -> new StoryException(ErrorCode.STORY_NOT_EXISTS));
-            story = storyConverter.convertFromDraftToEntityWithStoryId(draftStoryRequestDto, member, exhibition, existingStory, storyId);
+        Story existingStory = storyRepository.findById(storyId)
+                .orElseThrow(() -> new StoryException(ErrorCode.STORY_NOT_EXISTS));
+        Story story = storyConverter.convertFromDraftToEntityWithStoryId(draftStoryRequestDto, member, exhibition, existingStory, storyId);
 
-            storyPictureRepository.deleteByStoryId(story.getId());
-        }
+        storyPictureRepository.deleteByStoryId(story.getId());
 
         List<String> picturesUrl = draftStoryRequestDto.getPicturesUrl();
         List<StoryPicture> storyPictureList = new ArrayList<>();
@@ -567,4 +554,27 @@ public class StoryServiceImpl implements StoryService{
         storyRepository.save(story);
     }
 
+
+    @Transactional
+    public void draftSaveStory(StoryRequestDto.StoryRequestGeneralDto draftStoryRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
+        Exhibition exhibition = exhibitionRepository.findById(draftStoryRequestDto.getExhibitionId())
+                .orElseThrow(() -> new ExhibitionException(ErrorCode.EXHIBITION_NOT_EXISTS));
+        Member member = memberRepository.findById(memberInfoDto.getMemberId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_EXISTS));
+
+        Story story = storyConverter.convertFromDraftToEntity(draftStoryRequestDto, member, exhibition);
+
+        List<String> picturesUrl = draftStoryRequestDto.getPicturesUrl();
+        List<StoryPicture> storyPictureList = new ArrayList<>();
+        for (String pictureUrl : picturesUrl) {
+            StoryPicture storyPicture = StoryPicture.builder()
+                    .story(story)
+                    .pictureUrl(pictureUrl)
+                    .build();
+            storyPictureList.add(storyPicture);
+        }
+
+        story.setStoryPictureList(storyPictureList);
+        storyRepository.save(story);
+    }
 }
