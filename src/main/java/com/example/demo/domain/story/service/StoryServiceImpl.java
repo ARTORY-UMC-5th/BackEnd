@@ -255,18 +255,16 @@ public class StoryServiceImpl implements StoryService{
     }
 
     @Transactional
-    public List<CommentResponseDto> getCommentById(Long storyId, @MemberInfo MemberInfoDto memberInfoDto) {
+    public List<CommentResponseDto> getCommentById(Long storyId) {
 
         // Story가 없으면 throw
         if (!storyRepository.existsById(storyId)) throw new StoryException(ErrorCode.STORY_NOT_EXISTS);
-
-        Member member = memberRepository.getById(memberInfoDto.getMemberId());
 
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
         List<Comment> commentList = commentRepository.findByStoryId(storyId);
         for (Comment comment : commentList) {
-            CommentResponseDto commentResponseDto = commentConverter.convertToResponseDto(comment, member);
+            CommentResponseDto commentResponseDto = commentConverter.convertToResponseDto(comment);
 
 
             // 각 댓글마다 댓글에 대한 대댓글 리스트 추가 로직

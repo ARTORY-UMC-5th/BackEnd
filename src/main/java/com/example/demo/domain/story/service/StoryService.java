@@ -14,7 +14,7 @@ public interface StoryService {
     // 특정 스토리 조회
     StoryResponseDto.StorySpecificResponseDto getStoryById(Long storyId,@MemberInfo MemberInfoDto memberInfoDto);
     //특정 스토리 댓글 조회
-    List<CommentResponseDto> getCommentById(Long storyId, @MemberInfo MemberInfoDto memberInfoDto);
+    List<CommentResponseDto> getCommentById(Long storyId);
     // 전체 스토리 리스트 조회
     StoryResponseDto.StoryListResponseDto getAllStoryList(int page, @MemberInfo MemberInfoDto memberInfoDto);
 
