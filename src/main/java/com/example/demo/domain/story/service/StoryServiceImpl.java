@@ -238,7 +238,7 @@ public class StoryServiceImpl implements StoryService{
                     .satisfactionLevel(comment.getCommentSatisfactionLevel())
                     .commentContext(comment.getCommentContext())
                     .memberId(comment.getMember().getMemberId())
-                    .memberProfile(comment.getMember().getProfile())
+                    .memberProfile(comment.getMember().getImage())
                     .memberNickname(comment.getMember().getNickname())
                     .build();
 
