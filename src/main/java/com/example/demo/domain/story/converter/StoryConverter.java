@@ -67,7 +67,7 @@ public class StoryConverter {
         StoryResponseDto.StorySpecificResponseDto storySpecificResponseDto = StoryResponseDto.StorySpecificResponseDto.builder()
                 .memberId(member.getMemberId())
                 .memberNickname(member.getNickname())
-                .memberProfile(member.getProfile())
+                .memberProfile(member.getImage())
                 // 조회하는 멤버가 스토리를 생성한 멤버를 스크랩했는지
                 .isScrapped(isMemberScrapped)
 
