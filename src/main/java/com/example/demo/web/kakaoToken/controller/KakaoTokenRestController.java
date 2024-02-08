@@ -34,30 +34,6 @@ public class  KakaoTokenRestController {
     private String KakaoCallbackUrl;
 
 
-
-//    @GetMapping("/oauth/kakao/callback")
-
-//    public @ResponseBody OauthLoginDto.Response loginCallback(String code) {
-//        String contentType = "application/x-www-form-urlencoded;charset=utf-8";
-//        KakaoTokenDto.Request kakaoTokenRequestDto = KakaoTokenDto.Request.builder()
-//                .client_id(kakaoClientId)
-//                .client_secret(kakaoClientSecret)
-//                .grant_type("authorization_code")
-//                .code(code)
-//                .redirect_uri(KakaoCallbackUrl)
-////                .redirect_uri("http://localhost:8080/home")
-//
-//                .build();
-//        System.out.println("CODE : " + code);
-//
-//        KakaoTokenDto.Response kakaoToken = kakaoTokenClient.requestKakaoToken(contentType, kakaoTokenRequestDto);
-//
-//        System.out.println("getAccess_token : " + kakaoToken.getAccess_token());
-//
-//        System.out.println(kakaoToken);
-////        return "kakao toekn : " + kakaoToken;
-//        return oauthLoginService.oauthLogin(kakaoToken.getAccess_token(), MemberType.from("KAKAO"));
-//    }
     @GetMapping("/oauth/kakao/callback")
     public RedirectView loginCallback(String code) {
         String contentType = "application/x-www-form-urlencoded;charset=utf-8";

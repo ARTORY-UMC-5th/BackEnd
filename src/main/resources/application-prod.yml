@@ -24,13 +24,13 @@ spring:
 client-ip: http://localhost:3000
 kakao:
   client:
-    id: ee35f9bdbb7d489738218a16bc693718
+    id: 5b7d7ffc9aa7f5e78dd3f29e032aafd4
     secret: ${prod_kakao}
   callback:
-    url: http://artory-powerful-server.store/oauth/kakao/callback
+    url: http://3.39.39.6:8080/oauth/kakao/callback
 naver:
   client:
     id: 27AEJS87AXoGop3MoHhW
     secret: ${prod_naver}
   callback:
-    url: http://artory-powerful-server.store/login/oauth2/code/naver
+    url: http://3.39.39.6:8080/login/oauth2/code/naver
