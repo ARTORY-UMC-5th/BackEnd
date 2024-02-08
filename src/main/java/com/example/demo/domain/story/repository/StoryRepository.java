@@ -29,7 +29,10 @@ public interface StoryRepository extends JpaRepository<Story, Long> {
     // 스토리 엔티티 + 조회하는 멤버가 스토리를 생성한 멤버를 스크랩 했는지 여부 (isScrapped)
 
 
-    @Query("SELECT s FROM Story s JOIN FETCH s.exhibition WHERE s.member.memberId = :memberId")
+    @Query("SELECT s " +
+            "FROM Story s " +
+            "JOIN FETCH s.exhibition " +
+            "WHERE s.member.memberId = :memberId AND s.storyState = com.example.demo.domain.story.constant.State.DONE ")
     List<Story> findByMemberId(@Param("memberId") Long memberId);
 
 
