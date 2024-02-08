@@ -42,18 +42,31 @@ public class MyStoryController {
 
     }
 
-    @Operation(summary = "스토리 임시 저장")
-    @PostMapping("/draft-save")
-    public ResponseEntity<String> draftSaveStory(@RequestBody StoryRequestDto.StoryRequestGeneralDto storyRequestDraftDto, @MemberInfo MemberInfoDto memberInfoDto, @RequestParam(required = false) Long storyId) {
+    @Operation(summary = "스토리 임시 저장 (storyId 존재할 때)")
+    @PostMapping("/draft-save-with-storyId")
+    public ResponseEntity<String> draftSaveStoryWithStoryId(@RequestBody StoryRequestDto.StoryRequestGeneralDto storyRequestDraftDto, @MemberInfo MemberInfoDto memberInfoDto, @RequestParam Long storyId) {
 //        try {
 //            storyService.draftSaveStory(storyRequestDraftDto, memberInfoDto);
 //            return ResponseEntity.ok("Story draft-saved successfully!");
 //        } catch (Exception e) {
 //            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to draft-save the story.");
 //        }
-        storyService.draftSaveStory(storyRequestDraftDto, memberInfoDto, storyId);
+        storyService.draftSaveStoryWithStoryId(storyRequestDraftDto, memberInfoDto, storyId);
         return ResponseEntity.ok("Story draft-saved successfully!");
 
+    }
+
+    @Operation(summary = "스토리 임시 저장 (storyId 존재하지 않을 때")
+    @PostMapping("/draft-save")
+    public ResponseEntity<String> draftSaveStory(@RequestBody StoryRequestDto.StoryRequestGeneralDto storyRequestDraftDto, @MemberInfo MemberInfoDto memberInfoDto) {
+//        try {
+//            storyService.draftSaveStory(storyRequestDraftDto, memberInfoDto);
+//            return ResponseEntity.ok("Story draft-saved successfully!");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to draft-save the story.");
+//        }
+        storyService.draftSaveStory(storyRequestDraftDto, memberInfoDto);
+        return ResponseEntity.ok("Story draft-saved successfully!");
     }
 
     @Operation(summary = "마이스토리에 내정보 및 스크랩한 전시회 목록 조회", description = "마이스토리 창 들어갈때 호출되는 url, exhibitions에는 스크랩한 전시회 중 날짜가 유효(시작했고 끝나지 않은)한것만 나옴")
