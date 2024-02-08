@@ -84,7 +84,7 @@ public class Story extends BaseEntity {
 
     // 추가 : 해당 스토리의 상태 작성 전인지, 임시저장인지, 저장 완료인지 구분 (기본값 : 저장 완료(Done))
     @Builder.Default
-    private State storyState = State.DONE;
+    private State storyState = null;
 
     private int year;
     private int month;
