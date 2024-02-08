@@ -17,6 +17,5 @@ public class SubCommentResponseDto {
 
     //멤버
     private Long memberId;
-    private String memberProfile;
     private String memberNickname;
 }
