@@ -114,9 +114,13 @@ public class StoryServiceImpl implements StoryService{
         // 스토리 썸네일 set
         story.setStoryThumbnailImage(picturesUrl.get(0));
 
-        story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), storyRequestDto.getGenre1());
-        story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), storyRequestDto.getGenre2());
-        story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), storyRequestDto.getGenre3());
+        Genre genre1 = Genre.fromString(storyRequestDto.getGenre1());
+        Genre genre2 = Genre.fromString(storyRequestDto.getGenre2());
+        Genre genre3 = Genre.fromString(storyRequestDto.getGenre3());
+
+        story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), genre1);
+        story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), genre2);
+        story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibitionId), genre3);
 
         exhibition.updateCategory();
 
@@ -150,6 +154,10 @@ public class StoryServiceImpl implements StoryService{
             throw new StoryException(ErrorCode.NOT_YOUR_STORY);
         }
 
+        Genre genre1 = Genre.fromString(storyRequestDto.getGenre1());
+        Genre genre2 = Genre.fromString(storyRequestDto.getGenre2());
+        Genre genre3 = Genre.fromString(storyRequestDto.getGenre3());
+
         // 스토리 생성 (StoryPicture 할당 x)
         story = Story.builder()
                 .id(storyId)
@@ -162,9 +170,9 @@ public class StoryServiceImpl implements StoryService{
                 .storyKeyword(storyRequestDto.getStoryKeyword())
                 .storyViewingTime(storyRequestDto.getStoryViewingTime())
                 .storyContext(storyRequestDto.getStoryContext())
-                .genre1(storyRequestDto.getGenre1())
-                .genre2(storyRequestDto.getGenre2())
-                .genre3(storyRequestDto.getGenre3())
+                .genre1(genre1)
+                .genre2(genre2)
+                .genre3(genre3)
                 .isOpen(storyRequestDto.getIsOpen())
                 .build();
 
@@ -193,9 +201,9 @@ public class StoryServiceImpl implements StoryService{
 
 
         Exhibition exhibition = story.getExhibition();
-        story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibition.getId()), storyRequestDto.getGenre1());
-        story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibition.getId()), storyRequestDto.getGenre2());
-        story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibition.getId()), storyRequestDto.getGenre3());
+        story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibition.getId()), genre1);
+        story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibition.getId()), genre2);
+        story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibition.getId()), genre3);
 
         /*
           updateCategory : 해당 전시회의 상위 3개 Genre 선택해서 업데이트

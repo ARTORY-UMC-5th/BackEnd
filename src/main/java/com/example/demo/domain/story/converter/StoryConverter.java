@@ -3,6 +3,7 @@ package com.example.demo.domain.story.converter;
 
 import com.example.demo.domain.comment.dto.CommentResponseDto;
 import com.example.demo.domain.exhibition.entity.Exhibition;
+import com.example.demo.domain.member.constant.Genre;
 import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.story.constant.State;
 import com.example.demo.domain.story.dto.StoryRequestDto;
@@ -16,6 +17,11 @@ import java.util.List;
 @Component
 public class StoryConverter {
     public Story convertToEntity(StoryRequestDto.StoryRequestGeneralDto storyRequestDto, Member member, Exhibition exhibition) {
+
+        Genre genre1 = Genre.fromString(storyRequestDto.getGenre1());
+        Genre genre2 = Genre.fromString(storyRequestDto.getGenre2());
+        Genre genre3 = Genre.fromString(storyRequestDto.getGenre3());
+
         return Story.builder()
                 .storyTitle(storyRequestDto.getStoryTitle())
                 .storySatisfactionLevel(storyRequestDto.getStorySatisfactionLevel())
@@ -27,9 +33,9 @@ public class StoryConverter {
                 .year(storyRequestDto.getYear())
                 .month(storyRequestDto.getMonth())
                 .day(storyRequestDto.getDay())
-                .genre1(storyRequestDto.getGenre1())
-                .genre2(storyRequestDto.getGenre2())
-                .genre3(storyRequestDto.getGenre3())
+                .genre1(genre1)
+                .genre2(genre2)
+                .genre3(genre3)
                 .isOpen(storyRequestDto.getIsOpen())
                 .storyState(State.DONE)
                 .member(member)
@@ -129,6 +135,10 @@ public class StoryConverter {
     // 임시 저장 데이터를 스토리로 변경 (storyId가 없을 때)
     public Story convertFromDraftToEntity(StoryRequestDto.StoryRequestGeneralDto draftStoryRequestDto, Member member, Exhibition exhibition) {
 
+        Genre genre1 = Genre.fromString(draftStoryRequestDto.getGenre1());
+        Genre genre2 = Genre.fromString(draftStoryRequestDto.getGenre2());
+        Genre genre3 = Genre.fromString(draftStoryRequestDto.getGenre3());
+
         Story story = Story.builder()
                 .exhibition(exhibition)
                 .member(member)
@@ -142,9 +152,9 @@ public class StoryConverter {
                 .month(draftStoryRequestDto.getMonth())
                 .day(draftStoryRequestDto.getDay())
                 .storyContext(draftStoryRequestDto.getStoryContext())
-                .genre1(draftStoryRequestDto.getGenre1())
-                .genre2(draftStoryRequestDto.getGenre2())
-                .genre3(draftStoryRequestDto.getGenre3())
+                .genre1(genre1)
+                .genre2(genre2)
+                .genre3(genre3)
                 .isOpen(draftStoryRequestDto.getIsOpen())
                 .storyState(State.IN_PROGRESS)
                 .build();
@@ -154,6 +164,10 @@ public class StoryConverter {
 
     // 임시 저장 데이터를 스토리로 변경 (storyId가 있을 때)
     public Story convertFromDraftToEntityWithStoryId(StoryRequestDto.StoryRequestGeneralDto draftStoryRequestDto, Member member, Exhibition exhibition, Story existingStory, Long storyId) {
+
+        Genre genre1 = Genre.fromString(draftStoryRequestDto.getGenre1());
+        Genre genre2 = Genre.fromString(draftStoryRequestDto.getGenre2());
+        Genre genre3 = Genre.fromString(draftStoryRequestDto.getGenre3());
 
         Story story = existingStory.builder()
                 .exhibition(exhibition)
@@ -169,9 +183,9 @@ public class StoryConverter {
                 .month(draftStoryRequestDto.getMonth())
                 .day(draftStoryRequestDto.getDay())
                 .storyContext(draftStoryRequestDto.getStoryContext())
-                .genre1(draftStoryRequestDto.getGenre1())
-                .genre2(draftStoryRequestDto.getGenre2())
-                .genre3(draftStoryRequestDto.getGenre3())
+                .genre1(genre1)
+                .genre2(genre2)
+                .genre3(genre3)
                 .isOpen(draftStoryRequestDto.getIsOpen())
                 .storyState(State.IN_PROGRESS)
                 .build();
@@ -180,6 +194,10 @@ public class StoryConverter {
     }
 
     public Story convertToEntityWithStoryId(StoryRequestDto.StoryRequestGeneralDto storyRequestDto, Member member, Exhibition exhibition, Story existingStory, Long storyId) {
+
+        Genre genre1 = Genre.fromString(storyRequestDto.getGenre1());
+        Genre genre2 = Genre.fromString(storyRequestDto.getGenre2());
+        Genre genre3 = Genre.fromString(storyRequestDto.getGenre3());
 
         Story story = existingStory.builder()
                 .exhibition(exhibition)
@@ -195,9 +213,9 @@ public class StoryConverter {
                 .month(storyRequestDto.getMonth())
                 .day(storyRequestDto.getDay())
                 .storyContext(storyRequestDto.getStoryContext())
-                .genre1(storyRequestDto.getGenre1())
-                .genre2(storyRequestDto.getGenre2())
-                .genre3(storyRequestDto.getGenre3())
+                .genre1(genre1)
+                .genre2(genre2)
+                .genre3(genre3)
                 .isOpen(storyRequestDto.getIsOpen())
                 .storyState(State.DONE)
                 .build();
