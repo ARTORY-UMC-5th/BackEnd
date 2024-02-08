@@ -1,9 +1,6 @@
 package com.example.demo.domain.comment.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -24,5 +21,6 @@ public class CommentResponseDto {
     private String memberNickname;
 
     // 대댓글
+    @Setter
     private List<SubCommentResponseDto> subCommentResponseDtoList;
 }

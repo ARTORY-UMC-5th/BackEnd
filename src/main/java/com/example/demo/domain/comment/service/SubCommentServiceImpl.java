@@ -95,8 +95,9 @@ public class SubCommentServiceImpl implements SubCommentService{
                     Long subCommentId = (Long) array[0];
                     String subCommentContext = (String) array[1];
                     Long memberId = (Long) array[2];
-                    String memberNickname = (String) array[3];
-                    return new SubCommentResponseDto(subCommentId, subCommentContext, memberId, memberNickname);
+                    String memberProfile = (String) array[3];
+                    String memberNickname = (String) array[4];
+                    return new SubCommentResponseDto(subCommentId, subCommentContext, memberId, memberProfile, memberNickname);
                 })
                 .collect(Collectors.toList());
 
