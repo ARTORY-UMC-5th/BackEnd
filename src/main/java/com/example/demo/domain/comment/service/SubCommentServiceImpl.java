@@ -66,12 +66,17 @@ public class SubCommentServiceImpl implements SubCommentService{
         SubComment subComment = subCommentRepository.findById(subcommentUpdateRequestDto.getSubCommentId())
                 .orElseThrow(() -> new CommentException(ErrorCode.COMMENT_NOT_EXISTS));
 
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new CommentException(ErrorCode.COMMENT_NOT_EXISTS));
+
         if (!Objects.equals(subComment.getMember().getMemberId(), member.getMemberId())) {
             throw new CommentException(ErrorCode.NOT_YOUR_COMMENT);
         }
 
         subComment = SubComment.builder()
-                .id(subComment.getId())
+                .id(subcommentUpdateRequestDto.getSubCommentId())
+                .member(member)
+                .comment(comment)
                 .commentContext(subcommentUpdateRequestDto.getCommentContext())
                 .build();
 

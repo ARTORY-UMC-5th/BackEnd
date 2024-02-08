@@ -1,9 +1,11 @@
 package com.example.demo.domain.myStory.controller;
 
+import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.myStory.dto.MyStoryRequestDto;
 import com.example.demo.domain.myStory.dto.MyStoryResponseDto;
 import com.example.demo.domain.myStory.service.MyStoryServiceImpl;
 import com.example.demo.domain.story.dto.StoryRequestDto;
+import com.example.demo.domain.story.service.StoryService;
 import com.example.demo.domain.story.service.StoryServiceImpl;
 import com.example.demo.global.resolver.memberInfo.MemberInfo;
 import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
@@ -24,18 +26,36 @@ import java.util.stream.Collectors;
 public class MyStoryController {
 
     private final MyStoryServiceImpl myStoryService;
-    private final StoryServiceImpl storyService;
+    private final StoryService storyService;
 
-    @Operation(summary = "스토리 저장")
-    @PostMapping("/save")
+    @Operation(summary = "스토리 저장 (작성 전)")
+    @PostMapping("/not-started-save")
     public ResponseEntity<String> saveStory(@RequestBody StoryRequestDto.StoryRequestDateDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto) {
-        try {
-            storyService.saveStoryNotDate(storyRequestDto,memberInfoDto);
-            return ResponseEntity.ok("Story saved successfully!");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save the story.");
-        }
+//        try {
+//            storyService.saveStoryNotDate(storyRequestDto,memberInfoDto);
+//            return ResponseEntity.ok("Story saved successfully!");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save the story.");
+//        }
+        storyService.saveStoryNotDate(storyRequestDto,memberInfoDto);
+        return ResponseEntity.ok("Story saved successfully!");
+
     }
+
+    @Operation(summary = "스토리 임시 저장")
+    @PostMapping("/draft-save")
+    public ResponseEntity<String> draftSaveStory(@RequestBody StoryRequestDto.StoryRequestGeneralDto storyRequestDraftDto, @MemberInfo MemberInfoDto memberInfoDto, @RequestParam(required = false) Long storyId) {
+//        try {
+//            storyService.draftSaveStory(storyRequestDraftDto, memberInfoDto);
+//            return ResponseEntity.ok("Story draft-saved successfully!");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to draft-save the story.");
+//        }
+        storyService.draftSaveStory(storyRequestDraftDto, memberInfoDto, storyId);
+        return ResponseEntity.ok("Story draft-saved successfully!");
+
+    }
+
     @Operation(summary = "마이스토리에 내정보 및 스크랩한 전시회 목록 조회", description = "마이스토리 창 들어갈때 호출되는 url, exhibitions에는 스크랩한 전시회 중 날짜가 유효(시작했고 끝나지 않은)한것만 나옴")
     @GetMapping("/all")
     public ResponseEntity<MyStoryResponseDto.MemberGeneralResponseDto> getAllMyStoryInfo(

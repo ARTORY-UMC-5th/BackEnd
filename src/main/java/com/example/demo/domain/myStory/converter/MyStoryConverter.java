@@ -56,6 +56,7 @@ public class MyStoryConverter {
                 .year(story.getYear())
                 .month(story.getMonth())
                 .day(story.getDay())
+                .storyState(story.getStoryState())
                 .build();
         return dto;
     }
@@ -99,6 +100,9 @@ public class MyStoryConverter {
     public MyStoryResponseDto.StorySpecificResponseDto convertToSpecificStoryDto(Story story){
         MyStoryResponseDto.StorySpecificResponseDto dto = MyStoryResponseDto.StorySpecificResponseDto.builder()
                 .StoryId(story.getId())
+                .storyState(story.getStoryState())
+                .exhibitionId(story.getExhibition().getId())
+                .exhibitionImage(story.getExhibition().getExhibitionImage())
                 .exhibitionTitle(story.getExhibition().getExhibitionTitle())
                 .build();
         return dto;

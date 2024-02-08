@@ -82,7 +82,38 @@ public class ExhibitionResponseDto {
         private List<ExhibitionGeneralResponseDto> recommendExhibitionDtoList;
         private List<ExhibitionGeneralResponseDto> similarExhibitionDtoList;
 
+    }
+
+    @Builder
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ExhibitionGenreListResponseDto {
+        private GenreCategoryResponseDto mediaCategoryResponseDto;
+        private GenreCategoryResponseDto craftCategoryResponseDto;
+        private GenreCategoryResponseDto designCategoryResponseDto;
+        private GenreCategoryResponseDto pictureCategoryResponseDto;
+        private GenreCategoryResponseDto specialExhibitionCategoryResponseDto;
+        private GenreCategoryResponseDto sculptureCategoryResponseDto;
+        private GenreCategoryResponseDto planExhibitionCategoryResponseDto;
+        private GenreCategoryResponseDto installationArtCategoryResponseDto;
+        private GenreCategoryResponseDto paintingCategoryResponseDto;
+        private GenreCategoryResponseDto artistExhibitionCategoryResponseDto;
+    }
+
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GenreCategoryResponseDto {
+        private Long exhibitionId;
+        private String exhibitionImage;
+        private String genre;
+
 
     }
+
 
 }
