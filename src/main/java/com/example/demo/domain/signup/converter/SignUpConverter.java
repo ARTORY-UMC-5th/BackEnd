@@ -1,7 +1,6 @@
 package com.example.demo.domain.signup.converter;
 
 import com.example.demo.domain.member.entity.Member;
-import com.example.demo.domain.myPage.dto.MyPageResponseDto;
 import com.example.demo.domain.signup.dto.SignUpRequestDto;
 import org.springframework.stereotype.Component;
 

@@ -1,23 +1,24 @@
 package com.example.demo.domain.signup.service;
-
 import com.example.demo.domain.member.entity.Member;
-import com.example.demo.domain.member.repository.MemberRepository;
+import com.example.demo.domain.signup.converter.SignUpConverter;
 import com.example.demo.domain.signup.dto.SignUpRequestDto;
 import com.example.demo.global.error.ErrorCode;
 import com.example.demo.global.error.exception.SignupException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
 public class SignUpService {
-
+    @Autowired
+    private SignUpConverter signUpConverter;
     @Transactional
-    public void signUp(SignUpRequestDto signUpRequestDto){
+    public void signUp(Member memberData) {
+        SignUpRequestDto signUpRequestDto = signUpConverter.convertToGeneralDto(memberData);
+
         //이메일
         if (!isValidEmail(signUpRequestDto.getEmail())) {
             throw new SignupException(ErrorCode.INVALID_EMAIL_FORMAT);
@@ -41,6 +42,7 @@ public class SignUpService {
 
         // 마케팅 정보 수신 동의 (선택)
         Boolean isMarketingAgreed = Optional.ofNullable(signUpRequestDto.getMarketingAgreed()).orElse(false);
+
         Member member = new Member();
         member.setEmail(signUpRequestDto.getEmail());
         member.setPassword(signUpRequestDto.getPassword());

@@ -1,6 +1,7 @@
 package com.example.demo.domain.signup.controller;
 
 
+import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.signup.dto.SignUpRequestDto;
 import com.example.demo.domain.signup.service.SignUpService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,8 +22,8 @@ public class SignUpController {
 
     @Operation(summary = "회원가입")
     @PostMapping("/form-login")
-    public ResponseEntity<Void> signUp(@RequestBody SignUpRequestDto signUpRequestDto) {
-        signUpService.signUp(signUpRequestDto);
+    public ResponseEntity<Void> signUp(@RequestBody Member memberData) {
+        signUpService.signUp(memberData);
         return ResponseEntity.ok().build();
     }
 }
