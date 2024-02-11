@@ -23,6 +23,9 @@ public class SocialLoginApiServiceFactory {
         else if(MemberType.NAVER.equals(memberType)) {
             socialLoginApiServiceBeanName = "naverLoginApiServiceImpl";
         }
+        else if(MemberType.FORM.equals(memberType)) {
+            socialLoginApiServiceBeanName = "formLoginApiServiceImpl";
+        }
         return socialLoginApiServices.get(socialLoginApiServiceBeanName);
     }
 

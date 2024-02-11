@@ -33,14 +33,10 @@ public class StoryRequestDto {
         @Column(length = 1000000)
         private String storyContext;
 
-        @Builder.Default
-        private Genre genre1 = null;
 
-        @Builder.Default
-        private Genre genre2 = null;
-
-        @Builder.Default
-        private Genre genre3 = null;
+        private String genre1;
+        private String genre2;
+        private String genre3;
 
 
         private Boolean isOpen;

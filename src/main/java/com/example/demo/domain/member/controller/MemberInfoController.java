@@ -7,6 +7,8 @@ import com.example.demo.domain.member.dto.MemberInfoSaveDto;
 import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.member.repository.MemberRepository;
 import com.example.demo.domain.member.service.MemberInfoService;
+import com.example.demo.global.error.ErrorCode;
+import com.example.demo.global.error.exception.BusinessException;
 import com.example.demo.global.jwt.service.TokenManager;
 import com.example.demo.global.resolver.memberInfo.MemberInfo;
 import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
@@ -76,5 +78,15 @@ public class MemberInfoController {
 
         return ResponseEntity.ok("genre-saved");
     }
+
+//    @Operation(summary = "사용자 삭제 ㄷㄷ")
+//    @DeleteMapping("/delete-member/dont-do-that")
+//    public ResponseEntity<String> deleteMember(Long memberId) {
+//        Member member = memberRepository.findById(memberId)
+//                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_EXISTS));
+//        memberRepository.delete(member);
+//
+//        return ResponseEntity.ok("delete success");
+//    }
 
 }

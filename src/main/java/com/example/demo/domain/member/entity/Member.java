@@ -2,6 +2,7 @@ package com.example.demo.domain.member.entity;
 
 
 import com.example.demo.domain.comment.entity.Comment;
+import com.example.demo.domain.comment.entity.SubComment;
 import com.example.demo.domain.common.BaseEntity;
 import com.example.demo.domain.exhibition.entity.LikeExhibition;
 import com.example.demo.domain.exhibition.entity.ScrapExhibition;
@@ -36,22 +37,28 @@ public class Member extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
+    @Setter
     private MemberType memberType;
 
     @Column(unique = true, length = 50, nullable = false)
+    @Setter
     private String email;
 
     @Column(length = 200)
+    @Setter
     private String password;
 
     @Column(nullable = false, length = 20)
+    @Setter
     private String memberName;
 
     @Column(length = 200)
+    @Setter
     private String profile;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
+    @Setter
     private Role role;
 
     @Column(length = 250)
@@ -151,6 +158,9 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Comment> commentList;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<SubComment> subCommentList;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<ScrapExhibition> scrapExhibitionList;
