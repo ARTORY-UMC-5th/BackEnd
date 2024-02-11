@@ -41,6 +41,7 @@ public class MyStoryServiceImpl implements MyStoryService{
 
 
     @Override
+    @Transactional
     public List<MyStoryResponseDto.StorySpecificResponseDto> getSavedStories(@MemberInfo MemberInfoDto memberInfoDto, int year, int month, int day) {
         Long memberId = memberInfoDto.getMemberId();
 
@@ -48,7 +49,10 @@ public class MyStoryServiceImpl implements MyStoryService{
 
         List<MyStoryResponseDto.StorySpecificResponseDto> storyDtos = memberStories.stream()
                 .filter(story -> story.getYear() == year && story.getMonth() == month && story.getDay() == day)
-                .map(myStoryConverter::convertToSpecificStoryDto)
+                .map((Story story1) -> {
+                    Exhibition exhibition = story1.getExhibition();
+                    return myStoryConverter.convertToSpecificStoryDto(story1, exhibition);
+                })
                 .collect(Collectors.toList());
 
         return storyDtos;
