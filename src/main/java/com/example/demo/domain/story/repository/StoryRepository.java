@@ -31,8 +31,7 @@ public interface StoryRepository extends JpaRepository<Story, Long> {
 
     @Query("SELECT s " +
             "FROM Story s " +
-            "JOIN FETCH s.exhibition " +
-            "WHERE s.member.memberId = :memberId AND s.storyState = com.example.demo.domain.story.constant.State.DONE ")
+            "WHERE s.member.memberId = :memberId ")
     List<Story> findByMemberId(@Param("memberId") Long memberId);
 
 
