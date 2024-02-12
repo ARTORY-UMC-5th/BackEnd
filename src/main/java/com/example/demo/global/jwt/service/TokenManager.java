@@ -86,6 +86,20 @@ public class TokenManager {
             throw new AuthenticationException(ErrorCode.NOT_VALID_TOKEN);
         }
     }
+    public void refreshValidateToken(String token) {
+        try {
+            System.out.println("refresh valdation Checking");
+            Jwts.parserBuilder().setSigningKey(tokenSecret.getBytes(StandardCharsets.UTF_8))
+                    .build()
+                    .parseClaimsJws(token);
+        } catch (ExpiredJwtException e) {
+            log.info("refresh token 만료", e);
+            throw new AuthenticationException(ErrorCode.TOKEN_EXPIRED);
+        } catch (Exception e) {
+            log.info("유효하지 않은 refresh token", e);
+            throw new AuthenticationException(ErrorCode.NOT_VALID_TOKEN);
+        }
+    }
 
     public Claims getTokenClaims(String token) {
         Claims claims;
