@@ -42,7 +42,7 @@ public class  KakaoTokenRestController {
                 .client_secret(kakaoClientSecret)
                 .grant_type("authorization_code")
                 .code(code)
-                .redirect_uri(KakaoCallbackUrl)
+//                .redirect_uri(KakaoCallbackUrl)
                 .build();
         System.out.println("CODE : " + code);
 
