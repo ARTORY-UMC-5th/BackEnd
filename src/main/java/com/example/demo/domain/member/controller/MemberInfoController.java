@@ -17,6 +17,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
+
 @Tag(name = "사용자 정보 조회, 수정", description = "사용자 정보, 로그아웃 API")
 @RestController
 @RequestMapping("/api/member")
@@ -79,14 +82,18 @@ public class MemberInfoController {
         return ResponseEntity.ok("genre-saved");
     }
 
-//    @Operation(summary = "사용자 삭제 ㄷㄷ")
-//    @DeleteMapping("/delete-member/dont-do-that")
-//    public ResponseEntity<String> deleteMember(Long memberId) {
-//        Member member = memberRepository.findById(memberId)
-//                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_EXISTS));
-//        memberRepository.delete(member);
-//
-//        return ResponseEntity.ok("delete success");
-//    }
+    @Operation(summary = "사용자 삭제 ㄷㄷ")
+    @DeleteMapping("/delete-member")
+    public ResponseEntity<String> deleteMember(@MemberInfo MemberInfoDto memberInfoDto, @RequestParam Long memberId) {
+        if (!Objects.equals(memberInfoDto.getMemberId(), memberId)) {
+            throw new BusinessException(ErrorCode.NOT_YOUR_MEMBER);
+        }
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_EXISTS));
+        memberRepository.delete(member);
+
+        return ResponseEntity.ok("member-deleted");
+    }
 
 }
