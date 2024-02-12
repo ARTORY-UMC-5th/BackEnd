@@ -1,11 +1,14 @@
 package com.example.demo.domain.member.controller;
 
 import com.example.demo.domain.member.service.LogoutService;
+import com.example.demo.global.resolver.memberInfo.MemberInfo;
+import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 import com.example.demo.global.util.AuthorizationHeaderUtils;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,13 +21,11 @@ public class LogoutController {
 
     private final LogoutService logoutService;
 
-    @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpServletRequest httpServletRequest) {
-        String authorizationHeader = httpServletRequest.getHeader("Authorization");
-        AuthorizationHeaderUtils.validateAuthorization(authorizationHeader);
+    @GetMapping("/logout")
+    public ResponseEntity<String> logout(@MemberInfo MemberInfoDto memberInfoDto) {
 
-        String accessToken = authorizationHeader.split(" ")[1];
-        logoutService.logout(accessToken);
+        Long memberId = memberInfoDto.getMemberId();
+        logoutService.logout(memberId);
 
         return ResponseEntity.ok("logout success");
     }
