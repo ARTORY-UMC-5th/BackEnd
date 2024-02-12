@@ -24,7 +24,7 @@ public class TokenManager {
     private final String refreshTokenExpirationTime;
     private final String tokenSecret;
 
-    public JwtTokenDto createJwtTokenDto(Long memberId, Role role) {
+    public JwtTokenDto createJwtTokenDto(Long memberId, Role role, Boolean enrolled) {
         Date accessTokenExpireTime = createAccessTokenExpireTime();
         Date refreshTokenExpireTime = createRefreshTokenExpireTime();
 
@@ -36,6 +36,7 @@ public class TokenManager {
                 .accessTokenExpireTime(accessTokenExpireTime)
                 .refreshToken(refreshToken)
                 .refreshTokenExpireTime(refreshTokenExpireTime)
+                .enrolled(enrolled)
                 .build();
     }
 
