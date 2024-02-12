@@ -87,7 +87,6 @@ public class MyStoryServiceImpl implements MyStoryService{
         // 첫 번째 메서드의 스토리 필터링 로직을 통합
         List<Story> memberStories = storyRepository.findByMemberId(memberId);
         List<MyStoryResponseDto.StoryGeneralResponseDto> storyDtos = memberStories.stream()
-                .filter(story -> story.getYear() != 0 && story.getMonth() != 0 && story.getDay() != 0)
                 .map(myStoryConverter::convertToStoryDto)
                 .collect(Collectors.toList());
 
