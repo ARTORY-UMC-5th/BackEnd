@@ -97,13 +97,13 @@ public class MyStoryConverter {
 
         return responseDtos;
     }
-    public MyStoryResponseDto.StorySpecificResponseDto convertToSpecificStoryDto(Story story){
+    public MyStoryResponseDto.StorySpecificResponseDto convertToSpecificStoryDto(Story story, Exhibition exhibition){
         MyStoryResponseDto.StorySpecificResponseDto dto = MyStoryResponseDto.StorySpecificResponseDto.builder()
                 .StoryId(story.getId())
                 .storyState(story.getStoryState())
-                .exhibitionId(story.getExhibition().getId())
-                .exhibitionImage(story.getExhibition().getExhibitionImage())
-                .exhibitionTitle(story.getExhibition().getExhibitionTitle())
+                .exhibitionId(exhibition.getId())
+                .exhibitionImage(exhibition.getExhibitionImage())
+                .exhibitionTitle(exhibition.getExhibitionTitle())
                 .build();
         return dto;
     }
