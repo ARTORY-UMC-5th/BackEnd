@@ -22,20 +22,20 @@ public class LogoutService {
     private final MemberService memberService;
     private final TokenManager tokenManager;
 
-    public void logout(String accessToken) {
+    public void logout(Long memberId) {
 
         // 1. 토큰 검증
-        tokenManager.validateToken(accessToken);
-
-        // 2. 토큰 타입 확인
-        Claims tokenClaims = tokenManager.getTokenClaims(accessToken);
-        String tokenType = tokenClaims.getSubject();
-        if(!TokenType.isAccessToken(tokenType)) {
-            throw new AuthenticationException(ErrorCode.NOT_ACCESS_TOKEN_TYPE);
-        }
+//        tokenManager.validateToken(accessToken);
+//
+//        // 2. 토큰 타입 확인
+//        Claims tokenClaims = tokenManager.getTokenClaims(accessToken);
+//        String tokenType = tokenClaims.getSubject();
+//        if(!TokenType.isAccessToken(tokenType)) {
+//            throw new AuthenticationException(ErrorCode.NOT_ACCESS_TOKEN_TYPE);
+//        }
 
         // 3. refresh token 만료 처리
-        Long memberId = Long.valueOf((Integer)tokenClaims.get("memberId"));
+//        Long memberId = Long.valueOf((Integer)tokenClaims.get("memberId"));
         Member member = memberService.findMemberByMemberId(memberId);
         member.expireRefreshToken(LocalDateTime.now());
 
