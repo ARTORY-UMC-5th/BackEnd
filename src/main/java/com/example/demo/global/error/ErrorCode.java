@@ -26,6 +26,7 @@ public enum ErrorCode {//우리가 사용할 에러코드를 담은 dto
     MEMBER_NOT_EXISTS(HttpStatus.BAD_REQUEST, "M-003", "해당 회원은 존재하지 않습니다."),
     ALREADY_REGISTERED_EMAIL(HttpStatus.BAD_REQUEST, "M-004", "이미 다른 소셜로그인으로 가입된 이메일 입니다."),
     MISSING_REQUIRED_VALUE(HttpStatus.BAD_REQUEST, "M-005", "필요 값(body)이 누락되었습니다."),
+    NOT_YOUR_MEMBER(HttpStatus.BAD_REQUEST, "M-006", "본인의 회원이 아닙니다."),
 
 
     //전시회
