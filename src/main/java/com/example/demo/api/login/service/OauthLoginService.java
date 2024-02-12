@@ -52,7 +52,7 @@ public class OauthLoginService {
             Member oauthMember = userInfo.toMemberEntity(memberType, Role.USER);
             oauthMember = memberService.registerMember(oauthMember);
             //토큰 생성
-            jwtTokenDto = tokenManager.createJwtTokenDto(oauthMember.getMemberId(), oauthMember.getRole());
+            jwtTokenDto = tokenManager.createJwtTokenDto(oauthMember.getMemberId(), oauthMember.getRole(), false);
             oauthMember.updateRefreshToken(jwtTokenDto);
             //시큐리티에 저장
 
@@ -61,7 +61,7 @@ public class OauthLoginService {
             Member oauthMember = optionalMember.get();
 
             //토큰 생성
-            jwtTokenDto = tokenManager.createJwtTokenDto(oauthMember.getMemberId(), oauthMember.getRole());
+            jwtTokenDto = tokenManager.createJwtTokenDto(oauthMember.getMemberId(), oauthMember.getRole(),true);
             oauthMember.updateRefreshToken(jwtTokenDto);
         } else throw new BusinessException(ErrorCode.ALREADY_REGISTERED_EMAIL);
         //같은 이메일 사용한 경우

@@ -39,7 +39,7 @@ public class FormLoginService {
         }
 
         // 비밀번호가 일치하면 해당 회원의 정보를 기반으로 JWT 토큰 생성하여 반환
-        JwtTokenDto jwtTokenDto = tokenManager.createJwtTokenDto(member.getMemberId(), member.getRole());
+        JwtTokenDto jwtTokenDto = tokenManager.createJwtTokenDto(member.getMemberId(), member.getRole(),true);
         jwtTokenDto.setRefreshToken(member.getRefreshToken());
 
         return jwtTokenDto;
@@ -61,7 +61,7 @@ public class FormLoginService {
         Member registeredMember = memberService.registerMember(newMember);
 
         // 회원의 정보를 기반으로 JWT 토큰 생성하여 반환
-        JwtTokenDto jwtTokenDto = tokenManager.createJwtTokenDto(registeredMember.getMemberId(), registeredMember.getRole());
+        JwtTokenDto jwtTokenDto = tokenManager.createJwtTokenDto(registeredMember.getMemberId(), registeredMember.getRole(), false);
         registeredMember.updateRefreshToken(jwtTokenDto);
 
         return jwtTokenDto;
