@@ -47,7 +47,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         }
         // 4. 리프레시 토큰 만료
         Long memberId = Long.valueOf( (Integer) tokenClaims.get("memberId"));
-        tokenManager.validateToken(memberRepository.findByMemberId(memberId).getRefreshToken());
+        tokenManager.refreshValidateToken(memberRepository.findByMemberId(memberId).getRefreshToken());
 
 
         return true;
