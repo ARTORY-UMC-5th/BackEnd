@@ -13,7 +13,8 @@ public interface MyPageService {
 
     public void updateMemberInfo(@MemberInfo MemberInfoDto memberInfoDto, String userName, String introduction, String myKeyword, String nickname, String image);
 
-    MyPageResponseDto.MemberGeneralResponseDto getAllMyStoryInfo(@MemberInfo MemberInfoDto memberInfoDto, int page);
+    MyPageResponseDto.MemberGeneralResponseDto getAllMyStoryInfo(@MemberInfo MemberInfoDto memberInfoDto);
+
 
     }
 

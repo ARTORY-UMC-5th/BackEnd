@@ -46,6 +46,7 @@ import com.example.demo.domain.myPage.dto.MyPageResponseDto;
 import com.example.demo.domain.story.entity.LikeStory;
 import com.example.demo.domain.story.entity.ScrapStory;
 import com.example.demo.domain.story.entity.Story;
+import com.example.demo.domain.story.entity.StoryPicture;
 import com.example.demo.domain.story.repository.LikeStoryRepository;
 import com.example.demo.domain.story.repository.StoryPictureRepository;
 import com.example.demo.domain.story.repository.StoryRepository;
@@ -59,6 +60,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -98,19 +100,14 @@ public class MyPageServiceImpl implements MyPageService {
 
     @Override
     @Transactional
-    public MyPageResponseDto.MemberGeneralResponseDto getAllMyStoryInfo(@MemberInfo MemberInfoDto memberInfoDto, int page) {
+    public MyPageResponseDto.MemberGeneralResponseDto getAllMyStoryInfo(@MemberInfo MemberInfoDto memberInfoDto) {
         Long memberId = memberInfoDto.getMemberId();
 
-        int pageSize = 10;
-        Pageable pageable = PageRequest.of(page - 1, pageSize);
-        Page<Story> storyPage = storyRepository.findAllByOrderByUpdateTimeExhibition(memberId, pageable);
-        List<MyPageResponseDto.MyStoryResponseDto> stories = storyPage.getContent()
-                .stream()
-                .map(story -> myPageConverter.convertToStoryDto(story))
-                .collect(Collectors.toList());
+        List<Story> allStories = storyRepository.findAllByOrderByUpdateTimeExhibition(memberId);
 
-        List<MyPageResponseDto.MyAlbumResponseDto> allStoryPictures = getAllStoryPictures(storyPage.getContent());
-        List<MyPageResponseDto.ScrappedStoryResponseDto> scrappedStoies = getScrappedStories(storyPage.getContent(), memberId);
+        List<MyPageResponseDto.MyStoryResponseDto> stories = getAllStory(memberId);
+        List<MyPageResponseDto.MyAlbumResponseDto> allStoryPictures = getAllStoryPictures(memberId);
+        List<MyPageResponseDto.ScrappedStoryResponseDto> scrappedStories = getScrappedStories(allStories, memberId);
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 멤버를 찾을 수 없습니다. memberId: " + memberId));
         List<MyPageResponseDto.ScrappedMemberResponseDto> scrappedMembers = getScrappedMembers(member);
@@ -118,23 +115,34 @@ public class MyPageServiceImpl implements MyPageService {
         MyPageResponseDto.MemberGeneralResponseDto myPageResponseDto = myPageConverter.convertToGeneralDto(member);
         myPageResponseDto.setStories(stories);
         myPageResponseDto.setStoryPictures(allStoryPictures);
-        myPageResponseDto.setScrappedStories(scrappedStoies);
-        myPageResponseDto.setScrappedMembers(scrappedMembers); // 추가
+        myPageResponseDto.setScrappedStories(scrappedStories);
+        myPageResponseDto.setScrappedMembers(scrappedMembers);
 
         return myPageResponseDto;
+    }
+
+    //내 스토리 위한 메서드
+
+    private List<MyPageResponseDto.MyStoryResponseDto> getAllStory(Long memberId) {
+        List<Story> memberStories = storyRepository.findByMemberId(memberId);
+
+        return memberStories.stream()
+                .map(story -> myPageConverter.convertToStoryDto(story))
+                .collect(Collectors.toList());
     }
 
 
     //사진 위한 메서드
 
 
-    private List<MyPageResponseDto.MyAlbumResponseDto> getAllStoryPictures(List<Story> stories) {
-        return stories.stream()
-                .flatMap(story -> story.getStoryPictureList().stream()
-                        .map(myPageConverter::convertToMyAlbumDto))
+    private List<MyPageResponseDto.MyAlbumResponseDto> getAllStoryPictures(Long memberId) {
+
+        List<StoryPicture> memberStoryPictures = storyPictureRepository.findAllByMemberId(memberId);
+
+        return memberStoryPictures.stream()
+                .map(myPageConverter::convertToMyAlbumDto)
                 .collect(Collectors.toList());
     }
-
 
 
     //저장 스토리

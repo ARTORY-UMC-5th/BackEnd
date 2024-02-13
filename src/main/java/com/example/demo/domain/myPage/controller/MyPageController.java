@@ -44,9 +44,8 @@ public class MyPageController {
     @Operation(summary = "마이스토리에 내정보 및 스크랩한 전시회 목록 조회", description = "마이스토리 창 들어갈때 호출되는 url")
     @GetMapping("/all")
     public ResponseEntity<MyPageResponseDto.MemberGeneralResponseDto> getAllMyStoryInfo(
-            @MemberInfo MemberInfoDto memberInfoDto,
-            @RequestParam(defaultValue = "1") int page) {
-        MyPageResponseDto.MemberGeneralResponseDto myPageResponseDto = myPageService.getAllMyStoryInfo(memberInfoDto, page);
+            @MemberInfo MemberInfoDto memberInfoDto) {
+        MyPageResponseDto.MemberGeneralResponseDto myPageResponseDto = myPageService.getAllMyStoryInfo(memberInfoDto);
         return ResponseEntity.ok(myPageResponseDto);
     }
 
