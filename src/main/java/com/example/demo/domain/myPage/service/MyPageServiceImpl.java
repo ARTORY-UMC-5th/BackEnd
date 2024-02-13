@@ -40,7 +40,9 @@ package com.example.demo.domain.myPage.service;
 
 import com.example.demo.domain.exhibition.repository.ExhibitionRepository;
 import com.example.demo.domain.member.entity.Member;
+import com.example.demo.domain.member.entity.ScrapMember;
 import com.example.demo.domain.member.repository.MemberRepository;
+import com.example.demo.domain.member.repository.ScrapMemberRepository;
 import com.example.demo.domain.myPage.converter.MyPageConverter;
 import com.example.demo.domain.myPage.dto.MyPageResponseDto;
 import com.example.demo.domain.story.entity.LikeStory;
@@ -74,6 +76,7 @@ public class MyPageServiceImpl implements MyPageService {
     private final StoryRepository storyRepository;
     private final StoryPictureRepository storyPictureRepository;
     private final LikeStoryRepository likeStoryRepository;
+    private final ScrapMemberRepository scrapMemberRepository;
     @Override
     public MyPageResponseDto.MemberGeneralResponseDto getMemberInfo(@MemberInfo MemberInfoDto memberInfoDto) {
         Long memberId = memberInfoDto.getMemberId();
@@ -110,7 +113,7 @@ public class MyPageServiceImpl implements MyPageService {
         List<MyPageResponseDto.ScrappedStoryResponseDto> scrappedStories = getScrappedStories(allStories, memberId);
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 멤버를 찾을 수 없습니다. memberId: " + memberId));
-        List<MyPageResponseDto.ScrappedMemberResponseDto> scrappedMembers = getScrappedMembers(member);
+        List<MyPageResponseDto.ScrappedMemberResponseDto> scrappedMembers = getScrappedMembers(memberId);
 
         MyPageResponseDto.MemberGeneralResponseDto myPageResponseDto = myPageConverter.convertToGeneralDto(member);
         myPageResponseDto.setStories(stories);
@@ -166,10 +169,16 @@ public class MyPageServiceImpl implements MyPageService {
     }
 
     //저장 유저
-    private List<MyPageResponseDto.ScrappedMemberResponseDto> getScrappedMembers(Member member) {
-        return member.getScraptoMemberList().stream()
-                .map(scrapMember -> myPageConverter.convertToScrappedMemberDto(scrapMember))
+    private List<MyPageResponseDto.ScrappedMemberResponseDto> getScrappedMembers(Long memberId)  {
+        List<ScrapMember> scrapMembers = scrapMemberRepository.findByFromMemberId(memberId);
+
+        return scrapMembers.stream()
+                .map(myPageConverter::convertToScrappedMemberDto)
                 .collect(Collectors.toList());
     }
+
+
+
+
 
 }
