@@ -82,11 +82,12 @@ public class MyPageServiceImpl implements MyPageService {
     }
 
     @Override
-    public void updateMemberInfo(@MemberInfo MemberInfoDto memberInfoDto, String introduction, String myKeyword, String nickname, String image) {
+    public void updateMemberInfo(@MemberInfo MemberInfoDto memberInfoDto, String userName, String introduction, String myKeyword, String nickname, String image) {
         Long memberId = memberInfoDto.getMemberId();
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 멤버를 찾을 수 없습니다. memberId: " + memberId));
 
+        member.setMemberName(userName);
         member.setIntroduction(introduction);
         member.setMyKeyword(myKeyword);
         member.setNickname(nickname);

@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class MyPageRequestDto {
 
+    private String userName;
     private String introduction;
     private String myKeyword;
     private String nickname;
