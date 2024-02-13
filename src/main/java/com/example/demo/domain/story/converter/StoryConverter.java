@@ -115,7 +115,7 @@ public class StoryConverter {
         StoryResponseDto.MemberThumbnailResponseDto memberThumbnailResponseDto = StoryResponseDto.MemberThumbnailResponseDto.builder()
                 .memberId(member.getMemberId())
                 .memberNickname(member.getNickname())
-                .memberProfile(member.getProfile())
+                .memberProfile(member.getImage())
                 .isScrapped(isScrapped)
                 .build();
 
