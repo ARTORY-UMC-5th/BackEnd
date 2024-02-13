@@ -13,6 +13,7 @@ import com.example.demo.domain.exhibition.repository.ExhibitionRepository;
 import com.example.demo.domain.member.constant.Genre;
 import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.member.repository.MemberRepository;
+import com.example.demo.domain.story.constant.State;
 import com.example.demo.domain.story.converter.StoryConverter;
 import com.example.demo.domain.story.dto.StoryRequestDto;
 import com.example.demo.domain.story.dto.StoryResponseDto;
@@ -69,17 +70,6 @@ public class StoryServiceImpl implements StoryService{
         Exhibition exhibition = exhibitionRepository.findById(exhibitionId)
                 .orElseThrow(() -> new ExhibitionException(ErrorCode.EXHIBITION_NOT_EXISTS));
 
-
-        // Transactional 끼고 save된 객체를 사용하기 힘들어서 직접 ExhibitionGenre에 추가
-//        Boolean isExisted = exhibitionGenreRepository.existsByExhibitionId(exhibitionId);
-//        // 테이블이 존재하면, 패스
-//        if (!isExisted) {
-//            ExhibitionGenre tempExhibitionGenre = ExhibitionGenre.builder()
-//                .exhibition(exhibition)
-//                .build();
-//
-//            exhibitionGenreRepository.save(tempExhibitionGenre);
-//        }
         Story story;
         if (storyId == null) {
             // 새로 story 생성
@@ -94,10 +84,7 @@ public class StoryServiceImpl implements StoryService{
             storyPictureRepository.deleteByStoryId(story.getId());
         }
 
-        //        story.initializeNullFields();
-
         List<String> picturesUrl = storyRequestDto.getPicturesUrl();
-
         // 스토리의 사진 저장(repository에 저장)
         List<StoryPicture> storyPictureList = new ArrayList<>();
         for (String pictureUrl : picturesUrl) {
@@ -148,7 +135,6 @@ public class StoryServiceImpl implements StoryService{
         // 장르 수정을 위해 기존의 사진 삭제
         storyPictureRepository.deleteByStoryId(storyId);
 
-
         // 해당 스토리가 자신이 쓴 스토리가 아니라면 예외 발생
         if (!memberId.equals(story.getMember().getMemberId())) {
             throw new StoryException(ErrorCode.NOT_YOUR_STORY);
@@ -158,11 +144,15 @@ public class StoryServiceImpl implements StoryService{
         Genre genre2 = Genre.fromString(storyRequestDto.getGenre2());
         Genre genre3 = Genre.fromString(storyRequestDto.getGenre3());
 
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_EXISTS));
+        Exhibition exhibition = exhibitionRepository.findById(storyRequestDto.getExhibitionId())
+                .orElseThrow(() -> new ExhibitionException(ErrorCode.EXHIBITION_NOT_EXISTS));
+
         // 스토리 생성 (StoryPicture 할당 x)
-        story = Story.builder()
-                .id(storyId)
-                .member(memberRepository.getById(memberInfoDto.getMemberId()))
-                .exhibition(exhibitionRepository.getById(storyRequestDto.getExhibitionId()))
+        Story new_story = story.toBuilder()
+                .member(member)
+                .exhibition(exhibition)
                 .storyTitle(storyRequestDto.getStoryTitle())
                 .storySatisfactionLevel(storyRequestDto.getStorySatisfactionLevel())
                 .storyWeather(storyRequestDto.getStoryWeather())
@@ -174,6 +164,10 @@ public class StoryServiceImpl implements StoryService{
                 .genre2(genre2)
                 .genre3(genre3)
                 .isOpen(storyRequestDto.getIsOpen())
+                .storyState(State.DONE)
+                .year(storyRequestDto.getYear())
+                .month(storyRequestDto.getMonth())
+                .day(storyRequestDto.getDay())
                 .build();
 
 
@@ -190,27 +184,25 @@ public class StoryServiceImpl implements StoryService{
         List<StoryPicture> storyPictureList = new ArrayList<>();
         for (String pictureUrl : picturesUrl) {
             StoryPicture storyPicture = StoryPicture.builder()
-                    .story(story)
+                    .story(new_story)
                     .pictureUrl(pictureUrl)
                     .build();
 
             storyPictureList.add(storyPicture);
         }
 
-        story.setStoryPictureList(storyPictureList);
+        new_story.setStoryPictureList(storyPictureList);
 
-
-        Exhibition exhibition = story.getExhibition();
-        story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibition.getId()), genre1);
-        story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibition.getId()), genre2);
-        story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibition.getId()), genre3);
+        new_story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibition.getId()), genre1);
+        new_story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibition.getId()), genre2);
+        new_story.updateIncreaseExhibitionGenre(exhibitionGenreRepository.getByExhibitionId(exhibition.getId()), genre3);
 
         /*
           updateCategory : 해당 전시회의 상위 3개 Genre 선택해서 업데이트
          */
         exhibition.updateCategory();
 
-        storyRepository.save(story);
+        storyRepository.save(new_story);
         storyPictureRepository.saveAll(storyPictureList);
     }
 
@@ -548,6 +540,7 @@ public class StoryServiceImpl implements StoryService{
             storyPictureList.add(storyPicture);
         }
 
+        story.setStoryThumbnailImage(picturesUrl.get(0));
         story.setStoryPictureList(storyPictureList);
         storyRepository.save(story);
     }
@@ -572,6 +565,7 @@ public class StoryServiceImpl implements StoryService{
             storyPictureList.add(storyPicture);
         }
 
+        story.setStoryThumbnailImage(picturesUrl.get(0));
         story.setStoryPictureList(storyPictureList);
         storyRepository.save(story);
     }
