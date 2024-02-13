@@ -4,6 +4,7 @@
 
 ### SERVER TEAM
 </br>
+<img width="1367" alt="image" src="https://github.com/ARTORY-UMC-5th/BackEnd/assets/109260012/f3dfdb97-b63c-4cc8-9fb5-07c5da2720f5">
 
 
 ### SKILLS
