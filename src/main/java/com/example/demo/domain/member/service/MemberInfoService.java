@@ -57,6 +57,12 @@ public class MemberInfoService {
                 .genre3(memberGenre.getGenre3())
                 .build();
     }
+    public Member saveMemberPw(String password, Long memberId){
+        Member member = memberService.findMemberByMemberId(memberId);
+        return member.toBuilder()
+                .password(password)
+                .build();
+    }
 
 
 
