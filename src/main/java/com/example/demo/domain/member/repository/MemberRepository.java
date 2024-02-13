@@ -13,7 +13,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Member findByRefreshToken(String refreshToken);
 
     Member findByMemberId(Long memberid);
-//    Member findMemberByMemberId(Long id);
+
 
     @Query("SELECT m, COALESCE(sm1.isScrapped, false) " +
             "FROM Member m " +
