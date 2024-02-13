@@ -49,6 +49,13 @@ public class MyPageController {
         return ResponseEntity.ok(myPageResponseDto);
     }
 
+    @Operation(summary = "마이스토리에 해당 유저 정보 및 스크랩한 전시회 목록 조회", description = "멤버 선택시 호출되는 특정 회원의 정보")
+    @PostMapping("/member")
+    public ResponseEntity<MyPageResponseDto.MemberGeneralResponseDto> getMemberStoryInfo(
+            @RequestBody MemberInfoDto memberInfoDto) {
+        MyPageResponseDto.MemberGeneralResponseDto myPageResponseDto = myPageService.getAllMyStoryInfo(memberInfoDto);
+        return ResponseEntity.ok(myPageResponseDto);
+    }
 
 
 }
