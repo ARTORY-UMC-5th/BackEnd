@@ -381,6 +381,11 @@ public class StoryServiceImpl implements StoryService{
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Object[]> recommendMemberPage = memberRepository.recommendMember(pageable, memberId);
 
+        if (recommendMemberPage.getContent().isEmpty()) {
+            recommendMemberPage = memberRepository.initRecommendMember(pageable, memberId);
+        }
+
+
         List<StoryResponseDto.MemberThumbnailResponseDto> recommendMembers = recommendMemberPage.getContent()
                 .stream()
                 .map(array -> {
