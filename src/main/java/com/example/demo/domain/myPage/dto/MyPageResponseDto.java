@@ -61,6 +61,7 @@ public class MyPageResponseDto {
     public static class ScrappedStoryResponseDto {
         private Long storyId;
         private String storyImage;
+        private String storyTitle;
         private Boolean isScrapped;
         @Setter
         private Boolean isLiked;
@@ -75,6 +76,7 @@ public class MyPageResponseDto {
     public static class ScrappedMemberResponseDto {
         private Long memberId;
         private String profile;
+        private String memberNickname;
         private Boolean isScrapped;
         private Boolean isLiked;
 

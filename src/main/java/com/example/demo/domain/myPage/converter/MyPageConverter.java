@@ -42,6 +42,7 @@ public class MyPageConverter {
         return MyPageResponseDto.ScrappedStoryResponseDto.builder()
                 .storyId(scrapStory.getId())
                 .storyImage(scrapStory.getStory().getStoryThumbnailImage())
+                .storyTitle(scrapStory.getStory().getStoryTitle())
                 .isScrapped(scrapStory.getIsScrapped())
 //                .isLiked(likeStory.getIsLiked())
                 .build();
@@ -50,7 +51,8 @@ public class MyPageConverter {
         return MyPageResponseDto.ScrappedMemberResponseDto.builder()
                 .memberId(scrapMember.getToMember().getMemberId())
                 .isScrapped(scrapMember.getIsScrapped())
-                .profile(scrapMember.getToMember().getProfile())
+                .profile(scrapMember.getToMember().getImage())
+                .memberNickname(scrapMember.getToMember().getNickname())
                 .build();
     }
 
