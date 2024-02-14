@@ -50,6 +50,7 @@ import com.example.demo.domain.story.entity.ScrapStory;
 import com.example.demo.domain.story.entity.Story;
 import com.example.demo.domain.story.entity.StoryPicture;
 import com.example.demo.domain.story.repository.LikeStoryRepository;
+import com.example.demo.domain.story.repository.ScrapStoryRepository;
 import com.example.demo.domain.story.repository.StoryPictureRepository;
 import com.example.demo.domain.story.repository.StoryRepository;
 import com.example.demo.global.resolver.memberInfo.MemberInfo;
@@ -77,6 +78,7 @@ public class MyPageServiceImpl implements MyPageService {
     private final StoryPictureRepository storyPictureRepository;
     private final LikeStoryRepository likeStoryRepository;
     private final ScrapMemberRepository scrapMemberRepository;
+    private final ScrapStoryRepository scrapStoryRepository;
     @Override
     public MyPageResponseDto.MemberGeneralResponseDto getMemberInfo(@MemberInfo MemberInfoDto memberInfoDto) {
         Long memberId = memberInfoDto.getMemberId();
@@ -110,7 +112,7 @@ public class MyPageServiceImpl implements MyPageService {
 
         List<MyPageResponseDto.MyStoryResponseDto> stories = getAllStory(memberId);
         List<MyPageResponseDto.MyAlbumResponseDto> allStoryPictures = getAllStoryPictures(memberId);
-        List<MyPageResponseDto.ScrappedStoryResponseDto> scrappedStories = getScrappedStories(allStories, memberId);
+        List<MyPageResponseDto.ScrappedStoryResponseDto> scrappedStories = getScrappedStories(memberId);
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 멤버를 찾을 수 없습니다. memberId: " + memberId));
         List<MyPageResponseDto.ScrappedMemberResponseDto> scrappedMembers = getScrappedMembers(memberId);
@@ -149,23 +151,37 @@ public class MyPageServiceImpl implements MyPageService {
 
 
     //저장 스토리
-    private List<MyPageResponseDto.ScrappedStoryResponseDto> getScrappedStories(List<Story> stories, Long memberId) {
-        List<MyPageResponseDto.ScrappedStoryResponseDto> scrappedStories = new ArrayList<>();
+    private List<MyPageResponseDto.ScrappedStoryResponseDto> getScrappedStories(Long memberId) {
+        List<ScrapStory> scrapStoryList = scrapStoryRepository.findAllByScrapMemberId(memberId);
 
-        for (Story story : stories) {
-            for (ScrapStory scrapStory : story.getScrapStoryList()) {
-                if (scrapStory.getMember().getMemberId().equals(memberId)) {
-                    LikeStory likeStory = likeStoryRepository.findByMemberAndStory(scrapStory.getMember(), scrapStory.getStory());
-                    boolean isLiked = likeStory != null && likeStory.getIsLiked();
-
-                    MyPageResponseDto.ScrappedStoryResponseDto scrappedStoryDto = myPageConverter.convertToScrappedStory(scrapStory);
-                    scrappedStoryDto.setIsLiked(isLiked);
-                    scrappedStories.add(scrappedStoryDto);
+        System.out.println("scrapStoryList = " + scrapStoryList.get(0));
+        List<MyPageResponseDto.ScrappedStoryResponseDto> scrappedStoryResponseDtos = scrapStoryList.stream()
+            //story를 ScrappedStoryResponseDto로 변경
+            .map((ScrapStory scrapStory) -> {
+                LikeStory likeStory = likeStoryRepository.findByMemberIdAndStoryId(memberId, scrapStory.getStory().getId());
+                if (likeStory == null) {
+                    Boolean isLiked = false;
+                    return myPageConverter.convertToScrappedStory(scrapStory, isLiked);
+                } else {
+                    return myPageConverter.convertToScrappedStory(scrapStory, likeStory.getIsLiked());
                 }
-            }
-        }
+            })
+            .collect(Collectors.toList()); // collect 추가
 
-        return scrappedStories;
+//        for (Story story : stories) {
+//            for (ScrapStory scrapStory : story.getScrapStoryList()) {
+//                if (scrapStory.getMember().getMemberId().equals(memberId)) {
+//                    LikeStory likeStory = likeStoryRepository.findByMemberAndStory(scrapStory.getMember(), scrapStory.getStory());
+//                    boolean isLiked = likeStory != null && likeStory.getIsLiked();
+//
+//                    MyPageResponseDto.ScrappedStoryResponseDto scrappedStoryDto = myPageConverter.convertToScrappedStory(scrapStory);
+//                    scrappedStoryDto.setIsLiked(isLiked);
+//                    scrappedStories.add(scrappedStoryDto);
+//                }
+//            }
+//        }
+
+        return scrappedStoryResponseDtos;
     }
 
     //저장 유저
