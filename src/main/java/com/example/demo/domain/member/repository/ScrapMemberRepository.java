@@ -21,7 +21,7 @@ public interface ScrapMemberRepository extends JpaRepository<ScrapMember, Long> 
 
     @Query("select sm " +
             "from ScrapMember sm " +
-            "where sm.fromMember.memberId = :fromMemberId")
+            "where sm.fromMember.memberId = :fromMemberId and sm.isScrapped = true ")
     List<ScrapMember> findByFromMemberId(Long fromMemberId);
 
     @Modifying

@@ -191,9 +191,4 @@ public class MyPageServiceImpl implements MyPageService {
                 .map(myPageConverter::convertToScrappedMemberDto)
                 .collect(Collectors.toList());
     }
-
-
-
-
-
 }
