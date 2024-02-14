@@ -78,8 +78,6 @@ public class MyPageResponseDto {
         private String profile;
         private String memberNickname;
         private Boolean isScrapped;
-        private Boolean isLiked;
-
 
     }
 }
