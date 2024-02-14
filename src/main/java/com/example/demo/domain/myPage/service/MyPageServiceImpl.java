@@ -154,7 +154,6 @@ public class MyPageServiceImpl implements MyPageService {
     private List<MyPageResponseDto.ScrappedStoryResponseDto> getScrappedStories(Long memberId) {
         List<ScrapStory> scrapStoryList = scrapStoryRepository.findAllByScrapMemberId(memberId);
 
-        System.out.println("scrapStoryList = " + scrapStoryList.get(0));
         List<MyPageResponseDto.ScrappedStoryResponseDto> scrappedStoryResponseDtos = scrapStoryList.stream()
             //story를 ScrappedStoryResponseDto로 변경
             .map((ScrapStory scrapStory) -> {
