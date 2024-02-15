@@ -15,17 +15,17 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Member findByMemberId(Long memberid);
 
 
-    @Query("SELECT m, COALESCE(sm1.isScrapped, false) " +
+    @Query("SELECT distinct m " +
             "FROM Member m " +
             "JOIN ScrapMember sm ON sm.fromMember.memberId = :memberId " +
             "JOIN ScrapMember sm1 ON sm.toMember.memberId = sm1.toMember.memberId " +
-            "WHERE m.memberId = sm1.fromMember.memberId and m.memberId != :memberId " )
-    Page<Object[]> recommendMember(Pageable pageable, Long memberId);
+            "WHERE m.memberId = sm1.fromMember.memberId and m.memberId != :memberId and sm1.isScrapped = false " )
+    Page<Member> recommendMember(Pageable pageable, Long memberId);
 
-    @Query("select m, COALESCE(sm.isScrapped, false) " +
+    @Query("select distinct m " +
             "from Member m " +
             "left join ScrapMember sm on sm.toMember = m and sm.fromMember.memberId = :memberId " +
-            "where m.memberId != :memberId " +
+            "where m.memberId != :memberId and sm.isScrapped = false " +
             "order by rand() ")
-    Page<Object[]> initRecommendMember(Pageable pageable, Long memberId);
+    Page<Member> initRecommendMember(Pageable pageable, Long memberId);
 }

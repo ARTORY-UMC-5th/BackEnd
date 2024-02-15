@@ -379,7 +379,7 @@ public class StoryServiceImpl implements StoryService{
         // 추후 구현
         int pageSize = 10;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
-        Page<Object[]> recommendMemberPage = memberRepository.recommendMember(pageable, memberId);
+        Page<Member> recommendMemberPage = memberRepository.recommendMember(pageable, memberId);
 
         if (recommendMemberPage.getContent().isEmpty()) {
             recommendMemberPage = memberRepository.initRecommendMember(pageable, memberId);
@@ -388,11 +388,7 @@ public class StoryServiceImpl implements StoryService{
 
         List<StoryResponseDto.MemberThumbnailResponseDto> recommendMembers = recommendMemberPage.getContent()
                 .stream()
-                .map(array -> {
-                    Member member = (Member) array[0];
-                    Boolean isScrapped = (Boolean) array[1];
-                    return StoryConverter.convertToMemberThumbnailResponseDto(member, isScrapped);
-                })
+                .map((Member member) -> StoryConverter.convertToMemberThumbnailResponseDto(member, false))
                 .toList();
 
         return recommendMembers;
