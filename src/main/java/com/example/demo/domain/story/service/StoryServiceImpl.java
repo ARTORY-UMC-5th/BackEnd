@@ -12,7 +12,9 @@ import com.example.demo.domain.exhibition.repository.ExhibitionGenreRepository;
 import com.example.demo.domain.exhibition.repository.ExhibitionRepository;
 import com.example.demo.domain.member.constant.Genre;
 import com.example.demo.domain.member.entity.Member;
+import com.example.demo.domain.member.entity.ScrapMember;
 import com.example.demo.domain.member.repository.MemberRepository;
+import com.example.demo.domain.member.repository.ScrapMemberRepository;
 import com.example.demo.domain.story.constant.State;
 import com.example.demo.domain.story.converter.StoryConverter;
 import com.example.demo.domain.story.dto.StoryRequestDto;
@@ -59,6 +61,7 @@ public class StoryServiceImpl implements StoryService{
     private final CommentRepository commentRepository;
     private final SubCommentService subCommentService;
     private final CommentConverter commentConverter;
+    private final ScrapMemberRepository scrapMemberRepository;
 
     @Transactional
     public void saveStory(StoryRequestDto.StoryRequestGeneralDto storyRequestDto, @MemberInfo MemberInfoDto memberInfoDto, Long storyId) {
@@ -388,7 +391,10 @@ public class StoryServiceImpl implements StoryService{
 
         List<StoryResponseDto.MemberThumbnailResponseDto> recommendMembers = recommendMemberPage.getContent()
                 .stream()
-                .map((Member member) -> StoryConverter.convertToMemberThumbnailResponseDto(member, false))
+                .map((Member member) -> {
+                    ScrapMember scrapMember = scrapMemberRepository.findByfromMemberIdAndtoMemberId(memberId, member.getMemberId());
+                    return StoryConverter.convertToMemberThumbnailResponseDto(member, scrapMember.getIsScrapped());
+                })
                 .toList();
 
         return recommendMembers;
