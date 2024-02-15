@@ -11,9 +11,10 @@ public interface MyPageService {
 
     public MyPageResponseDto.MemberGeneralResponseDto getMemberInfo(@MemberInfo MemberInfoDto memberInfoDto);
 
-    public void updateMemberInfo(@MemberInfo MemberInfoDto memberInfoDto, String introduction, String myKeyword, String nickname, String image);
+    public void updateMemberInfo(@MemberInfo MemberInfoDto memberInfoDto, String userName, String introduction, String myKeyword, String nickname, String image);
 
-    MyPageResponseDto.MemberGeneralResponseDto getAllMyStoryInfo(@MemberInfo MemberInfoDto memberInfoDto, int page);
+    MyPageResponseDto.MemberGeneralResponseDto getAllMyStoryInfo(@MemberInfo MemberInfoDto memberInfoDto);
+
 
     }
 

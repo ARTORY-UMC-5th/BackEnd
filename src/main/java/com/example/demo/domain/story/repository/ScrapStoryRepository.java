@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ScrapStoryRepository extends JpaRepository<ScrapStory, Long> {
 
@@ -31,4 +33,10 @@ public interface ScrapStoryRepository extends JpaRepository<ScrapStory, Long> {
             "set ss.isScrapped = true " +
             "where ss = :scrapStory")
     void setIsScrappedTrue(ScrapStory scrapStory);
+
+    @Query("select ss " +
+            "from ScrapStory ss " +
+            "where ss.member.memberId = :memberId and ss.isScrapped = true ")
+    List<ScrapStory> findAllByScrapMemberId(Long memberId);
+
 }

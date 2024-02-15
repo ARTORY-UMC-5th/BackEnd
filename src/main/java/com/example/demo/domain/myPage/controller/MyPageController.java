@@ -33,6 +33,7 @@ public class MyPageController {
             @RequestBody MyPageRequestDto myPageRequestDto
     ) {
         myPageService.updateMemberInfo(memberInfoDto,
+                myPageRequestDto.getUserName(),
                 myPageRequestDto.getIntroduction(),
                 myPageRequestDto.getMyKeyword(),
                 myPageRequestDto.getNickname(),
@@ -43,12 +44,18 @@ public class MyPageController {
     @Operation(summary = "마이스토리에 내정보 및 스크랩한 전시회 목록 조회", description = "마이스토리 창 들어갈때 호출되는 url")
     @GetMapping("/all")
     public ResponseEntity<MyPageResponseDto.MemberGeneralResponseDto> getAllMyStoryInfo(
-            @MemberInfo MemberInfoDto memberInfoDto,
-            @RequestParam(defaultValue = "1") int page) {
-        MyPageResponseDto.MemberGeneralResponseDto myPageResponseDto = myPageService.getAllMyStoryInfo(memberInfoDto, page);
+            @MemberInfo MemberInfoDto memberInfoDto) {
+        MyPageResponseDto.MemberGeneralResponseDto myPageResponseDto = myPageService.getAllMyStoryInfo(memberInfoDto);
         return ResponseEntity.ok(myPageResponseDto);
     }
 
+    @Operation(summary = "마이스토리에 해당 유저 정보 및 스크랩한 전시회 목록 조회", description = "멤버 선택시 호출되는 특정 회원의 정보")
+    @PostMapping("/member")
+    public ResponseEntity<MyPageResponseDto.MemberGeneralResponseDto> getMemberStoryInfo(
+            @RequestBody MemberInfoDto memberInfoDto) {
+        MyPageResponseDto.MemberGeneralResponseDto myPageResponseDto = myPageService.getAllMyStoryInfo(memberInfoDto);
+        return ResponseEntity.ok(myPageResponseDto);
+    }
 
 
 }

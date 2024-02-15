@@ -38,19 +38,21 @@ public class MyPageConverter {
                 .pictureUrl(storyPicture.getPictureUrl())
                 .build();
     }
-    public MyPageResponseDto.ScrappedStoryResponseDto convertToScrappedStory(ScrapStory scrapStory) {
+    public MyPageResponseDto.ScrappedStoryResponseDto convertToScrappedStory(ScrapStory scrapStory, Boolean isLiked) {
         return MyPageResponseDto.ScrappedStoryResponseDto.builder()
-                .storyId(scrapStory.getId())
+                .storyId(scrapStory.getStory().getId())
                 .storyImage(scrapStory.getStory().getStoryThumbnailImage())
+                .storyTitle(scrapStory.getStory().getStoryTitle())
                 .isScrapped(scrapStory.getIsScrapped())
-//                .isLiked(likeStory.getIsLiked())
+                .isLiked(isLiked)
                 .build();
     }
     public MyPageResponseDto.ScrappedMemberResponseDto convertToScrappedMemberDto(ScrapMember scrapMember) {
         return MyPageResponseDto.ScrappedMemberResponseDto.builder()
                 .memberId(scrapMember.getToMember().getMemberId())
                 .isScrapped(scrapMember.getIsScrapped())
-                .profile(scrapMember.getToMember().getProfile())
+                .profile(scrapMember.getToMember().getImage())
+                .memberNickname(scrapMember.getToMember().getNickname())
                 .build();
     }
 

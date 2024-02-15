@@ -24,7 +24,7 @@ public interface StoryRepository extends JpaRepository<Story, Long> {
             "FROM Story s " +
             "WHERE s.isOpen = true AND s.storyState = com.example.demo.domain.story.constant.State.DONE " +
             "ORDER BY s.updateTime DESC")
-    Page<Story> findAllByOrderByUpdateTimeExhibition(@Param("memberId") Long memberId, Pageable pageable);
+    List<Story> findAllByOrderByUpdateTimeExhibition(@Param("memberId") Long memberId);
 
     // 스토리 엔티티 + 조회하는 멤버가 스토리를 생성한 멤버를 스크랩 했는지 여부 (isScrapped)
 

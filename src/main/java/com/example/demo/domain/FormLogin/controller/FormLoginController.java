@@ -35,5 +35,6 @@ public class FormLoginController {
         JwtTokenDto jwtTokenDto = formLoginService.signIn(loginRequest.getEmail(), loginRequest.getPassword());
         return ResponseEntity.ok(jwtTokenDto);
     }
+
 }
 

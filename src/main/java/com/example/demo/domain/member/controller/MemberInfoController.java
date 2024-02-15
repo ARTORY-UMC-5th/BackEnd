@@ -95,5 +95,13 @@ public class MemberInfoController {
 
         return ResponseEntity.ok("member-deleted");
     }
+    @Operation(summary = "사용자 비밀번호 저장")
+    @PostMapping("/save/pwchange")
+    public ResponseEntity<String> saveMemberPW(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody String password) {
 
+        Member member = memberInfoService.saveMemberPw(password, memberInfoDto.getMemberId());
+        memberRepository.save(member);
+
+        return ResponseEntity.ok("pass-word-changed");
+    }
 }
