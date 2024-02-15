@@ -62,11 +62,12 @@ public class ScrapStoryServiceImpl implements ScrapStoryService{
 
         ScrapStory scrapStory = scrapStoryRepository.findByStoryIdAndMemberId(storyId, memberId);
 
-        if (scrapStory.getIsScrapped()) {
-            scrapStoryRepository.setIsLikedFalse(scrapStory);
-        } else {
+        if (scrapStory == null || scrapStory.getIsScrapped() == null || !scrapStory.getIsScrapped()) {
             throw new ScrapException(ErrorCode.UNSCRAP_EXISTS);
+        } else {
+            scrapStoryRepository.setIsLikedFalse(scrapStory);
         }
+
     }
 
 }

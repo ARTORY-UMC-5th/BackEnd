@@ -7,7 +7,6 @@ import com.example.demo.global.error.ErrorCode;
 import com.example.demo.global.error.exception.BusinessException;
 import com.example.demo.global.error.exception.ScrapException;
 import com.example.demo.global.error.exception.StoryException;
-import com.example.demo.global.resolver.memberInfo.MemberInfo;
 import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,7 @@ public class ScrapMemberServiceImpl implements ScrapMemberService{
 
 
     @Transactional
-    public void scrapMember(@MemberInfo MemberInfoDto memberInfoDto, Long toMemberId) {
+    public void scrapMember(MemberInfoDto memberInfoDto, Long toMemberId) {
 
         Long fromMemberId = memberInfoDto.getMemberId();
 
@@ -52,16 +51,16 @@ public class ScrapMemberServiceImpl implements ScrapMemberService{
     }
 
     @Transactional
-    public void unscrapMember(@MemberInfo MemberInfoDto memberInfoDto, Long toMemberId) {
+    public void unscrapMember(MemberInfoDto memberInfoDto, Long toMemberId) {
 
         Long fromMemberId = memberInfoDto.getMemberId();
 
         ScrapMember scrapMember = scrapMemberRepository.findByfromMemberIdAndtoMemberId(fromMemberId, toMemberId);
 
-        if (scrapMember.getIsScrapped()) {
-            scrapMemberRepository.setIsScrappedFalse(scrapMember);
-        } else {
+        if (scrapMember == null || scrapMember.getIsScrapped() == null || !scrapMember.getIsScrapped()) {
             throw new ScrapException(ErrorCode.UNSCRAP_EXISTS);
+        } else {
+            scrapMemberRepository.setIsScrappedFalse(scrapMember);
         }
     }
 }
