@@ -218,7 +218,6 @@ public class StoryServiceImpl implements StoryService{
         Long memberId = memberInfoDto.getMemberId();
 
         // 비공개면 throw
-        if (!story.getIsOpen()) throw new StoryException(ErrorCode.STORY_PRIVATE);
 
 
         ScrapStory scrapStory = scrapStoryRepository.findByStoryIdAndMemberId(storyId, memberId);
