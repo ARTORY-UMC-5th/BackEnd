@@ -25,8 +25,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Query("select distinct m " +
             "from Member m " +
-            "left join ScrapMember sm on sm.toMember = m and sm.fromMember.memberId = :memberId " +
-            "where m.memberId != :memberId and sm.isScrapped = false " +
+            "where m.memberId != :memberId " +
             "order by rand() ")
     Page<Member> initRecommendMember(Pageable pageable, Long memberId);
 }
