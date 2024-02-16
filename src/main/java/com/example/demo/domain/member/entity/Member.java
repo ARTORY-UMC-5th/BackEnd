@@ -18,6 +18,7 @@ import com.example.demo.global.jwt.dto.JwtTokenDto;
 import com.example.demo.global.util.DateTimeUtils;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -74,6 +75,7 @@ public class Member extends BaseEntity {
         this.password = password;
         this.memberName = memberName;
         this.profile = profile;
+        this.image = profile;
         this.role = role;
     }
 
@@ -100,6 +102,7 @@ public class Member extends BaseEntity {
     private String nickname;
 
     @Setter
+    @ColumnDefault("https://mblogthumb-phinf.pstatic.net/MjAyMDA2MTBfMTY1/MDAxNTkxNzQ2ODcyOTI2.Yw5WjjU3IuItPtqbegrIBJr3TSDMd_OPhQ2Nw-0-0ksg.8WgVjtB0fy0RCv0XhhUOOWt90Kz_394Zzb6xPjG6I8gg.PNG.lamute/user.png?type=w800")
     private String image;
 
 
