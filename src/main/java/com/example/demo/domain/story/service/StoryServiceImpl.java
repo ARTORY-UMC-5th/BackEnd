@@ -394,7 +394,12 @@ public class StoryServiceImpl implements StoryService{
                 .stream()
                 .map((Member member) -> {
                     ScrapMember scrapMember = scrapMemberRepository.findByfromMemberIdAndtoMemberId(memberId, member.getMemberId());
-                    return StoryConverter.convertToMemberThumbnailResponseDto(member, scrapMember.getIsScrapped() != null ? scrapMember.getIsScrapped() : false);
+                    if (scrapMember == null) {
+                        return StoryConverter.convertToMemberThumbnailResponseDto(member, false);
+                    } else {
+                        return StoryConverter.convertToMemberThumbnailResponseDto(member, scrapMember.getIsScrapped());
+                    }
+
                 })
                 .toList();
 
