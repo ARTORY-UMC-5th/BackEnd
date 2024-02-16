@@ -12,7 +12,6 @@ import com.example.demo.global.resolver.memberInfo.MemberInfoDto;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 public interface ExhibitionService {
     ExhibitionResponseDto.ExhibitionListResponseDto getAllExhibitionList(@MemberInfo MemberInfoDto memberInfoDto, LocalDate currentDate,int page);
@@ -31,7 +30,8 @@ public interface ExhibitionService {
     List<Exhibition> getAllExhibitions();
     List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRandomExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page);
     ExhibitionResponseDto.ExhibitionGeneralOneResponseDto getRandomOneExhibition();
-    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getSimilarExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page) ;
+    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getImminentExhibitions(@MemberInfo MemberInfoDto memberInfoDto, LocalDate currentDate, int page);
+
     List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecommendExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page);
 
     //각 페이지 눌렀을 때
@@ -39,7 +39,7 @@ public interface ExhibitionService {
     List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecentExhibitions1(@MemberInfo MemberInfoDto memberInfoDto, LocalDate currentDate, int page);
     List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getPopularityExhibitions1(@MemberInfo MemberInfoDto memberInfoDto, int page);
     List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRandomExhibitions1(@MemberInfo MemberInfoDto memberInfoDto, int page);
-    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getSimilarExhibitions1(@MemberInfo MemberInfoDto memberInfoDto, int page) ;
+    List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getImminentExhibitions1(@MemberInfo MemberInfoDto memberInfoDto, LocalDate currentDate, int page);
     List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecommendExhibitions1(@MemberInfo MemberInfoDto memberInfoDto, int page);
 
 
