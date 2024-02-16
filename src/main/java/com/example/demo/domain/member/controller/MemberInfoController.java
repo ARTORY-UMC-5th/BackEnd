@@ -97,9 +97,9 @@ public class MemberInfoController {
     }
     @Operation(summary = "사용자 비밀번호 저장")
     @PostMapping("/save/pwchange")
-    public ResponseEntity<String> saveMemberPW(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody String password) {
+    public ResponseEntity<String> saveMemberPW(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody MemberInfoSaveDto.passwordDto reqPassword) {
 
-        Member member = memberInfoService.saveMemberPw(password, memberInfoDto.getMemberId());
+        Member member = memberInfoService.saveMemberPw(reqPassword.getPassword(), memberInfoDto.getMemberId());
         memberRepository.save(member);
 
         return ResponseEntity.ok("pass-word-changed");
