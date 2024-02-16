@@ -54,6 +54,11 @@ public class MemberInfoSaveDto {
         @Builder.Default
         private Genre genre3 = null;
     }
+    @Getter
+    public static class passwordDto{
+        private String password;
+
+    }
 
 
 
