@@ -115,6 +115,7 @@ public class StoryServiceImpl implements StoryService{
         exhibition.updateCategory();
 
         storyRepository.save(story);
+        System.out.println("storyPictureList = " + storyPictureList);
         storyPictureRepository.saveAll(storyPictureList);
     }
 
