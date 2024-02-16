@@ -81,7 +81,6 @@ public class ExhibitionResponseDto {
         private List<ExhibitionGeneralResponseDto> popluarExhibitionDtoList;
         private List<ExhibitionGeneralResponseDto> randomExhibitionDtoList;
         private List<ExhibitionGeneralResponseDto> recommendExhibitionDtoList;
-        private List<ExhibitionGeneralResponseDto> similarExhibitionDtoList;
 
     }
 

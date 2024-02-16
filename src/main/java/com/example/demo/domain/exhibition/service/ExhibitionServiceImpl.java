@@ -45,7 +45,7 @@ public class ExhibitionServiceImpl implements ExhibitionService {
         // 랜덤 전시회 가져오기
         allResponseDto.setRandomExhibitionDtoList(getRandomExhibitions(memberInfoDto, page));
         // 추천 전시회 가져오기
-        allResponseDto.setSimilarExhibitionDtoList(getRecommendExhibitions(memberInfoDto, page));
+        allResponseDto.setRecommendExhibitionDtoList(getRecommendExhibitions(memberInfoDto, page));
 
         return allResponseDto;
     }
