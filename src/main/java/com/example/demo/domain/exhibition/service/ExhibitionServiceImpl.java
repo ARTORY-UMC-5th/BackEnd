@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -35,19 +34,18 @@ public class ExhibitionServiceImpl implements ExhibitionService {
 
     @Override
     public ExhibitionResponseDto.ExhibitionListResponseDto getAllExhibitionList(@MemberInfo MemberInfoDto memberInfoDto, LocalDate currentDate, int page) {
-//        Long memberId = memberInfoDto.getMemberId();
 
         ExhibitionResponseDto.ExhibitionListResponseDto allResponseDto = new ExhibitionResponseDto.ExhibitionListResponseDto();
         // 최근 전시회 가져오기
         allResponseDto.setRecentExhibitionDtoList(getRecentExhibitions(memberInfoDto, currentDate, page));
+        // 임박한 전시회 가져오기
+        allResponseDto.setImminentExhibitionDtoList(getImminentExhibitions(memberInfoDto, currentDate, page));
         // 인기 있는 전시회 가져오기
         allResponseDto.setPopluarExhibitionDtoList(getPopularityExhibitions(memberInfoDto, page));
         // 랜덤 전시회 가져오기
         allResponseDto.setRandomExhibitionDtoList(getRandomExhibitions(memberInfoDto, page));
-        // 비슷한 전시회 가져오기
-        allResponseDto.setRecommendExhibitionDtoList(getRandomExhibitions(memberInfoDto, page));
         // 추천 전시회 가져오기
-        allResponseDto.setSimilarExhibitionDtoList(getRecommendExhibitions(memberInfoDto, page));
+        allResponseDto.setRecommendExhibitionDtoList(getRecommendExhibitions(memberInfoDto, page));
 
         return allResponseDto;
     }
@@ -101,7 +99,7 @@ public class ExhibitionServiceImpl implements ExhibitionService {
         int pageSize = 10;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
 
-        Page<Object[]> recentExhibitionsPage = exhibitionRepository.findAllByOrderByCreateTimeByDesc(memberId, currentDate, pageable);
+        Page<Object[]> recentExhibitionsPage = exhibitionRepository.findAllByOrderByStartDateByDesc(memberId, currentDate, pageable);
 
 
         List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> recentExhibitions = recentExhibitionsPage.getContent()
@@ -242,14 +240,13 @@ public class ExhibitionServiceImpl implements ExhibitionService {
     }
 
     @Override
-    public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getSimilarExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page) {
+    public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getImminentExhibitions(@MemberInfo MemberInfoDto memberInfoDto, LocalDate currentDate, int page) {
         Long memberId = memberInfoDto.getMemberId();
-
         int pageSize = 10;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
-        Page<Object[]> similarExhibitionsPage = exhibitionRepository.findRandomExhibitions(memberId, pageable);
+        Page<Object[]> imminentExhibitionsPage = exhibitionRepository.findAllByOrderByEndDateByDesc(memberId, currentDate, pageable);
 
-        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> similarExhibitions = similarExhibitionsPage.getContent()
+        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> imminentExhibitions = imminentExhibitionsPage.getContent()
                 .stream()
                 .map(array -> {
                     Exhibition exhibition = (Exhibition) array[0];
@@ -259,8 +256,9 @@ public class ExhibitionServiceImpl implements ExhibitionService {
                 })
                 .collect(Collectors.toList());
 
-        return similarExhibitions;
+        return imminentExhibitions;
     }
+
 
 
     //각 페이지 눌렀을때
@@ -291,11 +289,12 @@ public class ExhibitionServiceImpl implements ExhibitionService {
     @Override
     public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecentExhibitions1(@MemberInfo MemberInfoDto memberInfoDto, LocalDate currentDate, int page) {
         Long memberId = memberInfoDto.getMemberId();
+        System.out.println(currentDate);
 
         int pageSize = 40;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
 
-        Page<Object[]> recentExhibitionsPage = exhibitionRepository.findAllByOrderByCreateTimeByDesc(memberId, currentDate, pageable);
+        Page<Object[]> recentExhibitionsPage = exhibitionRepository.findAllByOrderByStartDateByDesc(memberId, currentDate, pageable);
 
 
         List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> recentExhibitions = recentExhibitionsPage.getContent()
@@ -310,6 +309,31 @@ public class ExhibitionServiceImpl implements ExhibitionService {
 
 
         return recentExhibitions;
+    }
+    @Override
+    public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getImminentExhibitions1(@MemberInfo MemberInfoDto memberInfoDto, LocalDate currentDate, int page) {
+        Long memberId = memberInfoDto.getMemberId();
+        System.out.println(currentDate);
+
+
+        int pageSize = 40;
+        Pageable pageable = PageRequest.of(page - 1, pageSize);
+
+        Page<Object[]> ImminentExhibitionsPage = exhibitionRepository.findAllByOrderByEndDateByDesc(memberId, currentDate, pageable);
+
+
+        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> imminentExhibitions = ImminentExhibitionsPage.getContent()
+                .stream()
+                .map(array -> {
+                    Exhibition exhibition = (Exhibition) array[0];
+                    Boolean isLiked = (Boolean) array[1];
+                    Boolean isScrapped = (Boolean) array[2];
+                    return exhibitionConverter.convertToGeneralDto(exhibition, isLiked, isScrapped);
+                })
+                .collect(Collectors.toList());
+
+
+        return imminentExhibitions;
     }
 
 
@@ -388,27 +412,6 @@ public class ExhibitionServiceImpl implements ExhibitionService {
                     return exhibitionConverter.convertToGeneralDto(exhibition, isLiked, isScrapped);
                 })
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getSimilarExhibitions1(@MemberInfo MemberInfoDto memberInfoDto, int page) {
-        Long memberId = memberInfoDto.getMemberId();
-
-        int pageSize = 40;
-        Pageable pageable = PageRequest.of(page - 1, pageSize);
-        Page<Object[]> similarExhibitionsPage = exhibitionRepository.findRandomExhibitions(memberId, pageable);
-
-        List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> similarExhibitions = similarExhibitionsPage.getContent()
-                .stream()
-                .map(array -> {
-                    Exhibition exhibition = (Exhibition) array[0];
-                    Boolean isLiked = (Boolean) array[1];
-                    Boolean isScrapped = (Boolean) array[2];
-                    return exhibitionConverter.convertToGeneralDto(exhibition, isLiked, isScrapped);
-                })
-                .collect(Collectors.toList());
-
-        return similarExhibitions;
     }
 
 
