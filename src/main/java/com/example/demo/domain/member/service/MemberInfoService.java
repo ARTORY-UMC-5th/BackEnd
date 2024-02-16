@@ -29,19 +29,20 @@ public class MemberInfoService {
         Genre genre2 = memberInfoSaveDto.getGenre2();
         Genre genre3 = memberInfoSaveDto.getGenre3();
 
-        // 빈 문자열("")을 null로 변경하여 처리
+        // 빈 문자열("")을 NONE으로 변경하여 처리
         if ("".equals(memberInfoSaveDto.getGenre1())) {
-            genre1 = null;
+            genre1 = Genre.NONE;
         }
         if ("".equals(memberInfoSaveDto.getGenre2())) {
-            genre2 = null;
+            genre2 = Genre.NONE;
         }
         if ("".equals(memberInfoSaveDto.getGenre3())) {
-            genre3 = null;
+            genre3 = Genre.NONE;
         }
 
-        // 모든 장르가 NONE이면 에러 처리
-        if (genre1 ==null && genre2 ==null && genre3 ==null) {
+        if ((genre1 == Genre.NONE) &&
+                (genre2 == Genre.NONE) &&
+                (genre3 == Genre.NONE)) {
             throw new IllegalArgumentException("장르를 최소 한 가지 이상 선택해야 합니다.");
         }
 
