@@ -3,6 +3,7 @@ package com.example.demo.domain.member.dto;
 
 import com.example.demo.domain.member.constant.Gender;
 import com.example.demo.domain.member.constant.Genre;
+import com.example.demo.domain.member.constant.MemberType;
 import com.example.demo.domain.member.constant.Role;
 import com.example.demo.domain.member.entity.Member;
 import lombok.Builder;
@@ -22,6 +23,7 @@ public class MemberInfoResponseDto {
     private Genre genre1;
     private Genre genre2;
     private Genre genre3;
+    private MemberType memberType;
 
     public static MemberInfoResponseDto of(Member member) {
         return MemberInfoResponseDto.builder()
@@ -36,6 +38,7 @@ public class MemberInfoResponseDto {
                 .memberName(member.getMemberName())
                 .email(member.getEmail())
                 .profile(member.getProfile())
+                .memberType(member.getMemberType())
                 .build();
     }
 }
