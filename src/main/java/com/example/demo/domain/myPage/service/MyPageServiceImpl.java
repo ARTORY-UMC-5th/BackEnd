@@ -89,12 +89,12 @@ public class MyPageServiceImpl implements MyPageService {
     }
 
     @Override
-    public void updateMemberInfo(@MemberInfo MemberInfoDto memberInfoDto, String userName, String introduction, String myKeyword, String nickname, String image) {
+    public void updateMemberInfo(@MemberInfo MemberInfoDto memberInfoDto, String memberName, String introduction, String myKeyword, String nickname, String image) {
         Long memberId = memberInfoDto.getMemberId();
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 멤버를 찾을 수 없습니다. memberId: " + memberId));
 
-        member.setMemberName(userName);
+        member.setMemberName(memberName);
         member.setIntroduction(introduction);
         member.setMyKeyword(myKeyword);
         member.setNickname(nickname);
@@ -166,19 +166,6 @@ public class MyPageServiceImpl implements MyPageService {
                 }
             })
             .collect(Collectors.toList()); // collect 추가
-
-//        for (Story story : stories) {
-//            for (ScrapStory scrapStory : story.getScrapStoryList()) {
-//                if (scrapStory.getMember().getMemberId().equals(memberId)) {
-//                    LikeStory likeStory = likeStoryRepository.findByMemberAndStory(scrapStory.getMember(), scrapStory.getStory());
-//                    boolean isLiked = likeStory != null && likeStory.getIsLiked();
-//
-//                    MyPageResponseDto.ScrappedStoryResponseDto scrappedStoryDto = myPageConverter.convertToScrappedStory(scrapStory);
-//                    scrappedStoryDto.setIsLiked(isLiked);
-//                    scrappedStories.add(scrappedStoryDto);
-//                }
-//            }
-//        }
 
         return scrappedStoryResponseDtos;
     }

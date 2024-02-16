@@ -33,7 +33,7 @@ public class MyPageController {
             @RequestBody MyPageRequestDto myPageRequestDto
     ) {
         myPageService.updateMemberInfo(memberInfoDto,
-                myPageRequestDto.getUserName(),
+                myPageRequestDto.getMemberName(),
                 myPageRequestDto.getIntroduction(),
                 myPageRequestDto.getMyKeyword(),
                 myPageRequestDto.getNickname(),
