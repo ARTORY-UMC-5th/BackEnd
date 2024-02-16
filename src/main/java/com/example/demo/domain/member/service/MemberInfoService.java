@@ -1,6 +1,7 @@
 package com.example.demo.domain.member.service;
 
 
+import com.example.demo.domain.member.constant.Genre;
 import com.example.demo.domain.member.dto.MemberInfoResponseDto;
 import com.example.demo.domain.member.dto.MemberInfoSaveDto;
 import com.example.demo.domain.member.entity.Member;
@@ -22,14 +23,36 @@ public class MemberInfoService {
 
     public Member saveMemberInfo(MemberInfoSaveDto.MemberInfo memberInfoSaveDto, Long memberId){
         Member member = memberService.findMemberByMemberId(memberId);
+
+        // 장르 값 확인
+        Genre genre1 = memberInfoSaveDto.getGenre1();
+        Genre genre2 = memberInfoSaveDto.getGenre2();
+        Genre genre3 = memberInfoSaveDto.getGenre3();
+
+        // 빈 문자열("")을 null로 변경하여 처리
+        if ("".equals(memberInfoSaveDto.getGenre1())) {
+            genre1 = null;
+        }
+        if ("".equals(memberInfoSaveDto.getGenre2())) {
+            genre2 = null;
+        }
+        if ("".equals(memberInfoSaveDto.getGenre3())) {
+            genre3 = null;
+        }
+
+        // 모든 장르가 NONE이면 에러 처리
+        if (genre1 ==null && genre2 ==null && genre3 ==null) {
+            throw new IllegalArgumentException("장르를 최소 한 가지 이상 선택해야 합니다.");
+        }
+
         return member.toBuilder()
                 .age(memberInfoSaveDto.getAge())
                 .nickname(memberInfoSaveDto.getNickname())
                 .image(memberInfoSaveDto.getImage())
                 .gender(memberInfoSaveDto.getGender())
-                .genre1(memberInfoSaveDto.getGenre1())
-                .genre2(memberInfoSaveDto.getGenre2())
-                .genre3(memberInfoSaveDto.getGenre3())
+                .genre1(genre1)
+                .genre2(genre2)
+                .genre3(genre3)
                 .memberName(memberInfoSaveDto.getMemberName())
                 .profile(memberInfoSaveDto.getProfile())
                 .build();
