@@ -98,9 +98,9 @@ public class Story extends BaseEntity {
         this.storyKeyword = null;
         this.storyViewingTime = null;
         this.storyContext = null;
-        this.genre1 = null;
-        this.genre2 = null;
-        this.genre3 = null;
+        this.genre1 = Genre.NONE;
+        this.genre2 = Genre.NONE;
+        this.genre3 = Genre.NONE;
         this.isOpen = null;
 
     }

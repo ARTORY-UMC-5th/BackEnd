@@ -46,13 +46,13 @@ public class MemberInfoSaveDto {
     public static class MemberGenre{
 
         @Builder.Default
-        private Genre genre1 = null;
+        private Genre genre1 = Genre.NONE;
 
         @Builder.Default
-        private Genre genre2 = null;
+        private Genre genre2 = Genre.NONE;
 
         @Builder.Default
-        private Genre genre3 = null;
+        private Genre genre3 = Genre.NONE;
     }
     @Getter
     public static class passwordDto{
