@@ -90,6 +90,7 @@ public class StoryConverter {
                 .storyKeyword(story.getStoryKeyword())
                 .storyContext(story.getStoryContext())
                 .commentResponseDtoList(commentResponseDtoList)
+                .isOpen(story.getIsOpen())
                 .build();
 
 
