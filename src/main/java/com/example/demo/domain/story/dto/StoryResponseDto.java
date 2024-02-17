@@ -57,6 +57,7 @@ public class StoryResponseDto {
         private Genre storyGenre3;
         private String storyKeyword;
         private String storyContext;
+        private Boolean isOpen;
 
         // 댓글
         private List<CommentResponseDto> commentResponseDtoList;
