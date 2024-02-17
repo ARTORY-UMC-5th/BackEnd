@@ -25,6 +25,9 @@ public class MemberInfoResponseDto {
     private Genre genre3;
     private MemberType memberType;
 
+    private String myKeyword;
+    private String introduction;
+
     public static MemberInfoResponseDto of(Member member) {
         return MemberInfoResponseDto.builder()
                 .memberId(member.getMemberId())
@@ -39,6 +42,8 @@ public class MemberInfoResponseDto {
                 .email(member.getEmail())
                 .profile(member.getProfile())
                 .memberType(member.getMemberType())
+                .myKeyword(member.getMyKeyword())
+                .introduction(member.getIntroduction())
                 .build();
     }
 }
