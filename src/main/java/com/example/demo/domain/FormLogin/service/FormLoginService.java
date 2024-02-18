@@ -50,12 +50,13 @@ public class FormLoginService {
     public JwtTokenDto signUp(FormLoginRequestDto.SignUpRequestDto signupRequest) {
 
         // 회원가입 처리
-        Member newMember = new Member();
-        newMember.setEmail(signupRequest.getEmail());
-        newMember.setPassword(signupRequest.getPassword());
-        newMember.setMemberName(signupRequest.getMemberName());
-        newMember.setMemberType(signupRequest.getMemberType());
-        newMember.setRole(signupRequest.getRole());
+        Member newMember = Member.builder()
+                .email(signupRequest.getEmail())
+                .password(signupRequest.getPassword())
+                .memberName(signupRequest.getMemberName())
+                .memberType(signupRequest.getMemberType())
+                .role(signupRequest.getRole())
+                .build();
         // 다른 회원가입 관련 필드 설정
 
         // 회원 등록
