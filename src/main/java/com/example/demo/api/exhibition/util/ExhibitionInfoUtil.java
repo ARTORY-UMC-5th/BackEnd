@@ -52,7 +52,7 @@ public class ExhibitionInfoUtil {
 
             //같은 전시회가 존재하면 pass
             Boolean isExist = exhibitionRepository.existsByExhibitionTitle(exhibitionInfo.getExhibition_title());
-            if (!isExist) continue;
+            if (isExist) continue;
 
             LocalDateTime currentDateTime = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

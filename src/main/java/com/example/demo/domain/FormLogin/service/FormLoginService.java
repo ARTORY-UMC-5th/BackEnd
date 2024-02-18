@@ -20,8 +20,7 @@ public class FormLoginService {
 
     private final MemberService memberService;
     private final TokenManager tokenManager;
-
-
+    private final PasswordEncryptor passwordEncryptor;
 
     //로그인
     public JwtTokenDto signIn(String email, String password) {
@@ -34,13 +33,13 @@ public class FormLoginService {
 
         // 등록된 회원이 있는 경우 비밀번호 일치 여부 확인
         Member member = optionalMember.get();
-        if (!member.getPassword().equals(password)) {
+        if (!passwordEncryptor.checkPassword(password, member.getPassword())) {
             // 비밀번호가 일치하지 않는 경우
             throw new BusinessException(ErrorCode.INVALID_PASSWORD);
         }
 
         // 비밀번호가 일치하면 해당 회원의 정보를 기반으로 JWT 토큰 생성하여 반환
-        JwtTokenDto jwtTokenDto = tokenManager.createJwtTokenDto(member.getMemberId(), member.getRole(),true);
+        JwtTokenDto jwtTokenDto = tokenManager.createJwtTokenDto(member.getMemberId(), member.getRole(), true);
         jwtTokenDto.setRefreshToken(member.getRefreshToken());
 
         return jwtTokenDto;
@@ -50,9 +49,11 @@ public class FormLoginService {
     public JwtTokenDto signUp(FormLoginRequestDto.SignUpRequestDto signupRequest) {
 
         // 회원가입 처리
+        String encryptedPassword = passwordEncryptor.encryptPassword(signupRequest.getPassword());
+
         Member newMember = Member.builder()
                 .email(signupRequest.getEmail())
-                .password(signupRequest.getPassword())
+                .password(encryptedPassword)
                 .memberName(signupRequest.getMemberName())
                 .memberType(signupRequest.getMemberType())
                 .role(signupRequest.getRole())
@@ -68,6 +69,4 @@ public class FormLoginService {
 
         return jwtTokenDto;
     }
-
 }
-
