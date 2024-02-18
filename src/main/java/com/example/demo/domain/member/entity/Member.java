@@ -26,8 +26,8 @@ import java.util.List;
 @Entity
 @Getter
 @Builder(toBuilder = true)
-//@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+//@RequiredArgsConstructor
 @AllArgsConstructor
 public class Member extends BaseEntity {
 
