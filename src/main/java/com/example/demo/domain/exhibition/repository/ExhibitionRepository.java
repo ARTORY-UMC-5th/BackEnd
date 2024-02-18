@@ -167,5 +167,5 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
 
     Exhibition findArtistExhibitionExhibition();
 
-
+    Boolean existsByExhibitionTitle(@Param("exhibition_title") String exhibitionTitle);
 }
