@@ -22,7 +22,7 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
             "FROM ScrapExhibition se " +
             "LEFT JOIN Exhibition e ON e.id = se.exhibition.id " +
             "LEFT JOIN LikeExhibition le ON e.id = le.exhibition.id AND le.member.memberId = :memberId " +
-            "WHERE se.isScrapped = true AND se.member.memberId = :memberId AND e.isEnded = false AND e.isStarted = true " +
+            "WHERE se.isScrapped = true AND se.member.memberId = :memberId "+
             "ORDER BY se.updateTime DESC")
     Page<Object[]> findAllByOrderByUpdateTimeExhibition(@Param("memberId") Long memberId, Pageable pageable);
 
@@ -33,8 +33,6 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
             "FROM Exhibition e " +
             "LEFT JOIN LikeExhibition le ON e.id = le.exhibition.id AND le.member.memberId = :memberId " +
             "LEFT JOIN ScrapExhibition se ON e.id = se.exhibition.id AND se.member.memberId = :memberId " +
-            "WHERE e.isEnded = false " +
-//            "AND e.isStarted = true " +
             "AND CAST(e.exhibitionStartDate AS LocalDate) <= :currentDate " +
             "ORDER BY ABS(DATEDIFF(CURRENT_DATE, CAST(e.exhibitionStartDate AS LocalDate))), e.exhibitionStartDate ASC")
     Page<Object[]> findAllByOrderByStartDateByDesc(@Param("memberId") Long memberId,
@@ -49,8 +47,6 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
             "FROM Exhibition e " +
             "LEFT JOIN LikeExhibition le ON e.id = le.exhibition.id AND le.member.memberId = :memberId " +
             "LEFT JOIN ScrapExhibition se ON e.id = se.exhibition.id AND se.member.memberId = :memberId " +
-            "WHERE e.isEnded = false " +
-            "AND e.isStarted = true " +
             "AND CAST(e.exhibitionEndDate AS LocalDate) >= :currentDate " +
             "ORDER BY ABS(DATEDIFF(CURRENT_DATE, CAST(e.exhibitionEndDate AS LocalDate))), e.exhibitionEndDate DESC")
     Page<Object[]> findAllByOrderByEndDateByDesc(@Param("memberId") Long memberId,
@@ -64,8 +60,6 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
             "FROM Exhibition e " +
             "LEFT JOIN LikeExhibition le ON e.id = le.exhibition.id AND le.member.memberId = :memberId " +
             "LEFT JOIN ScrapExhibition se ON e.id = se.exhibition.id AND se.member.memberId = :memberId " +
-            "WHERE e.isEnded = false " +
-            "AND e.isStarted = true " +
             "ORDER BY e.exhibitionLikeCount DESC")
     Page<Object[]> findAllByOrderByExhibitionLikeCountDesc(@Param("memberId") Long memberId, Pageable pageable);
 
@@ -78,9 +72,7 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
             "FROM Exhibition e " +
             "LEFT JOIN LikeExhibition le ON e.id = le.exhibition.id AND le.member.memberId = :memberId " +
             "LEFT JOIN ScrapExhibition se ON e.id = se.exhibition.id AND se.member.memberId = :memberId " +
-            "WHERE e.isEnded = false " +
-            "AND e.isStarted = true " +
-            "AND LOWER(e.exhibitionTitle) LIKE LOWER(CONCAT('%', :title, '%')) ORDER BY e.exhibitionStartDate DESC")
+            "WHERE  LOWER(e.exhibitionTitle) LIKE LOWER(CONCAT('%', :title, '%')) ORDER BY e.exhibitionStartDate DESC")
 
     Page<Object[]> findByExhibitionTitleContainingCase(@Param("memberId")Long memberId, String title, Pageable pageable);
 
@@ -92,13 +84,14 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
             "FROM Exhibition e " +
             "LEFT JOIN LikeExhibition le ON e.id = le.exhibition.id AND le.member.memberId = :memberId " +
             "LEFT JOIN ScrapExhibition se ON e.id = se.exhibition.id AND se.member.memberId = :memberId " +
-            "WHERE e.isEnded = false " +
-            "AND e.isStarted = true " +"ORDER BY RAND()")
+            "where e.isEnded = false AND e.isStarted = true " +
+            "ORDER BY RAND()")
     Page<Object[]> findRandomExhibitions(@Param("memberId") Long memberId, Pageable pageable);
 
     //랜덤한개(메인용)
     @Query("SELECT e " +
             "FROM Exhibition e " +
+            "WHERE e.isEnded = false AND e.isStarted = true " +
             "ORDER BY RAND() " +
             "LIMIT 1")
     Exhibition findRandomOneExhibition();
@@ -109,9 +102,7 @@ public interface ExhibitionRepository extends JpaRepository<Exhibition, Long> {
             "FROM Exhibition e " +
             "LEFT JOIN LikeExhibition le ON e.id = le.exhibition.id AND le.member.memberId = :memberId " +
             "LEFT JOIN ScrapExhibition se ON e.id = se.exhibition.id AND se.member.memberId = :memberId " +
-            "WHERE e.isEnded = false " +
-            "AND e.isStarted = true " +
-            "AND (e.genreCategory1 = :genre1 OR e.genreCategory2 = :genre2 OR e.genreCategory3 = :genre3) " +
+            "WHERE (e.genreCategory1 = :genre1 OR e.genreCategory2 = :genre2 OR e.genreCategory3 = :genre3) " +
             "ORDER BY CASE " +
             "  WHEN e.genreCategory1 = :genre1 THEN 1 " +
             "  WHEN e.genreCategory2 = :genre2 THEN 2 " +
