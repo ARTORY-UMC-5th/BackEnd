@@ -30,7 +30,7 @@ public class ExhibitionInfoUtil {
 
     public void getInfo() {
 
-        String url = "http://openapi.seoul.go.kr:8088/42456b54756b6f7236386167426b68/json/culturalEventInfo/1/300/";
+        String url = "http://openapi.seoul.go.kr:8088/" + apiKey + "/json/culturalEventInfo/1/300/";
 
         RestTemplate restTemplate = new RestTemplate();
 
