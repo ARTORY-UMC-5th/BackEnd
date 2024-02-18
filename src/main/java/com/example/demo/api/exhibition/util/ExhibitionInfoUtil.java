@@ -52,7 +52,7 @@ public class ExhibitionInfoUtil {
 
             //같은 전시회가 존재하면 pass
             Boolean isExist = exhibitionRepository.existsByExhibitionTitle(exhibitionInfo.getExhibition_title());
-            if (!isExist) continue;
+            if (isExist) continue;
 
             LocalDateTime currentDateTime = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -80,7 +80,6 @@ public class ExhibitionInfoUtil {
             LocalDateTime exhibitionStartDate = LocalDateTime.parse(exhibition_start_date + " 00:00:00", timeFormatter);
             boolean is_started = currentDateTime.isAfter(exhibitionStartDate);
 
-            System.out.println("exhibitionInfo = " + exhibitionInfo);
             Exhibition exhibition = exhibitionConverter.convertToEntity(exhibitionInfo, exhibition_like_count, is_started, is_ended, "0분");
             exhibitionList.add(exhibition);
         }
