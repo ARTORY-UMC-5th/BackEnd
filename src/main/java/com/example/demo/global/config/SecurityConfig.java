@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 
+
 @Configuration
 public class SecurityConfig {
 
@@ -22,6 +23,7 @@ public class SecurityConfig {
     public TokenManager tokenManager() {
         return new TokenManager(accessTokenExpirationTime, refreshTokenExpirationTime, tokenSecret);
     }
+
 
 
 }
