@@ -2,6 +2,7 @@ package com.example.demo.domain.exhibition.converter;
 
 
 
+import com.example.demo.api.exhibition.dto.ExhibitionInfoResponseDto;
 import com.example.demo.domain.exhibition.dto.ExhibitionResponseDto;
 import com.example.demo.domain.exhibition.entity.Exhibition;
 import org.springframework.stereotype.Component;
@@ -62,4 +63,29 @@ public class ExhibitionConverter {
     }
 
 
+
+    public Exhibition convertToEntity(ExhibitionInfoResponseDto.ExhibitionInfo exhibitionInfo, int like_count, Boolean isStarted, Boolean isEnded, String viewing_time) {
+
+        Exhibition exhibition = Exhibition.builder()
+                .exhibitionAddress(exhibitionInfo.getExhibition_address())
+                .exhibitionDuration(exhibitionInfo.getExhibition_duration())
+                .exhibitionImage(exhibitionInfo.getExhibition_image())
+                .exhibitionInstitution(exhibitionInfo.getExhibition_institution())
+                .exhibitionLatitude(exhibitionInfo.getExhibition_latitude())
+                .exhibitionLongitude(exhibitionInfo.getExhibition_longitude())
+                .exhibitionPlace(exhibitionInfo.getExhibition_place())
+                .exhibitionTitle(exhibitionInfo.getExhibition_title())
+                .exhibitionUrl(exhibitionInfo.getExhibition_url())
+                .exhibitionViewingAge(exhibitionInfo.getExhibition_viewing_age())
+                .exhibitionStartDate(exhibitionInfo.getStart_date())
+                .exhibitionEndDate(exhibitionInfo.getEnd_date())
+                .exhibitionLikeCount(like_count)
+                .isEnded(isEnded)
+                .isStarted(isStarted)
+                .exhibitionViewingTime(viewing_time)
+                .exhibitionPrice(exhibitionInfo.getExhibition_price())
+                .build();
+
+        return exhibition;
+    }
 }
