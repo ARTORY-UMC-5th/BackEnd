@@ -216,10 +216,13 @@ public class StoryServiceImpl implements StoryService{
         Story story = storyRepository.findById(storyId)
                 .orElseThrow(() -> new StoryException(ErrorCode.STORY_NOT_EXISTS));
         Long memberId = memberInfoDto.getMemberId();
-
-        // 비공개면 throw
-        if (!story.getIsOpen()) throw new StoryException(ErrorCode.STORY_PRIVATE);
-
+        if (memberId.equals(story.getMember().getMemberId())) { //본인이면 조회
+        }
+        else {
+            if (!story.getIsOpen() && !memberId.equals(story.getMember().getMemberId())) { //비공개 + 본인이 아니면 조회 불가
+                throw new StoryException(ErrorCode.STORY_PRIVATE);
+            }
+        }
 
         ScrapStory scrapStory = scrapStoryRepository.findByStoryIdAndMemberId(storyId, memberId);
         Boolean isMemberScrapped = (scrapStory != null && scrapStory.getIsScrapped() != null) ? scrapStory.getIsScrapped() : false;
