@@ -48,3 +48,7 @@ token:
   secret: ${token_key} # ??? ???
   access-token-expiration-time: 90000000  # 15? 1000(ms) x 60(s) x 15(m)
   refresh-token-expiration-time: 1209600000 # 2? 1000(ms) x 60 (s) x 60(m) x 24(h) x 14(d)
+
+
+exhibition:
+  apikey: 42456b54756b6f7236386167426b68
