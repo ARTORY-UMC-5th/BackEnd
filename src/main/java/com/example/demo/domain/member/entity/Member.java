@@ -51,10 +51,12 @@ public class Member extends BaseEntity {
 
     @Column(nullable = false, length = 20)
     @Setter
+    @ColumnDefault("Artory")
     private String memberName;
 
     @Column(length = 200)
     @Setter
+    @ColumnDefault("'https://mblogthumb-phinf.pstatic.net/MjAyMDA2MTBfMTY1/MDAxNTkxNzQ2ODcyOTI2.Yw5WjjU3IuItPtqbegrIBJr3TSDMd_OPhQ2Nw-0-0ksg.8WgVjtB0fy0RCv0XhhUOOWt90Kz_394Zzb6xPjG6I8gg.PNG.lamute/user.png?type=w800'")
     private String profile;
 
     @Enumerated(EnumType.STRING)
@@ -99,6 +101,7 @@ public class Member extends BaseEntity {
 
     @Setter
     @Column(nullable = true, length = 200)
+    @ColumnDefault("tory")
     private String nickname;
 
     @Setter
@@ -130,15 +133,18 @@ public class Member extends BaseEntity {
 
     //mypage에서 사용
     @Setter
+    @ColumnDefault("자기 소개")
     private String introduction;
 
     @Setter
+    @ColumnDefault("키워드")
     private String myKeyword;
 
     //mystory에서 사용
     @Setter
     @Lob
     @Column(length = 1000000)
+    @ColumnDefault("메모")
     private String memo;
 
 //원재
