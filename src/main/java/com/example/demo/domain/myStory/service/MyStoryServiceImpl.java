@@ -64,7 +64,7 @@ public class MyStoryServiceImpl implements MyStoryService{
     public MyStoryResponseDto.MemberGeneralResponseDto getAllMyStoryInfo(@MemberInfo MemberInfoDto memberInfoDto, int page) {
         Long memberId = memberInfoDto.getMemberId();
 
-        int pageSize = 12;
+        int pageSize = 200;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Object[]> scrapExhibitionsPage = exhibitionRepository.findAllByOrderByUpdateTimeExhibition(memberId, pageable);
 
