@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -19,11 +20,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Query("SELECT distinct m " +
             "FROM Member m " +
-            "JOIN ScrapMember sm ON sm.fromMember.memberId = :memberId " +
-            "JOIN ScrapMember sm1 ON sm.toMember.memberId = sm1.fromMember.memberId " +
-            "JOIN ScrapMember sm2 ON sm2.fromMember.memberId = :memberId and sm2.toMember = sm1.toMember " +
-            "WHERE m = sm2.toMember and m.memberId != :memberId and sm2.isScrapped = false " )
-    Page<Member> recommendMember(Pageable pageable, Long memberId);
+            "LEFT JOIN ScrapMember sm ON sm.fromMember.memberId = :memberId " +
+            "LEFT JOIN ScrapMember sm1 ON sm.toMember = sm1.fromMember " +
+            "LEFT JOIN ScrapMember sm2 ON sm1.toMember = sm2.toMember and sm2.fromMember.memberId = :memberId " +
+            "WHERE m = sm1.toMember and m.memberId != :memberId and (sm2 is null or sm2.isScrapped = false) " )
+    Page<Member> recommendMember(Pageable pageable, @Param("memberId") Long memberId);
 
     @Query("select distinct m " +
             "from Member m " +
