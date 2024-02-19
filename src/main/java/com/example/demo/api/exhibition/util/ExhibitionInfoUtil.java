@@ -3,6 +3,8 @@ package com.example.demo.api.exhibition.util;
 import com.example.demo.api.exhibition.dto.ExhibitionInfoResponseDto;
 import com.example.demo.domain.exhibition.converter.ExhibitionConverter;
 import com.example.demo.domain.exhibition.entity.Exhibition;
+import com.example.demo.domain.exhibition.entity.ExhibitionGenre;
+import com.example.demo.domain.exhibition.repository.ExhibitionGenreRepository;
 import com.example.demo.domain.exhibition.repository.ExhibitionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +26,7 @@ public class ExhibitionInfoUtil {
 
     private final ExhibitionRepository exhibitionRepository;
     private final ExhibitionConverter exhibitionConverter;
+    private final ExhibitionGenreRepository exhibitionGenreRepository;
 
     @Value("${exhibition.apikey}")
     private String apiKey;
@@ -82,8 +85,15 @@ public class ExhibitionInfoUtil {
 
             Exhibition exhibition = exhibitionConverter.convertToEntity(exhibitionInfo, exhibition_like_count, is_started, is_ended, "0분");
             exhibitionList.add(exhibition);
+
+            exhibitionRepository.save(exhibition);
+
+            ExhibitionGenre exhibitionGenre = ExhibitionGenre.builder()
+                    .exhibition(exhibition)
+                    .build();
+
+            exhibitionGenreRepository.save(exhibitionGenre);
         }
 
-        exhibitionRepository.saveAll(exhibitionList);
     }
 }
