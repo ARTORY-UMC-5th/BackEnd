@@ -117,14 +117,17 @@ public class Member extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(20)")
+    @Builder.Default
     private Genre genre1 = Genre.NONE;
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(20)")
+    @Builder.Default
     private Genre genre2 = Genre.NONE;
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(20)")
+    @Builder.Default
     private Genre genre3 = Genre.NONE;
 
 
