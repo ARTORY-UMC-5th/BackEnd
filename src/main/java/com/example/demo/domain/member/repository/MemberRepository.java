@@ -22,7 +22,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             "JOIN ScrapMember sm ON sm.fromMember.memberId = :memberId " +
             "JOIN ScrapMember sm1 ON sm.toMember.memberId = sm1.fromMember.memberId " +
             "JOIN ScrapMember sm2 ON sm2.fromMember = :memberId and sm2.toMember = sm1.toMember " +
-            "WHERE m.memberId = sm1.toMember.memberId and m.memberId != :memberId and sm2.isScrapped = false " )
+            "WHERE m = sm2.toMember and m.memberId != :memberId and sm2.isScrapped = false " )
     Page<Member> recommendMember(Pageable pageable, Long memberId);
 
     @Query("select distinct m " +
