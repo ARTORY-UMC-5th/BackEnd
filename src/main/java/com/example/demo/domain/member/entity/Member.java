@@ -117,15 +117,15 @@ public class Member extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(20)")
-    private Genre genre1;
+    private Genre genre1 = Genre.NONE;
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(20)")
-    private Genre genre2;
+    private Genre genre2 = Genre.NONE;
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(20)")
-    private Genre genre3;
+    private Genre genre3 = Genre.NONE;
 
 
     //mypage에서 사용
