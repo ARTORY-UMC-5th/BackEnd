@@ -21,7 +21,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             "FROM Member m " +
             "JOIN ScrapMember sm ON sm.fromMember.memberId = :memberId " +
             "JOIN ScrapMember sm1 ON sm.toMember.memberId = sm1.fromMember.memberId " +
-            "JOIN ScrapMember sm2 ON m = sm2.fromMember and sm2.toMember = sm1.toMember " +
+            "JOIN ScrapMember sm2 ON sm2.fromMember = :memberId and sm2.toMember = sm1.toMember " +
             "WHERE m.memberId = sm1.toMember.memberId and m.memberId != :memberId and sm2.isScrapped = false " )
     Page<Member> recommendMember(Pageable pageable, Long memberId);
 
