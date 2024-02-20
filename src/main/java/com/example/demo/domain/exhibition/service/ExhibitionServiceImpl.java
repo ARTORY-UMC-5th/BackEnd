@@ -96,7 +96,7 @@ public class ExhibitionServiceImpl implements ExhibitionService {
     public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecentExhibitions(@MemberInfo MemberInfoDto memberInfoDto, LocalDate currentDate, int page) {
         Long memberId = memberInfoDto.getMemberId();
 
-        int pageSize = 10;
+        int pageSize = 40;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
 
         Page<Object[]> recentExhibitionsPage = exhibitionRepository.findAllByOrderByStartDateByDesc(memberId, currentDate, pageable);

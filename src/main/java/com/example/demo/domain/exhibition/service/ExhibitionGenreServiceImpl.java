@@ -27,7 +27,7 @@ public class ExhibitionGenreServiceImpl implements ExhibitionGenreService {
     @Override
     public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getMediaExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page) {
         Long memberId = memberInfoDto.getMemberId();
-        int pageSize = 10;
+        int pageSize = 201;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Object[]> mediaExhibitionsPage = exhibitionGenreRepository.findMediaExhibitions(memberId, pageable);
 
@@ -47,7 +47,7 @@ public class ExhibitionGenreServiceImpl implements ExhibitionGenreService {
     @Override
         public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getCraftExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page) {
         Long memberId = memberInfoDto.getMemberId();
-        int pageSize = 10;
+        int pageSize = 201;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Object[]> craftExhibitionsPage = exhibitionGenreRepository.findCraftExhibitions(memberId, pageable);
 
@@ -67,7 +67,7 @@ public class ExhibitionGenreServiceImpl implements ExhibitionGenreService {
     @Override
     public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getDesignExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page) {
         Long memberId = memberInfoDto.getMemberId();
-        int pageSize = 10;
+        int pageSize = 201;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Object[]> designExhibitionsPage = exhibitionGenreRepository.findDesignExhibitions(memberId, pageable);
 
@@ -87,7 +87,7 @@ public class ExhibitionGenreServiceImpl implements ExhibitionGenreService {
     @Override
     public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getPictureExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page) {
         Long memberId = memberInfoDto.getMemberId();
-        int pageSize = 10;
+        int pageSize = 201;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Object[]> pictureExhibitionsPage = exhibitionGenreRepository.findPictureExhibitions(memberId, pageable);
 
@@ -107,7 +107,7 @@ public class ExhibitionGenreServiceImpl implements ExhibitionGenreService {
     @Override
     public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getSpecialExhibitionExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page) {
         Long memberId = memberInfoDto.getMemberId();
-        int pageSize = 10;
+        int pageSize = 201;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Object[]> specialExhibitionExhibitionsPage = exhibitionGenreRepository.findSpecialExhibitionExhibitions(memberId, pageable);
 
@@ -127,7 +127,7 @@ public class ExhibitionGenreServiceImpl implements ExhibitionGenreService {
     @Override
     public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getSculptureExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page) {
         Long memberId = memberInfoDto.getMemberId();
-        int pageSize = 10;
+        int pageSize = 201;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Object[]> sculptureExhibitionsPage = exhibitionGenreRepository.findSculptureExhibitions(memberId, pageable);
 
@@ -146,7 +146,7 @@ public class ExhibitionGenreServiceImpl implements ExhibitionGenreService {
     @Override
     public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getPlanExhibitionExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page) {
         Long memberId = memberInfoDto.getMemberId();
-        int pageSize = 10;
+        int pageSize = 201;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Object[]> planExhibitionExhibitionsPage = exhibitionGenreRepository.findPlanExhibitionExhibitions(memberId, pageable);
 
@@ -166,7 +166,7 @@ public class ExhibitionGenreServiceImpl implements ExhibitionGenreService {
     @Override
     public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getInstallationArtExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page) {
         Long memberId = memberInfoDto.getMemberId();
-        int pageSize = 10;
+        int pageSize = 201;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Object[]> installationArtExhibitionsPage = exhibitionGenreRepository.findInstallationArtExhibitions(memberId, pageable);
 
@@ -186,7 +186,7 @@ public class ExhibitionGenreServiceImpl implements ExhibitionGenreService {
     @Override
     public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getPaintingExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page) {
         Long memberId = memberInfoDto.getMemberId();
-        int pageSize = 10;
+        int pageSize = 201;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Object[]> paintingExhibitionsPage = exhibitionGenreRepository.findPaintingExhibitions(memberId, pageable);
 
@@ -206,7 +206,7 @@ public class ExhibitionGenreServiceImpl implements ExhibitionGenreService {
     @Override
     public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getArtistExhibitionExhibitions(@MemberInfo MemberInfoDto memberInfoDto, int page) {
         Long memberId = memberInfoDto.getMemberId();
-        int pageSize = 10;
+        int pageSize = 201;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Object[]> artistExhibitionExhibitionsPage = exhibitionGenreRepository.findArtistExhibitionExhibitions(memberId, pageable);
 
