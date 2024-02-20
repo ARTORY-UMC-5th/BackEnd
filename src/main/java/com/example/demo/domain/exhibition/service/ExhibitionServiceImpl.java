@@ -266,7 +266,7 @@ public class ExhibitionServiceImpl implements ExhibitionService {
     public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getDistanceRecommendExhibitions1(ExhibitionRequestDto requestDto, @MemberInfo MemberInfoDto memberInfoDto, int page) {
         Long memberId = memberInfoDto.getMemberId();
 
-        int pageSize = 40;
+        int pageSize = 201;
         double userLatitude = Double.parseDouble(requestDto.getLatitude());
         double userLongitude = Double.parseDouble(requestDto.getLongitude());
 
@@ -291,7 +291,7 @@ public class ExhibitionServiceImpl implements ExhibitionService {
         Long memberId = memberInfoDto.getMemberId();
         System.out.println(currentDate);
 
-        int pageSize = 40;
+        int pageSize = 201;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
 
         Page<Object[]> recentExhibitionsPage = exhibitionRepository.findAllByOrderByStartDateByDesc(memberId, currentDate, pageable);
@@ -316,7 +316,7 @@ public class ExhibitionServiceImpl implements ExhibitionService {
         System.out.println(currentDate);
 
 
-        int pageSize = 40;
+        int pageSize = 201;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
 
         Page<Object[]> ImminentExhibitionsPage = exhibitionRepository.findAllByOrderByEndDateByDesc(memberId, currentDate, pageable);
@@ -341,7 +341,7 @@ public class ExhibitionServiceImpl implements ExhibitionService {
     public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getPopularityExhibitions1(@MemberInfo MemberInfoDto memberInfoDto, int page) {
         Long memberId = memberInfoDto.getMemberId();
 
-        int pageSize = 40;
+        int pageSize = 201;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Object[]> likeExhibitionsPage = exhibitionRepository.findAllByOrderByExhibitionLikeCountDesc(memberId, pageable);
 
@@ -364,7 +364,7 @@ public class ExhibitionServiceImpl implements ExhibitionService {
     public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRandomExhibitions1(@MemberInfo MemberInfoDto memberInfoDto, int page) {
         Long memberId = memberInfoDto.getMemberId();
 
-        int pageSize = 40;
+        int pageSize = 201;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Object[]> randomExhibitionsPage = exhibitionRepository.findRandomExhibitions(memberId, pageable);
 
@@ -386,7 +386,7 @@ public class ExhibitionServiceImpl implements ExhibitionService {
     public List<ExhibitionResponseDto.ExhibitionGeneralResponseDto> getRecommendExhibitions1(@MemberInfo MemberInfoDto memberInfoDto, int page) {
         Long memberId = memberInfoDto.getMemberId();
 
-        int pageSize = 40;
+        int pageSize = 201;
         Pageable pageable = PageRequest.of(page - 1, pageSize);
 
         // 각 멤버의 genre1, genre2, genre3 값 가져오기
